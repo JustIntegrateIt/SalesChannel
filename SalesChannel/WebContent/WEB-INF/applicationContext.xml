@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:sec="http://cxf.apache.org/configuration/security"
+       xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+
+	<mongo:mongo host="localhost" port="27017" id="mongo" />
+	<mongo:db-factory dbname="saleschannel" mongo-ref="mongo"
+		id="mongoDbFactory" /> 
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+
+	<!-- Start @@ Bean mapping for Restlet service -->
+	<bean id="basecampComponent" class="org.restlet.ext.spring.SpringComponent">
+		<property name="defaultTarget" ref="autoRestletAppliction" />
+	</bean>
+
+	<bean id="autoRestletAppliction" class="net.saleschannel.api.frontcontroller.SalesChannelApplication">
+		<property name="inboundRoot" ref="router" />
+	</bean>
+
+	<bean name="router" class="org.restlet.ext.spring.SpringBeanRouter" />
+
+	<!-- Define all the routes -->
+
+	<!-- sales channel bean Creation Starts  -->
+	
+	<!-- customer bean Creation and API Starts  -->
+	<bean name="/customerLogin" class="net.saleschannel.api.customer.CustomerLoginController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+    </bean>
+	
+	<bean id="customerService" class="net.saleschannel.api.customer.CustomerServiceImpl">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<bean id="customerDao" class="net.saleschannel.api.customer.CustomerDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- customer bean Creation and API Ends  -->
+	
+	<!-- product bean Creation and API Starts  -->
+	<bean name="/product" class="net.saleschannel.api.product.ProductController" scope="prototype">
+		<property name="productService" ref="productService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+	
+	<bean id="productService" class="net.saleschannel.api.product.ProductServiceImpl">
+		<property name="productDao" ref="productDao" />
+	</bean>
+	
+	<bean id="productDao" class="net.saleschannel.api.product.ProductDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- product bean Creation and API Ends  -->
+	
+	<!-- category bean Creation and API Starts  -->
+	<bean name="/category" class="net.saleschannel.api.productcategory.ProductCategoryController" scope="prototype">
+		<property name="categoryService" ref="categoryService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+	
+	<bean id="categoryService" class="net.saleschannel.api.productcategory.ProductCategoryServiceImpl">
+		<property name="categoryDao" ref="categoryDao" />
+	</bean>
+	
+	<bean id="categoryDao" class="net.saleschannel.api.productcategory.ProductCategoryDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- customer bean Creation and API Ends  -->
+	
+	<!-- sales channel bean Creation Ends -->
+	
+</beans>
