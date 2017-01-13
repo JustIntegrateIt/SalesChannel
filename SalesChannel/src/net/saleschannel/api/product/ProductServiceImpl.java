@@ -18,7 +18,6 @@ public class ProductServiceImpl implements ProductService {
 	public String insertProduct(ProductJsonModel productJsonModel) {
 		String productId = null;
 		String productAttributeId = null;
-		productJsonModel.setSync(false);
 		productJsonModel.setCreateBy(productJsonModel.getCustomerId());
 		productJsonModel.setCreatedAt(new Date());
 		try {
