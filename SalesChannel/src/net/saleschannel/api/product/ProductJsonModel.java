@@ -9,27 +9,38 @@ import net.saleschannel.api.base.SalesChannelBaseJsonObject;
 
 public class ProductJsonModel extends SalesChannelBaseJsonObject {
 
+	//SC Product Id
 	@Id
 	private String id;
 	
+	//SC Customer Id
 	private String customerId;
 
+	//SC Product Name
 	private String productName;
 
+	//SC Product Type
 	private String productType;
 	
+	//SC Product Category
 	private String productCategory;
 	
+	//SC Product Description
 	private String description;
 	
+	//SC Product Quantity
 	private Integer quantity;
 	
+	//SC Product Cost
 	private Integer cost;
 	
+	//SC Product skuId
 	private String skuId;
 	
+	//SC Product Sync Status to Market Place
 	private boolean isSync;
 	
+	//POJO to map Product Attributes request
 	private List<ProductAttributeSetModel> productAttributes;
 	
 	private List<ProductAccessories> productAccessories; 

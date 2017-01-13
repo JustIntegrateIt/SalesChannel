@@ -6,15 +6,20 @@ import org.springframework.data.annotation.Id;
 
 public class ProductAttributes {
 
+	//SC Product Attributes Id
 	@Id
 	private String id;
 	
+	//SC Product Id
 	private String productId;
 	
+	//SC Product Quantity
 	private Integer quantity;
 	
+	//SC Product Cost
 	private Integer cost;
 	
+	//SC Product skuId
 	private String skuId;
 	
 	private String createdBy;

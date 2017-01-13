@@ -19,6 +19,8 @@ import org.restlet.representation.Representation;
 import net.saleschannel.api.SalesChannelServerResource;
 import net.saleschannel.api.constants.ProductTypes;
 import net.saleschannel.api.constants.SalesChannelConstants;
+import net.saleschannel.api.productcategory.ProductCategoryJsonModel;
+import net.saleschannel.api.productcategory.ProductCategoryServiceImpl;
 import net.saleschannel.api.utility.SalesChannelUtility;
 
 public class ProductController extends SalesChannelServerResource<ProductJsonModel> {
@@ -26,6 +28,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	private static final Logger LOGGERS = Logger.getLogger(ProductController.class);
 	
 	private ProductServiceImpl productService;
+	
+	private ProductCategoryServiceImpl categoryService;
 	
 	private String skuId = null;
 	
@@ -220,6 +224,12 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 				jsonObject2.put("1000", "Product Category is empty.@#productCategory#@");
 				return jsonObject2;
 			} else {
+				ProductCategoryJsonModel productCategoryJsonModel = categoryService.getProductCategoryByNameAndCustomerId(
+						getCustomerId(), obj.getProductCategory());
+				if(productCategoryJsonModel == null) {
+					jsonObject2.put("1004", "Product Category is Invalid.@#productCategory#@");
+					return jsonObject2;	
+				}
 				
 			}
 			//skuId validation
@@ -302,14 +312,6 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 		return productJsonModel;
 	}
 
-	public ProductServiceImpl getProductService() {
-		return productService;
-	}
-
-	public void setProductService(ProductServiceImpl productService) {
-		this.productService = productService;
-	}
-
 	@Override
 	public List<String> getParametersList() {
 		final ArrayList<String> paramList = new ArrayList<String>();
@@ -317,6 +319,22 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 		paramList.add("productId");
 		paramList.add("isAll");
 		return paramList;
+	}
+
+	public ProductServiceImpl getProductService() {
+		return productService;
+	}
+
+	public void setProductService(ProductServiceImpl productService) {
+		this.productService = productService;
+	}
+	
+	public ProductCategoryServiceImpl getCategoryService() {
+		return categoryService;
+	}
+
+	public void setCategoryService(ProductCategoryServiceImpl categoryService) {
+		this.categoryService = categoryService;
 	}
 
 }

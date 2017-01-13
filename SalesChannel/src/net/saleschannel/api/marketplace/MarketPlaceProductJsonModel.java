@@ -1,6 +1,6 @@
 package net.saleschannel.api.marketplace;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import net.saleschannel.api.base.SalesChannelBaseJsonObject;
 
@@ -8,24 +8,29 @@ import org.springframework.data.annotation.Id;
 
 public class MarketPlaceProductJsonModel extends SalesChannelBaseJsonObject {
 
+	//SC Market Place Product Id
 	@Id
 	private String id;
 	
+	//SC Product Id
 	private String productId;
 	
+	//SC Product Place Id
 	private String marketPlaceId;
 	
+	//SC Customer Id
 	private String customerId;
 	
+	//Market Place Product Reference Id
 	private String marketPlaceProductRefId;
 	
 	private String createBy;
 	
 	private String updatedBy;
 	
-	private Timestamp createdAt;
+	private Date createdAt;
 	
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	public String getId() {
 		return id;
@@ -83,19 +88,19 @@ public class MarketPlaceProductJsonModel extends SalesChannelBaseJsonObject {
 		this.updatedBy = updatedBy;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 }

@@ -19,6 +19,17 @@ public class SalesChannelConstants {
 	public static final String COST = "cost";
 	public static final String QUANTITY = "quantity";
 	
+	/** Separator types. */
+	public static final String FILE_SEPERATOR = "/";
+	public static final String DOT_SEPERATOR = ".";
+	public static final String NAME_SEPERATOR = "_";
+	public static final String CROSS = "x";
+	
+	/** image types. */
+	public static final String JPG = "jpg";
+	public static final String PNG = "png";
+	public static final String JPEG = "jpeg";
+	
 	/** Collection names. */
 	public static final String SC_CUSTOMER = "sc_customer";
 	public static final String SC_PRODUCT = "sc_product";

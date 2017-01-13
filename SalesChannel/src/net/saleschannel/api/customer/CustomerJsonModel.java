@@ -1,6 +1,6 @@
 package net.saleschannel.api.customer;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import net.saleschannel.api.base.SalesChannelBaseJsonObject;
 
@@ -8,24 +8,32 @@ import org.springframework.data.annotation.Id;
 
 public class CustomerJsonModel extends SalesChannelBaseJsonObject {
 	
+	//SC Customer Id
 	@Id
 	private String id;
 	
+	//SC Customer User Name
 	private String userName;
 	
+	//SC Customer User Password
 	private String password;
 	
+	//SC Auth Token
 	private String authToken;
 	
+	//SC Customer Active Status
 	private boolean isActive;
+	
+	//SC Customer Locale
+	private String locale;
 
 	private String createBy;
 	
 	private String updatedBy;
 	
-	private Timestamp createdAt;
+	private Date createdAt;
 	
-	private Timestamp updatedAt;
+	private Date updatedAt;
 	
 	public String getId() {
 		return id;
@@ -83,20 +91,28 @@ public class CustomerJsonModel extends SalesChannelBaseJsonObject {
 		this.updatedBy = updatedBy;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }

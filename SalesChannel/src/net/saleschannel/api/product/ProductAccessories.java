@@ -1,27 +1,31 @@
 package net.saleschannel.api.product;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
 public class ProductAccessories {
 
+	//SC Product Accessories Id
 	@Id
 	private String id;
 	
+	//SC Product Id
 	private String productId;
 	
+	//SC Product Accessories Name
 	private String name;
 	
+	//SC Product Accessories Description
 	private String description;
 	
 	private String createBy;
 	
 	private String updatedBy;
 	
-	private Timestamp createdAt;
+	private Date createdAt;
 	
-	private Timestamp updatedAt;
+	private Date updatedAt;
 
 	public String getId() {
 		return id;
@@ -71,19 +75,19 @@ public class ProductAccessories {
 		this.updatedBy = updatedBy;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public Timestamp getUpdatedAt() {
+	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Timestamp updatedAt) {
+	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 	

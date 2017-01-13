@@ -2,12 +2,18 @@ package net.saleschannel.api.product;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+
 public class Attribute {
 
+	//SC Attribute Id
+	@Id
 	private String id;
 	
+	//SC Attribute Name
 	private String name;
 	
+	//SC Attribute Description
 	private String description;
 	
 	private String createdBy;

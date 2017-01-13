@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ProductAttributeSet {
 	
+	//POJO to map ProductAttributes
 	private String name;
 	
 	private String value;

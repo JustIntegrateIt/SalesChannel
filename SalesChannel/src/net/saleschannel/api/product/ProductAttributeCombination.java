@@ -6,15 +6,20 @@ import org.springframework.data.annotation.Id;
 
 public class ProductAttributeCombination {
 
+	//SC Product Attribute Combination Id
 	@Id
 	private String id;
 	
+	//SC Product Attribute Id
 	private String productAttributeId;
 	
+	//SC Attribute Id
 	private String AttributeId;
 	
+	//SC Product Id
 	private String productId;
 	
+	//SC Attribute Value
 	private String value;
 	
 	private String createBy;
