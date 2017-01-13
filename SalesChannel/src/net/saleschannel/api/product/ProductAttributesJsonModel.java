@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-public class ProductAttributes {
+public class ProductAttributesJsonModel {
 
 	//SC Product Attributes Id
 	@Id

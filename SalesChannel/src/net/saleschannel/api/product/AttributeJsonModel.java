@@ -4,36 +4,25 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
-public class ProductAccessories {
+public class AttributeJsonModel {
 
-	//SC Product Accessories Id
+	//SC Attribute Id
 	@Id
 	private String id;
 	
-	//SC Product Id
-	private String productId;
-	
-	//SC Product Accessories Name
+	//SC Attribute Name
 	private String name;
 	
-	//SC Product Accessories Description
+	//SC Attribute Description
 	private String description;
 	
-	private String createBy;
+	private String createdBy;
 	
 	private String updatedBy;
 	
 	private Date createdAt;
 	
 	private Date updatedAt;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -51,20 +40,20 @@ public class ProductAccessories {
 		this.description = description;
 	}
 
-	public String getProductId() {
-		return productId;
+	public String getId() {
+		return id;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getCreateBy() {
-		return createBy;
+	public String getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public String getUpdatedBy() {
@@ -90,5 +79,4 @@ public class ProductAccessories {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
 }

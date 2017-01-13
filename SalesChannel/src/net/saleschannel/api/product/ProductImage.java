@@ -11,7 +11,9 @@ public class ProductImage {
 	
 	private String imageName;
 	
-	private String imageValue;
+	private String imagePath;
+	
+	private String actualPath;
 	
 	private String productId;
 	
@@ -37,14 +39,6 @@ public class ProductImage {
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
-	}
-
-	public String getImageValue() {
-		return imageValue;
-	}
-
-	public void setImageValue(String imageValue) {
-		this.imageValue = imageValue;
 	}
 
 	public String getProductId() {
@@ -85,5 +79,21 @@ public class ProductImage {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getActualPath() {
+		return actualPath;
+	}
+
+	public void setActualPath(String actualPath) {
+		this.actualPath = actualPath;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }

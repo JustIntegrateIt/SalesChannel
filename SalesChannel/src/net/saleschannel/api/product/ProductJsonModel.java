@@ -37,13 +37,10 @@ public class ProductJsonModel extends SalesChannelBaseJsonObject {
 	//SC Product skuId
 	private String skuId;
 	
-	//SC Product Sync Status to Market Place
-	private boolean isSync;
-	
 	//POJO to map Product Attributes request
 	private List<ProductAttributeSetModel> productAttributes;
 	
-	private List<ProductAccessories> productAccessories; 
+	private List<ProductAccessoriesJsonModel> productAccessories; 
 	
 	private String createBy;
 	
@@ -125,14 +122,6 @@ public class ProductJsonModel extends SalesChannelBaseJsonObject {
 		this.id = id;
 	}
 
-	public boolean isSync() {
-		return isSync;
-	}
-
-	public void setSync(boolean isSync) {
-		this.isSync = isSync;
-	}
-
 	public String getCreateBy() {
 		return createBy;
 	}
@@ -173,11 +162,11 @@ public class ProductJsonModel extends SalesChannelBaseJsonObject {
 		this.productAttributes = productAttributes;
 	}
 
-	public List<ProductAccessories> getProductAccessories() {
+	public List<ProductAccessoriesJsonModel> getProductAccessories() {
 		return productAccessories;
 	}
 
-	public void setProductAccessories(List<ProductAccessories> productAccessories) {
+	public void setProductAccessories(List<ProductAccessoriesJsonModel> productAccessories) {
 		this.productAccessories = productAccessories;
 	}
 }

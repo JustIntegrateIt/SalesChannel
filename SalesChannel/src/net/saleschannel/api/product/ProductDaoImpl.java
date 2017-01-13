@@ -107,7 +107,7 @@ public class ProductDaoImpl implements ProductDao {
 		return products;
 	}
 
-	public boolean insertAttribute(Attribute attribute) {
+	public boolean insertAttribute(AttributeJsonModel attribute) {
 		boolean status = false;
 		try {
 			this.mongoOps.insert(attribute, SalesChannelConstants.SC_ATTRIBUTE);
@@ -119,13 +119,13 @@ public class ProductDaoImpl implements ProductDao {
 		return status;
 	}
 	
-	public Attribute checkAttributeExist(String attributeName) {
-		Attribute attributeExist = null;
+	public AttributeJsonModel checkAttributeExist(String attributeName) {
+		AttributeJsonModel attributeExist = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.Attribute")
 					.and("name").is(attributeName));
-			attributeExist = this.mongoOps.findOne(query, Attribute.class, SalesChannelConstants.SC_ATTRIBUTE);
+			attributeExist = this.mongoOps.findOne(query, AttributeJsonModel.class, SalesChannelConstants.SC_ATTRIBUTE);
 		} catch(Exception e) {
 			LOGGERS.error("error while insert attribute in database");
 			e.printStackTrace();
@@ -133,7 +133,7 @@ public class ProductDaoImpl implements ProductDao {
 		return attributeExist;
 	}
 
-	public boolean updateAttribute(Attribute attribute) {
+	public boolean updateAttribute(AttributeJsonModel attribute) {
 		boolean status = false;
 		try {
 			this.mongoOps.save(attribute, SalesChannelConstants.SC_ATTRIBUTE);
@@ -150,14 +150,14 @@ public class ProductDaoImpl implements ProductDao {
 		return false;
 	}
 
-	public Attribute getAttributeById(String attributeId) {
-		Attribute attribute = null;
+	public AttributeJsonModel getAttributeById(String attributeId) {
+		AttributeJsonModel attribute = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.Attribute")
 					.and("_id").is(new ObjectId(attributeId)));
 			attribute = this.mongoOps.findOne(query, 
-					Attribute.class, SalesChannelConstants.SC_ATTRIBUTE);			
+					AttributeJsonModel.class, SalesChannelConstants.SC_ATTRIBUTE);			
 		} catch(Exception e) {
 			LOGGERS.error("error while get Attribute by id in database");
 			e.printStackTrace();
@@ -165,15 +165,15 @@ public class ProductDaoImpl implements ProductDao {
 		return attribute;
 	}
 
-	public List<Attribute> getAttributesByIds(List<String> attributeIds) {
+	public List<AttributeJsonModel> getAttributesByIds(List<String> attributeIds) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public List<Attribute> getAllAttributes() {
-		List<Attribute> attributeList = null;
+	public List<AttributeJsonModel> getAllAttributes() {
+		List<AttributeJsonModel> attributeList = null;
 		try {
-			attributeList = this.mongoOps.findAll(Attribute.class, SalesChannelConstants.SC_ATTRIBUTE);
+			attributeList = this.mongoOps.findAll(AttributeJsonModel.class, SalesChannelConstants.SC_ATTRIBUTE);
 		} catch(Exception e) {
 			LOGGERS.error("error while fetch all attributes from database");
 			e.printStackTrace();
@@ -181,7 +181,7 @@ public class ProductDaoImpl implements ProductDao {
 		return attributeList;
 	}
 
-	public String insertProductAttribute(ProductAttributes productAttribute) {
+	public String insertProductAttribute(ProductAttributesJsonModel productAttribute) {
 		String productAttributeId = null;
 		try {
 			ObjectId objectId = new ObjectId();
@@ -195,13 +195,13 @@ public class ProductDaoImpl implements ProductDao {
 		return productAttributeId;
 	}
 
-	public ProductAttributes checkProductAttributeExist(String productId, String skuId) {
-		ProductAttributes productAttributesExist = null;
+	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId) {
+		ProductAttributesJsonModel productAttributesExist = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
 					.and("skuId").is(skuId).and("productId").is(productId));
-			productAttributesExist = this.mongoOps.findOne(query, ProductAttributes.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
+			productAttributesExist = this.mongoOps.findOne(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
 		} catch(Exception e) {
 			LOGGERS.error("error while insert attribute in database");
 			e.printStackTrace();
@@ -209,7 +209,7 @@ public class ProductDaoImpl implements ProductDao {
 		return productAttributesExist;
 	}
 	
-	public boolean updateProductAttribute(ProductAttributes productAttribute) {
+	public boolean updateProductAttribute(ProductAttributesJsonModel productAttribute) {
 		boolean status = false;
 		try {
 			this.mongoOps.save(productAttribute, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
@@ -226,18 +226,18 @@ public class ProductDaoImpl implements ProductDao {
 		return false;
 	}
 
-	public ProductAttributes getProductAttributeById(String productAttributeId) {
+	public ProductAttributesJsonModel getProductAttributeById(String productAttributeId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ProductAttributes> getProductAttributeByProductId(String productId) {
-		List<ProductAttributes> productAttributes = null;
+	public List<ProductAttributesJsonModel> getProductAttributeByProductId(String productId) {
+		List<ProductAttributesJsonModel> productAttributes = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
 					.and("productId").is(productId));
-			productAttributes = this.mongoOps.find(query, ProductAttributes.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
+			productAttributes = this.mongoOps.find(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Attribute by productId in database");
 			e.printStackTrace();
@@ -251,7 +251,7 @@ public class ProductDaoImpl implements ProductDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
 					.and("productId").is(productId));
-			this.mongoOps.findAndRemove(query, ProductAttributes.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
+			this.mongoOps.findAndRemove(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product attribute by productId in database");
@@ -261,7 +261,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	public String insertProductAttributeCombination(
-			ProductAttributeCombination productAttributeCombination) {
+			ProductAttributeCombinationJsonModel productAttributeCombination) {
 		String productAttributeCombinationId = null;
 		try {
 			ObjectId objectId = new ObjectId();
@@ -277,7 +277,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	public boolean updateProductAttributeCombination(
-			ProductAttributeCombination productAttributeCombination) {
+			ProductAttributeCombinationJsonModel productAttributeCombination) {
 		boolean status = false;
 		try {
 			this.mongoOps.save(productAttributeCombination, 
@@ -296,20 +296,20 @@ public class ProductDaoImpl implements ProductDao {
 		return false;
 	}
 
-	public ProductAttributeCombination getProductAttributeCombinationById(
+	public ProductAttributeCombinationJsonModel getProductAttributeCombinationById(
 			String productAttributeCombinationId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ProductAttributeCombination> getProductAttributeCombinationByProductAttributId(
+	public List<ProductAttributeCombinationJsonModel> getProductAttributeCombinationByProductAttributId(
 			String productAttributId) {
-		List<ProductAttributeCombination> productAttributeCombinations = null;
+		List<ProductAttributeCombinationJsonModel> productAttributeCombinations = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombination")
 					.and("productAttributeId").is(productAttributId));
-			productAttributeCombinations = this.mongoOps.find(query, ProductAttributeCombination.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);			
+			productAttributeCombinations = this.mongoOps.find(query, ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);			
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Attribute Combination by productAttributId in database");
 			e.printStackTrace();
@@ -324,7 +324,7 @@ public class ProductDaoImpl implements ProductDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombination")
 					.and("productAttributeId").is(productAttributId));
-			this.mongoOps.findAndRemove(query, ProductAttributeCombination.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);
+			this.mongoOps.findAndRemove(query, ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Attribute Combination by productAttributId in database");

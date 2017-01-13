@@ -2,7 +2,7 @@ package net.saleschannel.api.product;
 
 import java.util.Date;
 
-public class ProductAttributeSet {
+public class ProductAttributeSetJsonObject {
 	
 	//POJO to map ProductAttributes
 	private String name;

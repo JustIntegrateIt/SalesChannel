@@ -22,13 +22,13 @@ public interface ProductService {
 	
 	public List<ProductJsonModel> getProductsByCustomer(String customerId);
 	
-	public ProductAttributes checkProductAttributeExist(String productId, String skuId);
+	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId);
 	
-	public List<Attribute> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
+	public List<AttributeJsonModel> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
 	
-	public List<ProductAttributes> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
+	public List<ProductAttributesJsonModel> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
 	
-	public List<ProductAttributeCombination> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList, String productId);
+	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList, String productId);
 	
 	public ProductJsonModel prepareProductJsonModel(ProductJsonModel productJsonModel);
 }

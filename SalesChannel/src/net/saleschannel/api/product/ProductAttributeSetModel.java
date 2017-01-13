@@ -4,13 +4,13 @@ import java.util.List;
 
 public class ProductAttributeSetModel {
 
-	private List<ProductAttributeSet> productAttributeSet;
+	private List<ProductAttributeSetJsonObject> productAttributeSet;
 
-	public List<ProductAttributeSet> getProductAttributeSet() {
+	public List<ProductAttributeSetJsonObject> getProductAttributeSet() {
 		return productAttributeSet;
 	}
 
-	public void setProductAttributeSet(List<ProductAttributeSet> productAttributeSet) {
+	public void setProductAttributeSet(List<ProductAttributeSetJsonObject> productAttributeSet) {
 		this.productAttributeSet = productAttributeSet;
 	}
 }

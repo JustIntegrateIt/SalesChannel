@@ -8,15 +8,20 @@ import org.springframework.data.annotation.Id;
 
 public class ProductCategoryJsonModel extends SalesChannelBaseJsonObject {
 
+	//SC Product Category Id
 	@Id
 	private String id;
 	
+	//SC Product Category Name
 	private String categoryName;
 	
+	//SC Customer Id
 	private String customerId;
 	
+	//SC Product Category Parent Id
 	private String parentId;
 	
+	//SC Market Place Id
 	private String marketPlaceId;
 	
 	private String createBy;

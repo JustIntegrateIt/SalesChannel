@@ -239,9 +239,9 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 			}
 			//productAttribute skuId validation
 			if(obj.getProductAttributes() != null && obj.getProductAttributes().size() > 0) {
-				List<ProductAttributes> productAttributesList = productService.prepareProductAttributes(obj.getProductAttributes());
+				List<ProductAttributesJsonModel> productAttributesList = productService.prepareProductAttributes(obj.getProductAttributes());
 				if(productAttributesList != null && productAttributesList.size() > 0) {
-					for(ProductAttributes productAttributes : productAttributesList) {
+					for(ProductAttributesJsonModel productAttributes : productAttributesList) {
 						if(productAttributes.getSkuId() == null || productAttributes.getSkuId().isEmpty()) {
 							jsonObject2.put("1000", "skuId is empty in attribute set.@#skuId#@");
 							return jsonObject2;

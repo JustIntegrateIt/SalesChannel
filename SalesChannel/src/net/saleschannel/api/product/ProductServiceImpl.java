@@ -29,9 +29,9 @@ public class ProductServiceImpl implements ProductService {
 				//insert attributes if not exist in database
 				List<ProductAttributeSetModel> productAttributeSetModelList = new ArrayList<ProductAttributeSetModel>();
 				productAttributeSetModelList = productJsonModel.getProductAttributes();
-				List<Attribute> attributes = prepareAttributes(productJsonModel.getProductAttributes()); 
-				for(Attribute attribute : attributes) {
-					Attribute attributeExist = productDao.checkAttributeExist(attribute.getName());
+				List<AttributeJsonModel> attributes = prepareAttributes(productJsonModel.getProductAttributes()); 
+				for(AttributeJsonModel attribute : attributes) {
+					AttributeJsonModel attributeExist = productDao.checkAttributeExist(attribute.getName());
 					if(attributeExist == null) {
 						attribute.setCreatedAt(new Date());
 						attribute.setCreatedBy(productJsonModel.getCustomerId());
@@ -44,13 +44,13 @@ public class ProductServiceImpl implements ProductService {
 				productJsonModel.setProductAttributes(productAttributeSetModelList);
 				//insert ProductAttributes
 				if(productId != null) {
-					List<ProductAttributes> productAttributes = prepareProductAttributes(productJsonModel.getProductAttributes());
+					List<ProductAttributesJsonModel> productAttributes = prepareProductAttributes(productJsonModel.getProductAttributes());
 					if(productAttributes != null && productAttributes.size() > 0) {
 						int i = 0;
 						do {
-							ProductAttributes productAttribute = productAttributes.get(i); 
+							ProductAttributesJsonModel productAttribute = productAttributes.get(i); 
 							productAttribute.setProductId(productId);
-							ProductAttributes productAttributeExist = checkProductAttributeExist(
+							ProductAttributesJsonModel productAttributeExist = checkProductAttributeExist(
 									productAttribute.getProductId(), productAttribute.getSkuId());
 							if(productAttributeExist == null) {
 								productAttribute.setCreatedBy(productJsonModel.getCustomerId());
@@ -63,8 +63,8 @@ public class ProductServiceImpl implements ProductService {
 				}
 				//insert ProductAttributesCombinations
 				if(productId != null && productAttributeId != null) {
-					List<ProductAttributeCombination> productAttributeCombinations = prepareProductAttributeCombination(productJsonModel.getProductAttributes(), productId);
-					for(ProductAttributeCombination productAttributeCombination : productAttributeCombinations) {
+					List<ProductAttributeCombinationJsonModel> productAttributeCombinations = prepareProductAttributeCombination(productJsonModel.getProductAttributes(), productId);
+					for(ProductAttributeCombinationJsonModel productAttributeCombination : productAttributeCombinations) {
 						productAttributeCombination.setCreateBy(productJsonModel.getCustomerId());
 						productAttributeCombination.setCreatedAt(new Date());
 						productDao.insertProductAttributeCombination(productAttributeCombination);
@@ -93,8 +93,8 @@ public class ProductServiceImpl implements ProductService {
 		return productJsonModel;
 	}
 	
-	public ProductAttributes checkProductAttributeExist(String productId, String skuId) {
-		ProductAttributes productAttributeExist = null;
+	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId) {
+		ProductAttributesJsonModel productAttributeExist = null;
 		try {
 			productAttributeExist = productDao.checkProductAttributeExist(productId,	skuId);
 		} catch (Exception e) {
@@ -138,9 +138,9 @@ public class ProductServiceImpl implements ProductService {
 			else if(productJsonModelNew.getProductType().equals(ProductTypes.Configurable) 
 					&& productJsonModelOld.getProductType().equals(ProductTypes.Configurable)) {
 				//insert attributes if not exist in database
-				List<Attribute> attributes = prepareAttributes(productJsonModelNew.getProductAttributes()); 
-				for(Attribute attribute : attributes) {
-					Attribute attributeExist = productDao.checkAttributeExist(attribute.getName());
+				List<AttributeJsonModel> attributes = prepareAttributes(productJsonModelNew.getProductAttributes()); 
+				for(AttributeJsonModel attribute : attributes) {
+					AttributeJsonModel attributeExist = productDao.checkAttributeExist(attribute.getName());
 					if(attributeExist == null) {
 						attribute.setCreatedBy(productJsonModelNew.getCustomerId());
 						attribute.setCreatedAt(new Date());
@@ -163,13 +163,13 @@ public class ProductServiceImpl implements ProductService {
 					//delete all the product attributes and add the new one
 					status = deleteProductAttributes(productJsonModelNew.getId());
 					if(status) {
-						List<ProductAttributes> productAttributes = prepareProductAttributes(productJsonModelNew.getProductAttributes());
+						List<ProductAttributesJsonModel> productAttributes = prepareProductAttributes(productJsonModelNew.getProductAttributes());
 						if(productAttributes != null && productAttributes.size() > 0) {
 							int i = 0;
 							do {
-								ProductAttributes productAttribute = productAttributes.get(i); 
+								ProductAttributesJsonModel productAttribute = productAttributes.get(i); 
 								productAttribute.setProductId(productJsonModelNew.getId());
-								ProductAttributes productAttributeExist = checkProductAttributeExist(
+								ProductAttributesJsonModel productAttributeExist = checkProductAttributeExist(
 										productAttribute.getProductId(), productAttribute.getSkuId());
 								if(productAttributeExist == null) {
 									productAttribute.setCreatedBy(productJsonModelNew.getCustomerId());
@@ -183,9 +183,9 @@ public class ProductServiceImpl implements ProductService {
 						}
 						//insert ProductAttributesCombinations
 						if(productJsonModelNew.getId() != null && productAttributeId != null) {
-							List<ProductAttributeCombination> productAttributeCombinations = prepareProductAttributeCombination(
+							List<ProductAttributeCombinationJsonModel> productAttributeCombinations = prepareProductAttributeCombination(
 									productJsonModelNew.getProductAttributes(), productJsonModelNew.getId());
-							for(ProductAttributeCombination productAttributeCombination : productAttributeCombinations) {
+							for(ProductAttributeCombinationJsonModel productAttributeCombination : productAttributeCombinations) {
 								productAttributeCombination.setCreateBy(productJsonModelNew.getCustomerId());
 								productAttributeCombination.setCreatedAt(new Date());
 								productAttributeCombination.setUpdatedBy(productJsonModelNew.getCustomerId());
@@ -221,9 +221,9 @@ public class ProductServiceImpl implements ProductService {
 	public boolean deleteProductAttributes(String productId) {
 		boolean status = false;
 		try {
-			List<ProductAttributes> productAttributesList = productDao.getProductAttributeByProductId(productId);
+			List<ProductAttributesJsonModel> productAttributesList = productDao.getProductAttributeByProductId(productId);
 			if(productAttributesList != null && productAttributesList.size() > 0) {
-				for(ProductAttributes productAttributes : productAttributesList) {
+				for(ProductAttributesJsonModel productAttributes : productAttributesList) {
 					status = productDao.deleteProductAttributeCombinationByProductAttributId(productAttributes.getId());
 				}
 			}
@@ -303,13 +303,13 @@ public class ProductServiceImpl implements ProductService {
 		return products;
 	}
 	
-	public List<Attribute> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
-		List<Attribute> attributes = new ArrayList<Attribute>();
+	public List<AttributeJsonModel> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
+		List<AttributeJsonModel> attributes = new ArrayList<AttributeJsonModel>();
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
-					for(ProductAttributeSet productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
-						Attribute attribute = new Attribute();
+					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
+						AttributeJsonModel attribute = new AttributeJsonModel();
 						if(!productAttributeSet.getName().equals(SalesChannelConstants.SKU_ID)
 								&& !productAttributeSet.getName().equals(SalesChannelConstants.QUANTITY)
 								&& !productAttributeSet.getName().equals(SalesChannelConstants.COST)) {
@@ -326,13 +326,13 @@ public class ProductServiceImpl implements ProductService {
 		return attributes;
 	}
 
-	public List<ProductAttributes> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
-		List<ProductAttributes> productAttributes = new ArrayList<ProductAttributes>();
+	public List<ProductAttributesJsonModel> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
+		List<ProductAttributesJsonModel> productAttributes = new ArrayList<ProductAttributesJsonModel>();
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
-					ProductAttributes productAttribute = new ProductAttributes();
-					for(ProductAttributeSet productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
+					ProductAttributesJsonModel productAttribute = new ProductAttributesJsonModel();
+					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
 						if(productAttributeSet.getName().equals(SalesChannelConstants.SKU_ID))
 							productAttribute.setSkuId(productAttributeSet.getValue());
 						else if(productAttributeSet.getName().equals(SalesChannelConstants.QUANTITY))
@@ -349,22 +349,22 @@ public class ProductServiceImpl implements ProductService {
 		return productAttributes;
 	}
 	
-	public List<ProductAttributeCombination> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList,
+	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList,
 			String productId) {
-		List<ProductAttributeCombination> productAttributeCombinations = new ArrayList<ProductAttributeCombination>();
+		List<ProductAttributeCombinationJsonModel> productAttributeCombinations = new ArrayList<ProductAttributeCombinationJsonModel>();
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
-					ProductAttributes productAttributeId = null;
-					Attribute attributeId = null;
-					for(ProductAttributeSet productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
+					ProductAttributesJsonModel productAttributeId = null;
+					AttributeJsonModel attributeId = null;
+					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
 						if(productAttributeSet.getName().equals(SalesChannelConstants.SKU_ID)) {
 							productAttributeId = productDao.checkProductAttributeExist(productId, 
 									productAttributeSet.getValue());
 						}
 					}
-					for(ProductAttributeSet productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
-						ProductAttributeCombination productAttributeCombination = new ProductAttributeCombination();
+					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
+						ProductAttributeCombinationJsonModel productAttributeCombination = new ProductAttributeCombinationJsonModel();
 						if(!productAttributeSet.getName().equals(SalesChannelConstants.SKU_ID)
 								&& !productAttributeSet.getName().equals(SalesChannelConstants.QUANTITY)
 								&& !productAttributeSet.getName().equals(SalesChannelConstants.COST)) {
@@ -389,17 +389,17 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductAttributeSetModel> productAttributeSetModelList = new ArrayList<ProductAttributeSetModel>();
 		try {
 			if(productJsonModel != null) {
-				List<ProductAttributes> productAttributes = productDao.getProductAttributeByProductId(productJsonModel.getId());
+				List<ProductAttributesJsonModel> productAttributes = productDao.getProductAttributeByProductId(productJsonModel.getId());
 				if(productAttributes != null && productAttributes.size() > 0) {
-					for(ProductAttributes productAttribute : productAttributes) {
+					for(ProductAttributesJsonModel productAttribute : productAttributes) {
 						ProductAttributeSetModel productAttributeSetModel = new ProductAttributeSetModel();
-						List<ProductAttributeSet> productAttributeSetList = new ArrayList<ProductAttributeSet>();
-						List<ProductAttributeCombination> productAttributeCombinations = productDao.
+						List<ProductAttributeSetJsonObject> productAttributeSetList = new ArrayList<ProductAttributeSetJsonObject>();
+						List<ProductAttributeCombinationJsonModel> productAttributeCombinations = productDao.
 								getProductAttributeCombinationByProductAttributId(productAttribute.getId());
 						if(productAttributeCombinations != null && productAttributeCombinations.size() > 0) {
-							for(ProductAttributeCombination productAttributeCombination : productAttributeCombinations) {
-								Attribute attribute = productDao.getAttributeById(productAttributeCombination.getAttributeId());
-								ProductAttributeSet productAttributeSet = new ProductAttributeSet();
+							for(ProductAttributeCombinationJsonModel productAttributeCombination : productAttributeCombinations) {
+								AttributeJsonModel attribute = productDao.getAttributeById(productAttributeCombination.getAttributeId());
+								ProductAttributeSetJsonObject productAttributeSet = new ProductAttributeSetJsonObject();
 								productAttributeSet.setName(attribute.getName());
 								productAttributeSet.setDescription(attribute.getDescription());
 								productAttributeSet.setValue(productAttributeCombination.getValue());
@@ -407,19 +407,19 @@ public class ProductServiceImpl implements ProductService {
 							}
 						}
 						if(productAttribute.getSkuId() != null && !productAttribute.getSkuId().isEmpty()) {
-							ProductAttributeSet productAttributeSet = new ProductAttributeSet();
+							ProductAttributeSetJsonObject productAttributeSet = new ProductAttributeSetJsonObject();
 							productAttributeSet.setName(SalesChannelConstants.SKU_ID);
 							productAttributeSet.setValue(productAttribute.getSkuId());
 							productAttributeSetList.add(productAttributeSet);
 						}
 						if(productAttribute.getQuantity() != null && !productAttribute.getQuantity().equals("")) {
-							ProductAttributeSet productAttributeSet = new ProductAttributeSet();
+							ProductAttributeSetJsonObject productAttributeSet = new ProductAttributeSetJsonObject();
 							productAttributeSet.setName(SalesChannelConstants.QUANTITY);
 							productAttributeSet.setValue(productAttribute.getQuantity().toString());
 							productAttributeSetList.add(productAttributeSet);
 						}
 						if(productAttribute.getCost() != null && !productAttribute.getCost().equals("")) {
-							ProductAttributeSet productAttributeSet = new ProductAttributeSet();
+							ProductAttributeSetJsonObject productAttributeSet = new ProductAttributeSetJsonObject();
 							productAttributeSet.setName(SalesChannelConstants.COST);
 							productAttributeSet.setValue(productAttribute.getCost().toString());
 							productAttributeSetList.add(productAttributeSet);

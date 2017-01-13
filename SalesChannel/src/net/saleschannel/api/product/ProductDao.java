@@ -18,45 +18,45 @@ public interface ProductDao {
 	public List<ProductJsonModel> getProductsByCustomer(String customerId);
 	
 	/*Attribute*/
-	public boolean insertAttribute(Attribute attribute);
+	public boolean insertAttribute(AttributeJsonModel attribute);
 	
-	public Attribute checkAttributeExist(String attributeName);
+	public AttributeJsonModel checkAttributeExist(String attributeName);
 	
-	public boolean updateAttribute(Attribute attribute);
+	public boolean updateAttribute(AttributeJsonModel attribute);
 	
 	public boolean deleteAttribute(String attributeId);
 	
-	public Attribute getAttributeById(String attributeId);
+	public AttributeJsonModel getAttributeById(String attributeId);
 	
-	public List<Attribute> getAttributesByIds(List<String> attributeIds);
+	public List<AttributeJsonModel> getAttributesByIds(List<String> attributeIds);
 	
-	public List<Attribute> getAllAttributes();
+	public List<AttributeJsonModel> getAllAttributes();
 	
 	/*ProductAttribute*/
-	public String insertProductAttribute(ProductAttributes productAttribute);
+	public String insertProductAttribute(ProductAttributesJsonModel productAttribute);
 	
-	public ProductAttributes checkProductAttributeExist(String productId, String skuId);
+	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId);
 	
-	public boolean updateProductAttribute(ProductAttributes productAttribute);
+	public boolean updateProductAttribute(ProductAttributesJsonModel productAttribute);
 	
 	public boolean deleteProductAttribute(String productAttributeId);
 	
-	public ProductAttributes getProductAttributeById(String productAttributeId);
+	public ProductAttributesJsonModel getProductAttributeById(String productAttributeId);
 	
-	public List<ProductAttributes> getProductAttributeByProductId(String productId);
+	public List<ProductAttributesJsonModel> getProductAttributeByProductId(String productId);
 	
 	public boolean deleteProductAttributeByProductId(String productId);
 	
 	/*ProductAttributeCombination*/
-	public String insertProductAttributeCombination(ProductAttributeCombination productAttributeCombination);
+	public String insertProductAttributeCombination(ProductAttributeCombinationJsonModel productAttributeCombination);
 	
-	public boolean updateProductAttributeCombination(ProductAttributeCombination productAttributeCombination);
+	public boolean updateProductAttributeCombination(ProductAttributeCombinationJsonModel productAttributeCombination);
 	
 	public boolean deleteProductAttributeCombination(String productAttributeCombinationId);
 	
-	public ProductAttributeCombination getProductAttributeCombinationById(String productAttributeCombinationId);
+	public ProductAttributeCombinationJsonModel getProductAttributeCombinationById(String productAttributeCombinationId);
 	
-	public List<ProductAttributeCombination> getProductAttributeCombinationByProductAttributId(String productAttributId);
+	public List<ProductAttributeCombinationJsonModel> getProductAttributeCombinationByProductAttributId(String productAttributId);
 	
 	public boolean deleteProductAttributeCombinationByProductAttributId(String productAttributId);
 }
