@@ -272,6 +272,7 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 		}
 		final SalesChannelBaseJsonObject salesChannelBaseJsonObject = new SalesChannelBaseJsonObject();
 		salesChannelBaseJsonObject.setAuthToken(authToken);
+		salesChannelBaseJsonObject.setCustomerId(customerId);
 		return salesChannelBaseJsonObject;
 	}
 	

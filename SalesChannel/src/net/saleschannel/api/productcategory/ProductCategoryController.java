@@ -20,7 +20,7 @@ import net.saleschannel.api.SalesChannelServerResource;
 import net.saleschannel.api.constants.SalesChannelConstants;
 import net.saleschannel.api.utility.SalesChannelUtility;
 
-public class ProductCategoryController extends SalesChannelServerResource<ProductCategoryJsonModel>{
+public class ProductCategoryController extends SalesChannelServerResource<ProductCategoryJsonObject> {
 
 	private static final Logger LOGGERS = Logger.getLogger(ProductCategoryController.class);
 
@@ -30,27 +30,31 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 	
 	private String categoryName = null;
 	
+	private String marketPlaceId = null;
+	
 	private boolean isAll = false;
 	
 	@Override
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
-			List<ProductCategoryJsonModel> productCategoryJsonModelList = new ArrayList<ProductCategoryJsonModel>();
+			List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
 			if(productCategoryId != null && !productCategoryId.isEmpty()) {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryService.getProductCategoryById(productCategoryId);
-				productCategoryJsonModelList.add(productCategoryJsonModel);
+				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryById(productCategoryId, getCustomerId());
+				productCategoryJsonObjectList.add(productCategoryJsonObject);
 			} else if(categoryName != null && !categoryName.isEmpty()) {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryService.getProductCategoryByNameAndCustomerId(
+				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryByNameAndCustomerId(
 						getCustomerId(), categoryName);
-				productCategoryJsonModelList.add(productCategoryJsonModel);
+				productCategoryJsonObjectList.add(productCategoryJsonObject);
+			} else if(marketPlaceId != null && !marketPlaceId.isEmpty()) {
+				productCategoryJsonObjectList = categoryService.getProductCategoryByMarketPlaceId(marketPlaceId);
 			} else if(isAll) {
-				productCategoryJsonModelList = categoryService.getProductCategoryByCustomerId(getCustomerId());
+				productCategoryJsonObjectList = categoryService.getProductCategoryByCustomerId(getCustomerId());
 			}
-			if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+			if(productCategoryJsonObjectList != null && productCategoryJsonObjectList.size() > 0) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
-				salesChannelErrorObject.setData(productCategoryJsonModelList);
+				salesChannelErrorObject.setData(productCategoryJsonObjectList);
 			} else {
 				salesChannelErrorObject.setStatusCode(3000);
 				salesChannelErrorObject.setMessage(getErrorMessage(3000));
@@ -65,7 +69,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 
 	@Override
 	public Representation insertOrUpdateDetails(Representation entity,
-			ProductCategoryJsonModel obj) {
+			ProductCategoryJsonObject obj) {
 		Representation representation = null;
 		try {
 			String categoryId = categoryService.insertProductCategory(obj);
@@ -87,7 +91,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 
 	@Override
 	public Representation updateDetails(Representation entity,
-			ProductCategoryJsonModel obj) {
+			ProductCategoryJsonObject obj) {
 		Representation representation = null;
 		try {
 			boolean status = categoryService.updateProductCategory(obj);
@@ -113,23 +117,23 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 		try {
 			boolean status = false;
 			boolean isExist = false;
-			ProductCategoryJsonModel productCategoryJsonModel = new ProductCategoryJsonModel();
+			ProductCategoryJsonObject productCategoryJsonObject = new ProductCategoryJsonObject();
 			if(productCategoryId != null && !productCategoryId.isEmpty()) {
-				productCategoryJsonModel = categoryService.getProductCategoryById(productCategoryId);
-				if(productCategoryJsonModel != null) {
+				productCategoryJsonObject = categoryService.getProductCategoryById(productCategoryId, getCustomerId());
+				if(productCategoryJsonObject != null) {
 					isExist = true;
-					status = categoryService.deleteProductCategoryById(productCategoryId);
+					status = categoryService.deleteProductCategoryById(productCategoryId, getCustomerId());
 				}
 			} else if(categoryName != null && !categoryName.isEmpty()) {
-				productCategoryJsonModel = categoryService.getProductCategoryByNameAndCustomerId(getCustomerId(), categoryName);
-				if(productCategoryJsonModel != null) {
+				productCategoryJsonObject = categoryService.getProductCategoryByNameAndCustomerId(getCustomerId(), categoryName);
+				if(productCategoryJsonObject != null) {
 					isExist = true;
 					status = categoryService.deleteProductCategoryByNameAndCustomerId(
 							getCustomerId(), categoryName);
 				}
 			} else if(isAll) {
-				List<ProductCategoryJsonModel> productCategoryJsonModelList = categoryService.getProductCategoryByCustomerId(getCustomerId()); 
-				if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+				List<ProductCategoryJsonObject> productCategoryJsonObjectList = categoryService.getProductCategoryByCustomerId(getCustomerId()); 
+				if(productCategoryJsonObjectList != null && productCategoryJsonObjectList.size() > 0) {
 					isExist = true;
 					status = categoryService.deleteProductCategoryByCustomerId(getCustomerId());
 				}
@@ -154,16 +158,34 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 	}
 
 	@Override
-	public JSONObject validate(ProductCategoryJsonModel obj, String method,
+	public JSONObject validate(ProductCategoryJsonObject obj, String method,
 			JSONObject jsonObject, Form form) throws JSONException {
 		JSONObject jsonObject2 = jsonObject;
 		//PUT & POST method
 		if (method.equals(SalesChannelConstants.PUT) || method.equals(SalesChannelConstants.POST)) {
-			obj.setCustomerId(getCustomerId());
 			//CategoryName validation
 			if(obj.getCategoryName() == null || obj.getCategoryName().isEmpty()) {
 				jsonObject2.put("1000", "category Name is empty.@#categoryName#@");
 				return jsonObject2;
+			}
+			//parent Category validation
+			if(obj.getParentId() != null && !obj.getParentId().isEmpty()) {
+				ProductCategoryJsonObject categoryJsonObject = categoryService.getProductCategoryById(obj.getParentId(), getCustomerId());
+				if(categoryJsonObject == null || categoryJsonObject.getId() == null) {
+					jsonObject2.put("1004", "Invalid value passed.@#parentId#@");
+					return jsonObject2;
+				}
+			}
+		}
+		//PUT method
+		if (method.equals(SalesChannelConstants.PUT)) {
+			//CategoryName validation
+			if(obj.getCategoryName() != null && !obj.getCategoryName().isEmpty()) {
+				ProductCategoryJsonModel categoryJsonModel = categoryService.isProductCategoryExist(obj);
+				if(categoryJsonModel != null && categoryJsonModel.getId() != null) {
+					jsonObject2.put("4001", "Database Error.Record already exist.@#categoryName#@");
+					return jsonObject2;
+				}
 			}
 		}
 		//GET method
@@ -180,6 +202,9 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 						else if (parameter.getName().equalsIgnoreCase("categoryName")) {
 							categoryName = parameter.getValue();
 						}
+						else if (parameter.getName().equalsIgnoreCase("marketPlaceId")) {
+							marketPlaceId = parameter.getValue();
+						}
 						else if (parameter.getName().equalsIgnoreCase("isAll")) {
 							String isAll = parameter.getValue();
 							if(isAll != null && !isAll.isEmpty() && isAll.equals("true")) {
@@ -194,11 +219,11 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 	}
 
 	@Override
-	public ProductCategoryJsonModel getJsonObject(InputStream stream)
+	public ProductCategoryJsonObject getJsonObject(InputStream stream)
 			throws JsonParseException, JsonMappingException, IOException,
 			JSONException {
 		final ObjectMapper mapper = new ObjectMapper();
-		final ProductCategoryJsonModel categoryJsonModel = mapper.readValue(stream, ProductCategoryJsonModel.class);
+		final ProductCategoryJsonObject categoryJsonModel = mapper.readValue(stream, ProductCategoryJsonObject.class);
 		return categoryJsonModel;
 	}
 
@@ -207,6 +232,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 		final ArrayList<String> paramList = new ArrayList<String>();
 		paramList.add("categoryId");
 		paramList.add("categoryName");
+		paramList.add("marketPlaceId");
 		paramList.add("isAll");
 		return paramList;
 	}

@@ -2,11 +2,9 @@ package net.saleschannel.api.productcategory;
 
 import java.util.Date;
 
-import net.saleschannel.api.base.SalesChannelBaseJsonObject;
-
 import org.springframework.data.annotation.Id;
 
-public class ProductCategoryJsonModel extends SalesChannelBaseJsonObject {
+public class ProductCategoryJsonModel {
 
 	//SC Product Category Id
 	@Id

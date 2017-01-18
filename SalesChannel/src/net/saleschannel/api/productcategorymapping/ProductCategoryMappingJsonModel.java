@@ -1,4 +1,4 @@
-package net.saleschannel.api.productcategory;
+package net.saleschannel.api.productcategorymapping;
 
 import java.util.Date;
 
@@ -13,11 +13,8 @@ public class ProductCategoryMappingJsonModel {
 	//SC Customer Id;
 	private String customerId;
 	
-	//SC Product Id;
-	private String productId;
-		
-	//SC Product Category Id;
-	private String productCategoryId;
+	//SC Customer Product Category Id;
+	private String customerProductCategoryId;
 	
 	//Market Place Product Category Id;
 	private String marketPlaceProductCategoryId;
@@ -25,7 +22,10 @@ public class ProductCategoryMappingJsonModel {
 	//SC Product Sync Status to Market Place
 	private boolean isSync;
 	
-	private String createBy;
+	//SC Market Place Id
+	private String marketPlaceId;
+	
+	private String createdBy;
 	
 	private String updatedBy;
 	
@@ -41,22 +41,6 @@ public class ProductCategoryMappingJsonModel {
 		this.isSync = isSync;
 	}
 
-	public String getProductId() {
-		return productId;
-	}
-
-	public void setProductId(String productId) {
-		this.productId = productId;
-	}
-
-	public String getProductCategoryId() {
-		return productCategoryId;
-	}
-
-	public void setProductCategoryId(String productCategoryId) {
-		this.productCategoryId = productCategoryId;
-	}
-
 	public String getMarketPlaceProductCategoryId() {
 		return marketPlaceProductCategoryId;
 	}
@@ -64,14 +48,6 @@ public class ProductCategoryMappingJsonModel {
 	public void setMarketPlaceProductCategoryId(
 			String marketPlaceProductCategoryId) {
 		this.marketPlaceProductCategoryId = marketPlaceProductCategoryId;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
 	}
 
 	public String getUpdatedBy() {
@@ -104,5 +80,37 @@ public class ProductCategoryMappingJsonModel {
 
 	public void setCustomerId(String customerId) {
 		this.customerId = customerId;
+	}
+
+	public String getCustomerProductCategoryId() {
+		return customerProductCategoryId;
+	}
+
+	public void setCustomerProductCategoryId(String customerProductCategoryId) {
+		this.customerProductCategoryId = customerProductCategoryId;
+	}
+
+	public String getMarketPlaceId() {
+		return marketPlaceId;
+	}
+
+	public void setMarketPlaceId(String marketPlaceId) {
+		this.marketPlaceId = marketPlaceId;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

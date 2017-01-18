@@ -46,12 +46,12 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		return status;
 	}
 
-	public ProductCategoryJsonModel getProductCategoryById(String productCategoryId) {
+	public ProductCategoryJsonModel getProductCategoryById(String productCategoryId, String customerId) {
 		ProductCategoryJsonModel productCategoryJsonModel = null;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
-					.and("_id").is(productCategoryId));
+					.and("_id").is(productCategoryId).and("customerId").is(customerId));
 			productCategoryJsonModel = this.mongoOps.findOne(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
 		} catch(Exception e) {
 			LOGGERS.error("error while get product category by Id from database");
@@ -87,13 +87,27 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		}
 		return productCategoryJsonModelList;
 	}
+	
+	public List<ProductCategoryJsonModel> getProductCategoryByMarketPlaceId(String marketPlaceId) {
+		List<ProductCategoryJsonModel> productCategoryJsonModelList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
+					.and("marketPlaceId").is(marketPlaceId));
+			productCategoryJsonModelList = this.mongoOps.find(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+		} catch(Exception e) {
+			LOGGERS.error("error while get product category list by marketPlaceId from database");
+			e.printStackTrace();
+		}
+		return productCategoryJsonModelList;
+	}
 
-	public boolean deleteProductCategoryById(String productCategoryId) {
+	public boolean deleteProductCategoryById(String productCategoryId, String customerId) {
 		boolean status = false;
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
-				.and("_id").is(productCategoryId));
+				.and("_id").is(productCategoryId).and("customerId").is(customerId));
 			this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
 			status = true;
 		} catch(Exception e) {
@@ -124,7 +138,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("customerId").is(customerId));
-			this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+			this.mongoOps.remove(query, ProductCategoryJsonModel.class);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by customerId in database");
@@ -139,7 +153,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("marketPlaceId").is(marketPlaceId));
-			this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+			this.mongoOps.remove(query, ProductCategoryJsonModel.class);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by marketPlaceId in database");
@@ -158,15 +172,15 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 						&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
 					query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 							.and("customerId").is(productCategoryJsonModel.getCustomerId()).and("categoryName").is(productCategoryJsonModel.getCategoryName()));
-				} else if(productCategoryJsonModel.getMarketPlaceId() != null && !productCategoryJsonModel.getMarketPlaceId().isEmpty()
-						&& productCategoryJsonModel.getCategoryName() != null && !productCategoryJsonModel.getCategoryName().isEmpty()) {
-					query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
-							.and("customerId").is("0").and("marketPlaceId").is(productCategoryJsonModel.getMarketPlaceId())
-							.and("categoryName").is(productCategoryJsonModel.getCategoryName()));
+					categoryJsonModel = this.mongoOps.findOne(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+				} else {
+					categoryJsonModel = new ProductCategoryJsonModel();
 				}
+			}  else {
+				categoryJsonModel = new ProductCategoryJsonModel();
 			}
-			categoryJsonModel = this.mongoOps.findOne(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
 		} catch(Exception e) {
+			categoryJsonModel = new ProductCategoryJsonModel();
 			LOGGERS.error("error while check product category exist in database");
 			e.printStackTrace();
 		}

@@ -39,4 +39,5 @@ public class SalesChannelConstants {
 	public static final String SC_PRODUCT_ACCESSORIES = "sc_product_accessories";
 	public static final String SC_PRODUCT_IMAGE = "sc_product_image";
 	public static final String SC_PRODUCT_CATEGORY = "sc_product_category";
+	public static final String SC_PRODUCT_CATEGORY_MAPPING = "sc_product_category_mapping";
 }

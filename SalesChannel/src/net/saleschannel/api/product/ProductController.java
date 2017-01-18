@@ -19,7 +19,7 @@ import org.restlet.representation.Representation;
 import net.saleschannel.api.SalesChannelServerResource;
 import net.saleschannel.api.constants.ProductTypes;
 import net.saleschannel.api.constants.SalesChannelConstants;
-import net.saleschannel.api.productcategory.ProductCategoryJsonModel;
+import net.saleschannel.api.productcategory.ProductCategoryJsonObject;
 import net.saleschannel.api.productcategory.ProductCategoryServiceImpl;
 import net.saleschannel.api.utility.SalesChannelUtility;
 
@@ -133,7 +133,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 					deleted = productService.deleteProduct(productJsonModel);
 				}
 			} else if(isAll) {
-				List<ProductJsonModel> productJsonModelList = productService.getProductsByCustomer(getCustomerId());
+				List<ProductJsonModel> productJsonModelList = productService.getProductsByCustomer(
+						getCustomerId());
 				if(productJsonModelList != null && productJsonModelList.size() > 0) {
 					isExist = true;
 					deleted = productService.deleteProducts(getCustomerId());
@@ -224,9 +225,9 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 				jsonObject2.put("1000", "Product Category is empty.@#productCategory#@");
 				return jsonObject2;
 			} else {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryService.getProductCategoryByNameAndCustomerId(
+				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryByNameAndCustomerId(
 						getCustomerId(), obj.getProductCategory());
-				if(productCategoryJsonModel == null) {
+				if(productCategoryJsonObject == null) {
 					jsonObject2.put("1004", "Product Category is Invalid.@#productCategory#@");
 					return jsonObject2;	
 				}
@@ -239,7 +240,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 			}
 			//productAttribute skuId validation
 			if(obj.getProductAttributes() != null && obj.getProductAttributes().size() > 0) {
-				List<ProductAttributesJsonModel> productAttributesList = productService.prepareProductAttributes(obj.getProductAttributes());
+				List<ProductAttributesJsonModel> productAttributesList = productService.prepareProductAttributes(
+						obj.getProductAttributes());
 				if(productAttributesList != null && productAttributesList.size() > 0) {
 					for(ProductAttributesJsonModel productAttributes : productAttributesList) {
 						if(productAttributes.getSkuId() == null || productAttributes.getSkuId().isEmpty()) {
@@ -271,7 +273,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 					return jsonObject2;
 				}
 				if(productJsonModel != null && productJsonModel.getCustomerId() != null 
-						&& !productJsonModel.getCustomerId().isEmpty() && !productJsonModel.getCustomerId().equals(obj.getCustomerId())) {
+						&& !productJsonModel.getCustomerId().isEmpty() && !productJsonModel.getCustomerId().equals(
+								obj.getCustomerId())) {
 					jsonObject2.put("1004", "Validation Error.Invalid productId passed.");
 					return jsonObject2;
 				}

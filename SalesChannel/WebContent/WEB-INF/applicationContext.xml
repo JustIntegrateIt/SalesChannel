@@ -74,7 +74,23 @@
 	<bean id="categoryDao" class="net.saleschannel.api.productcategory.ProductCategoryDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- customer bean Creation and API Ends  -->
+	<!-- category bean Creation and API Ends  -->
+	
+	<!-- category mapping bean Creation and API Starts  -->
+	<bean name="/categoryMapping" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingController" scope="prototype">
+		<property name="categoryMappingService" ref="categoryMappingService" />
+		<property name="categoryDao" ref="categoryDao" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+	
+	<bean id="categoryMappingService" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingServiceImpl">
+		<property name="categoryMappingDao" ref="categoryMappingDao" />
+	</bean>
+	
+	<bean id="categoryMappingDao" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- category bean Creation and API Ends  -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

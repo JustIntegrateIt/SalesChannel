@@ -4,17 +4,21 @@ import java.util.List;
 
 public interface ProductCategoryService {
 
-	public String insertProductCategory(ProductCategoryJsonModel categoryJsonModel);
+	public ProductCategoryJsonObject convertProductCategoryJsonModelToObject(ProductCategoryJsonModel productCategoryJsonModel);
 	
-	public boolean updateProductCategory(ProductCategoryJsonModel categoryJsonModel);
+	public ProductCategoryJsonModel convertProductCategoryJsonObjectToModel(ProductCategoryJsonObject productCategoryJsonObject);
 	
-	public ProductCategoryJsonModel getProductCategoryById(String categoryId);
+	public String insertProductCategory(ProductCategoryJsonObject categoryJsonObject);
 	
-	public ProductCategoryJsonModel getProductCategoryByNameAndCustomerId(String customerId, String categoryName);
+	public boolean updateProductCategory(ProductCategoryJsonObject categoryJsonObject);
 	
-	public List<ProductCategoryJsonModel> getProductCategoryByCustomerId(String customerId);
+	public ProductCategoryJsonObject getProductCategoryById(String categoryId, String customerId);
 	
-	public boolean deleteProductCategoryById(String productCategoryId);
+	public ProductCategoryJsonObject getProductCategoryByNameAndCustomerId(String customerId, String categoryName);
+	
+	public List<ProductCategoryJsonObject> getProductCategoryByCustomerId(String customerId);
+	
+	public boolean deleteProductCategoryById(String productCategoryId, String customerId);
 	
 	public boolean deleteProductCategoryByNameAndCustomerId(String customerId, String categoryName);
 	
@@ -22,6 +26,6 @@ public interface ProductCategoryService {
 	
 	public boolean deleteProductCategoryByMarketPlaceId(String marketPlaceId);
 	
-	public ProductCategoryJsonModel isProductCategoryExist(ProductCategoryJsonModel categoryJsonModel);
+	public ProductCategoryJsonModel isProductCategoryExist(ProductCategoryJsonObject categoryJsonObject);
 	
 }

@@ -6,6 +6,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class SalesChannelBaseJsonObject {
 	
 	private String authToken;
+	
+	private String customerId;
 
 	public String getAuthToken() {
 		return authToken;
@@ -13,6 +15,14 @@ public class SalesChannelBaseJsonObject {
 
 	public void setAuthToken(String authToken) {
 		this.authToken = authToken;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	
 }

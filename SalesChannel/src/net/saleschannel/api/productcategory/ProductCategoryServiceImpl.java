@@ -1,5 +1,6 @@
 package net.saleschannel.api.productcategory;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,15 +20,53 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		this.categoryDao = categoryDao;
 	}
 
-	public String insertProductCategory(ProductCategoryJsonModel productCategoryJsonModel) {
+	public ProductCategoryJsonObject convertProductCategoryJsonModelToObject(ProductCategoryJsonModel productCategoryJsonModel) {
+		ProductCategoryJsonObject productCategoryJsonObject = new ProductCategoryJsonObject();
+		try {
+			productCategoryJsonObject.setId(productCategoryJsonModel.getId());
+			productCategoryJsonObject.setCategoryName(productCategoryJsonModel.getCategoryName());
+			productCategoryJsonObject.setParentId(productCategoryJsonModel.getParentId());
+			if(productCategoryJsonModel.getParentId() != null && !productCategoryJsonModel.getParentId().isEmpty()) {
+				ProductCategoryJsonModel productCategoryModel = categoryDao.getProductCategoryById(productCategoryJsonModel.getParentId()
+						, productCategoryJsonModel.getCustomerId());
+				if(productCategoryModel != null && productCategoryModel.getCategoryName() != null && !productCategoryModel.getCategoryName().isEmpty()) {
+					productCategoryJsonObject.setParentCategoryName(productCategoryModel.getCategoryName());
+				}
+			}
+		} catch(Exception e) {
+			productCategoryJsonObject = null;
+			LOGGERS.error("error while convertProductCategoryJsonModelToObject");
+			e.printStackTrace();
+		}
+		return productCategoryJsonObject;
+	}
+	
+	public ProductCategoryJsonModel convertProductCategoryJsonObjectToModel(ProductCategoryJsonObject productCategoryJsonObject) {
+		ProductCategoryJsonModel productCategoryJsonModel = new ProductCategoryJsonModel();
+		try {
+			productCategoryJsonModel.setId(productCategoryJsonObject.getId());
+			productCategoryJsonModel.setCategoryName(productCategoryJsonObject.getCategoryName());
+			productCategoryJsonModel.setCustomerId(productCategoryJsonObject.getCustomerId());
+		} catch(Exception e) {
+			productCategoryJsonModel = null;
+			LOGGERS.error("error while convertProductCategoryJsonObjectToModel");
+			e.printStackTrace();
+		}
+		return productCategoryJsonModel;
+	}
+	
+	public String insertProductCategory(ProductCategoryJsonObject productCategoryJsonObject) {
 		String categoryId = null;
 		try {
-			if(productCategoryJsonModel != null) {
-				ProductCategoryJsonModel category = isProductCategoryExist(productCategoryJsonModel);
-				if(category == null) {
-					productCategoryJsonModel.setCreateBy(productCategoryJsonModel.getCustomerId());
-					productCategoryJsonModel.setCreatedAt(new Date());
-					categoryId = categoryDao.insertProductCategory(productCategoryJsonModel);
+			if(productCategoryJsonObject != null) {
+				ProductCategoryJsonModel productCategoryJsonModel = convertProductCategoryJsonObjectToModel(productCategoryJsonObject);
+				if(productCategoryJsonModel != null) {
+					ProductCategoryJsonModel category = isProductCategoryExist(productCategoryJsonObject);
+					if(category == null) {
+						productCategoryJsonModel.setCreateBy(productCategoryJsonModel.getCustomerId());
+						productCategoryJsonModel.setCreatedAt(new Date());
+						categoryId = categoryDao.insertProductCategory(productCategoryJsonModel);
+					}
 				}
 			}
 		} catch(Exception e) {
@@ -37,16 +76,22 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return categoryId;
 	}
 
-	public boolean updateProductCategory(ProductCategoryJsonModel productCategoryJsonModelNew) {
+	public boolean updateProductCategory(ProductCategoryJsonObject productCategoryJsonObject) {
 		boolean status = false;
 		try {
-			ProductCategoryJsonModel productCategoryJsonModelOld = getProductCategoryById(productCategoryJsonModelNew.getId());
-			if(productCategoryJsonModelOld != null) {
-				productCategoryJsonModelOld.setCategoryName(productCategoryJsonModelNew.getCategoryName());
-				productCategoryJsonModelOld.setUpdatedBy(productCategoryJsonModelOld.getCustomerId());
-				productCategoryJsonModelOld.setUpdatedAt(new Date());
-				categoryDao.updateProductCategory(productCategoryJsonModelOld);
-				status = true;
+			if(productCategoryJsonObject != null) {
+				ProductCategoryJsonModel productCategoryJsonModelNew = convertProductCategoryJsonObjectToModel(productCategoryJsonObject);
+				if(productCategoryJsonModelNew != null) {
+					ProductCategoryJsonModel productCategoryJsonModelOld = categoryDao.getProductCategoryById(productCategoryJsonModelNew.getId()
+							, productCategoryJsonObject.getCustomerId());
+					if(productCategoryJsonModelOld != null) {
+						productCategoryJsonModelOld.setCategoryName(productCategoryJsonModelNew.getCategoryName());
+						productCategoryJsonModelOld.setUpdatedBy(productCategoryJsonModelOld.getCustomerId());
+						productCategoryJsonModelOld.setUpdatedAt(new Date());
+						categoryDao.updateProductCategory(productCategoryJsonModelOld);
+						status = true;
+					}
+				}
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error while update product category");
@@ -55,43 +100,76 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return status;
 	}
 
-	public ProductCategoryJsonModel getProductCategoryById(String productCategoryId) {
-		ProductCategoryJsonModel productCategoryJsonModel = null;
+	public ProductCategoryJsonObject getProductCategoryById(String productCategoryId, String customerId) {
+		ProductCategoryJsonObject productCategoryJsonObject = null;
 		try {
-			productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryId);
+			ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryId
+					, customerId);
+			if(productCategoryJsonModel != null) {
+				productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel); 
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error while get product category by id");
 			e.printStackTrace();
 		}
-		return productCategoryJsonModel ;
+		return productCategoryJsonObject;
 	}
 	
-	public ProductCategoryJsonModel getProductCategoryByNameAndCustomerId(String customerId, String categoryName) {
-		ProductCategoryJsonModel productCategoryJsonModel = null;
+	public ProductCategoryJsonObject getProductCategoryByNameAndCustomerId(String customerId, String categoryName) {
+		ProductCategoryJsonObject productCategoryJsonObject = null;
 		try {
-			productCategoryJsonModel = categoryDao.getProductCategoryByNameAndCustomerId(customerId, categoryName);
+			ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryByNameAndCustomerId(customerId
+					, categoryName);
+			if(productCategoryJsonModel != null) {
+				productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error while get product category by Name and CustomerId");
 			e.printStackTrace();
 		}
-		return productCategoryJsonModel ;
+		return productCategoryJsonObject ;
 	}
 
-	public List<ProductCategoryJsonModel> getProductCategoryByCustomerId(String customerId) {
-		List<ProductCategoryJsonModel> productCategoryJsonModelList = null;
+	public List<ProductCategoryJsonObject> getProductCategoryByCustomerId(String customerId) {
+		List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
 		try {
-			productCategoryJsonModelList = categoryDao.getProductCategoryByCustomerId(customerId);
+			List<ProductCategoryJsonModel>  productCategoryJsonModelList = categoryDao.getProductCategoryByCustomerId(customerId);
+			if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+				for(ProductCategoryJsonModel productCategoryJsonModel : productCategoryJsonModelList) {
+					ProductCategoryJsonObject productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);
+					if(productCategoryJsonObject != null)
+						productCategoryJsonObjectList.add(productCategoryJsonObject);
+				}
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error while get product category list by customerId");
 			e.printStackTrace();
 		}
-		return productCategoryJsonModelList ;
+		return productCategoryJsonObjectList ;
+	}
+	
+	public List<ProductCategoryJsonObject> getProductCategoryByMarketPlaceId(String marketPlaceId) {
+		List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
+		try {
+			List<ProductCategoryJsonModel>  productCategoryJsonModelList = categoryDao.getProductCategoryByMarketPlaceId(marketPlaceId);
+			if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+				for(ProductCategoryJsonModel productCategoryJsonModel : productCategoryJsonModelList) {
+					ProductCategoryJsonObject productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);
+					if(productCategoryJsonObject != null)
+						productCategoryJsonObjectList.add(productCategoryJsonObject);
+				}
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while get product category list by marketPlaceId");
+			e.printStackTrace();
+		}
+		return productCategoryJsonObjectList ;
 	}
 
-	public boolean deleteProductCategoryById(String productCategoryId) {
+	public boolean deleteProductCategoryById(String productCategoryId, String customerId) {
 		boolean status = false;
 		try {
-			status = categoryDao.deleteProductCategoryById(productCategoryId);
+			status = categoryDao.deleteProductCategoryById(productCategoryId, customerId);
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by id");
 			e.printStackTrace();
@@ -131,11 +209,16 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		}
 		return status;
 	}
-	
-	public ProductCategoryJsonModel isProductCategoryExist(ProductCategoryJsonModel categoryJsonModel) {
+
+	public ProductCategoryJsonModel isProductCategoryExist(ProductCategoryJsonObject categoryJsonObject) {
 		ProductCategoryJsonModel productCategoryJsonModel = null;
 		try {
-			productCategoryJsonModel = categoryDao.isProductCategoryExist(productCategoryJsonModel);
+			if(categoryJsonObject != null) {
+				productCategoryJsonModel = convertProductCategoryJsonObjectToModel(categoryJsonObject);
+				if(productCategoryJsonModel != null) {
+					productCategoryJsonModel = categoryDao.isProductCategoryExist(productCategoryJsonModel);
+				}
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error while check is product category exist");
 			e.printStackTrace();
