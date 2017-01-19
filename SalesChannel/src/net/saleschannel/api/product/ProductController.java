@@ -23,7 +23,7 @@ import net.saleschannel.api.productcategory.ProductCategoryJsonObject;
 import net.saleschannel.api.productcategory.ProductCategoryServiceImpl;
 import net.saleschannel.api.utility.SalesChannelUtility;
 
-public class ProductController extends SalesChannelServerResource<ProductJsonModel> {
+public class ProductController extends SalesChannelServerResource<ProductJsonObject> {
 
 	private static final Logger LOGGERS = Logger.getLogger(ProductController.class);
 	
@@ -41,23 +41,23 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
-			List<ProductJsonModel> productJsonModels = new ArrayList<ProductJsonModel>();
-			ProductJsonModel productJsonModel = new ProductJsonModel();
+			List<ProductJsonObject> productJsonObjects = new ArrayList<ProductJsonObject>();
+			ProductJsonObject productJsonObject = new ProductJsonObject();
 			if(skuId != null) {
-				productJsonModel = productService.checkProductExist(skuId, getCustomerId());
-				productJsonModels.add(productJsonModel);
+				productJsonObject = productService.checkProductExist(skuId, getCustomerId());
+				productJsonObjects.add(productJsonObject);
 			}
 			else if(productId != null) {
-				productJsonModel = productService.getProductById(productId);
-				productJsonModels.add(productJsonModel);
+				productJsonObject = productService.getProductById(productId);
+				productJsonObjects.add(productJsonObject);
 			}
 			else if(isAll) {
-				productJsonModels = productService.getProductsByCustomer(getCustomerId());
+				productJsonObjects = productService.getProductsByCustomer(getCustomerId());
 			}
-			if(productJsonModels != null && productJsonModels.size() > 0) {
+			if(productJsonObjects != null && productJsonObjects.size() > 0) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
-				salesChannelErrorObject.setData(productJsonModels);
+				salesChannelErrorObject.setData(productJsonObjects);
 			} else {
 				salesChannelErrorObject.setStatusCode(3000);
 				salesChannelErrorObject.setMessage(getErrorMessage(3000));
@@ -71,7 +71,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	}
 
 	@Override
-	public Representation insertOrUpdateDetails(Representation entity,	ProductJsonModel obj) {
+	public Representation insertOrUpdateDetails(Representation entity,	ProductJsonObject obj) {
 		Representation representation = null;
 		try {
 			String productId = productService.insertProduct(obj);
@@ -92,7 +92,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	}
 
 	@Override
-	public Representation updateDetails(Representation entity,	ProductJsonModel obj) {
+	public Representation updateDetails(Representation entity,	ProductJsonObject obj) {
 		Representation representation = null;
 		try {
 			boolean status = productService.updateProduct(obj);
@@ -118,24 +118,24 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 		boolean deleted = false;
 		boolean isExist = false;
 		try {
-			ProductJsonModel productJsonModel = new ProductJsonModel();
+			ProductJsonObject productJsonObject = new ProductJsonObject();
 			if(skuId != null) {
-				productJsonModel = productService.checkProductExist(skuId, getCustomerId());
-				if(productJsonModel != null) {
+				productJsonObject = productService.checkProductExist(skuId, getCustomerId());
+				if(productJsonObject != null) {
 					isExist = true;
-					deleted = productService.deleteProduct(productJsonModel);
+					deleted = productService.deleteProduct(productJsonObject);
 				}
 			}
 			else if(productId != null) {
-				productJsonModel = productService.getProductById(productId);
-				if(productJsonModel != null) {
+				productJsonObject = productService.getProductById(productId);
+				if(productJsonObject != null) {
 					isExist = true;
-					deleted = productService.deleteProduct(productJsonModel);
+					deleted = productService.deleteProduct(productJsonObject);
 				}
 			} else if(isAll) {
-				List<ProductJsonModel> productJsonModelList = productService.getProductsByCustomer(
+				List<ProductJsonObject> productJsonObjectList = productService.getProductsByCustomer(
 						getCustomerId());
-				if(productJsonModelList != null && productJsonModelList.size() > 0) {
+				if(productJsonObjectList != null && productJsonObjectList.size() > 0) {
 					isExist = true;
 					deleted = productService.deleteProducts(getCustomerId());
 				}
@@ -160,7 +160,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	}
 
 	@Override
-	public JSONObject validate(ProductJsonModel obj, String method,
+	public JSONObject validate(ProductJsonObject obj, String method,
 			JSONObject jsonObject, Form form) throws JSONException {
 		JSONObject jsonObject2 = jsonObject;
 		//PUT & POST method
@@ -253,8 +253,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 			}
 			//product isExist validation
 			if (method.equals(SalesChannelConstants.POST) && obj.getId() == null) {
-				ProductJsonModel productJsonModel = productService.checkProductExist(obj.getSkuId(), obj.getCustomerId()); 
-				if(productJsonModel != null) {
+				ProductJsonObject productJsonObject = productService.checkProductExist(obj.getSkuId(), obj.getCustomerId()); 
+				if(productJsonObject != null) {
 					jsonObject2.put("4001", "Database Error.Record already exist.");
 					return jsonObject2;
 				}
@@ -267,13 +267,13 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 					return jsonObject2;
 				}
 				//product isExist validation
-				ProductJsonModel productJsonModel = productService.getProductById(obj.getId()); 
-				if(productJsonModel == null) {
+				ProductJsonObject productJsonObject = productService.getProductById(obj.getId()); 
+				if(productJsonObject == null) {
 					jsonObject2.put("4002", "Database Error.Record not exist.");
 					return jsonObject2;
 				}
-				if(productJsonModel != null && productJsonModel.getCustomerId() != null 
-						&& !productJsonModel.getCustomerId().isEmpty() && !productJsonModel.getCustomerId().equals(
+				if(productJsonObject != null && productJsonObject.getCustomerId() != null 
+						&& !productJsonObject.getCustomerId().isEmpty() && !productJsonObject.getCustomerId().equals(
 								obj.getCustomerId())) {
 					jsonObject2.put("1004", "Validation Error.Invalid productId passed.");
 					return jsonObject2;
@@ -308,10 +308,10 @@ public class ProductController extends SalesChannelServerResource<ProductJsonMod
 	}
 
 	@Override
-	public ProductJsonModel getJsonObject(InputStream stream)
+	public ProductJsonObject getJsonObject(InputStream stream)
 			throws JsonParseException, JsonMappingException, IOException, JSONException {
 		final ObjectMapper mapper = new ObjectMapper();
-		final ProductJsonModel productJsonModel = mapper.readValue(stream, ProductJsonModel.class);
+		final ProductJsonObject productJsonModel = mapper.readValue(stream, ProductJsonObject.class);
 		return productJsonModel;
 	}
 

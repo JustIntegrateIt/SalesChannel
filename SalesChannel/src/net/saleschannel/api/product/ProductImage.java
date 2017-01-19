@@ -1,29 +1,27 @@
 package net.saleschannel.api.product;
 
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 
 public class ProductImage {
 
+	//SC Product Image Id
 	@Id
 	private String id;
 	
+	//SC Product Image Name
 	private String imageName;
 	
+	//SC Product Image Path
 	private String imagePath;
 	
+	//SC Product Image Actual Path
 	private String actualPath;
 	
+	//SC Product Id
 	private String productId;
 	
-	private String createBy;
-	
-	private String updatedBy;
-	
-	private Date createdAt;
-	
-	private Date updatedAt;
+	//SC Market Place Id
+	private String marketPlaceId;
 
 	public String getId() {
 		return id;
@@ -49,38 +47,6 @@ public class ProductImage {
 		this.productId = productId;
 	}
 
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
 	public String getActualPath() {
 		return actualPath;
 	}
@@ -95,5 +61,13 @@ public class ProductImage {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public String getMarketPlaceId() {
+		return marketPlaceId;
+	}
+
+	public void setMarketPlaceId(String marketPlaceId) {
+		this.marketPlaceId = marketPlaceId;
 	}
 }

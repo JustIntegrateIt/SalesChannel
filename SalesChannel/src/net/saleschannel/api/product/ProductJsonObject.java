@@ -1,17 +1,13 @@
 package net.saleschannel.api.product;
 
-import java.util.Date;
+import java.util.List;
 
-import org.springframework.data.annotation.Id;
+import net.saleschannel.api.base.SalesChannelBaseJsonObject;
 
-public class ProductJsonModel {
+public class ProductJsonObject extends SalesChannelBaseJsonObject {
 
 	//SC Product Id
-	@Id
 	private String id;
-	
-	//SC Customer Id
-	private String customerId;
 
 	//SC Product Name
 	private String productName;
@@ -34,22 +30,20 @@ public class ProductJsonModel {
 	//SC Product skuId
 	private String skuId;
 	
-	private String createBy;
+	//POJO to map Product Attributes request
+	private List<ProductAttributeSetModel> productAttributes;
 	
-	private String updatedBy;
-	
-	private Date createdAt;
-	
-	private Date updatedAt;
-	
-	public String getCustomerId() {
-		return customerId;
+	//POJO to map Product Accessories request
+	private List<ProductAttributeSetJsonObject> productAccessories;
+
+	public String getId() {
+		return id;
 	}
 
-	public void setCustomerId(String customerId) {
-		this.customerId = customerId;
+	public void setId(String id) {
+		this.id = id;
 	}
-	
+
 	public String getProductName() {
 		return productName;
 	}
@@ -106,43 +100,21 @@ public class ProductJsonModel {
 		this.skuId = skuId;
 	}
 
-	public String getId() {
-		return id;
+	public List<ProductAttributeSetModel> getProductAttributes() {
+		return productAttributes;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setProductAttributes(
+			List<ProductAttributeSetModel> productAttributes) {
+		this.productAttributes = productAttributes;
 	}
 
-	public String getCreateBy() {
-		return createBy;
+	public List<ProductAttributeSetJsonObject> getProductAccessories() {
+		return productAccessories;
 	}
 
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
+	public void setProductAccessories(
+			List<ProductAttributeSetJsonObject> productAccessories) {
+		this.productAccessories = productAccessories;
 	}
 }

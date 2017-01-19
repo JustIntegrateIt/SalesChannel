@@ -21,24 +21,26 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 			ProductCategoryMappingJsonModel productCategoryMappingJsonModel) {
 		ProductCategoryMappingJsonObject productCategoryMappingJsonObject = new ProductCategoryMappingJsonObject();
 		try {
-			productCategoryMappingJsonObject.setId(productCategoryMappingJsonModel.getId());
-			productCategoryMappingJsonObject.setCustomerCategoryId(productCategoryMappingJsonModel.getCustomerProductCategoryId());
-			productCategoryMappingJsonObject.setMarketPlaceCategoryId(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId());
-			productCategoryMappingJsonObject.setCustomerId(productCategoryMappingJsonModel.getCustomerId());
-			if(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId() != null && !productCategoryMappingJsonModel.getMarketPlaceProductCategoryId().isEmpty()) {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId()
-						, productCategoryMappingJsonModel.getCustomerId());
-				if(productCategoryJsonModel != null && productCategoryJsonModel.getCategoryName() != null 
-						&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
-					productCategoryMappingJsonObject.setMarketPlaceCategoryName(productCategoryJsonModel.getCategoryName());				
+			if(productCategoryMappingJsonModel != null) {
+				productCategoryMappingJsonObject.setId(productCategoryMappingJsonModel.getId());
+				productCategoryMappingJsonObject.setCustomerCategoryId(productCategoryMappingJsonModel.getCustomerProductCategoryId());
+				productCategoryMappingJsonObject.setMarketPlaceCategoryId(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId());
+				productCategoryMappingJsonObject.setCustomerId(productCategoryMappingJsonModel.getCustomerId());
+				if(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId() != null && !productCategoryMappingJsonModel.getMarketPlaceProductCategoryId().isEmpty()) {
+					ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId()
+							, productCategoryMappingJsonModel.getCustomerId());
+					if(productCategoryJsonModel != null && productCategoryJsonModel.getCategoryName() != null 
+							&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
+						productCategoryMappingJsonObject.setMarketPlaceCategoryName(productCategoryJsonModel.getCategoryName());				
+					}
 				}
-			}
-			if(productCategoryMappingJsonModel.getCustomerProductCategoryId() != null && !productCategoryMappingJsonModel.getCustomerProductCategoryId().isEmpty()) {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonModel.getCustomerProductCategoryId()
-						, productCategoryMappingJsonModel.getCustomerId());
-				if(productCategoryJsonModel != null && productCategoryJsonModel.getCategoryName() != null 
-						&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
-					productCategoryMappingJsonObject.setCustomerCategoryName(productCategoryJsonModel.getCategoryName());				
+				if(productCategoryMappingJsonModel.getCustomerProductCategoryId() != null && !productCategoryMappingJsonModel.getCustomerProductCategoryId().isEmpty()) {
+					ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonModel.getCustomerProductCategoryId()
+							, productCategoryMappingJsonModel.getCustomerId());
+					if(productCategoryJsonModel != null && productCategoryJsonModel.getCategoryName() != null 
+							&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
+						productCategoryMappingJsonObject.setCustomerCategoryName(productCategoryJsonModel.getCategoryName());				
+					}
 				}
 			}
 		} catch(Exception e) {
@@ -53,16 +55,18 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 			ProductCategoryMappingJsonObject productCategoryMappingJsonObject) {
 		ProductCategoryMappingJsonModel productCategoryMappingJsonModel = new ProductCategoryMappingJsonModel();
 		try {
-			productCategoryMappingJsonModel.setId(productCategoryMappingJsonObject.getId());
-			productCategoryMappingJsonModel.setCustomerProductCategoryId(productCategoryMappingJsonObject.getCustomerCategoryId());
-			productCategoryMappingJsonModel.setMarketPlaceProductCategoryId(productCategoryMappingJsonObject.getMarketPlaceCategoryId());
-			productCategoryMappingJsonModel.setCustomerId(productCategoryMappingJsonObject.getCustomerId());
-			if(productCategoryMappingJsonObject.getMarketPlaceCategoryId() != null && !productCategoryMappingJsonObject.getMarketPlaceCategoryId().isEmpty()) {
-				ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonObject.getMarketPlaceCategoryId()
-						, productCategoryMappingJsonObject.getCustomerId());
-				if(productCategoryJsonModel != null && productCategoryJsonModel.getMarketPlaceId() != null 
-						&& !productCategoryJsonModel.getMarketPlaceId().isEmpty()) {
-					productCategoryMappingJsonModel.setMarketPlaceId(productCategoryJsonModel.getMarketPlaceId());				
+			if(productCategoryMappingJsonObject != null) {
+				productCategoryMappingJsonModel.setId(productCategoryMappingJsonObject.getId());
+				productCategoryMappingJsonModel.setCustomerProductCategoryId(productCategoryMappingJsonObject.getCustomerCategoryId());
+				productCategoryMappingJsonModel.setMarketPlaceProductCategoryId(productCategoryMappingJsonObject.getMarketPlaceCategoryId());
+				productCategoryMappingJsonModel.setCustomerId(productCategoryMappingJsonObject.getCustomerId());
+				if(productCategoryMappingJsonObject.getMarketPlaceCategoryId() != null && !productCategoryMappingJsonObject.getMarketPlaceCategoryId().isEmpty()) {
+					ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonObject.getMarketPlaceCategoryId()
+							, productCategoryMappingJsonObject.getCustomerId());
+					if(productCategoryJsonModel != null && productCategoryJsonModel.getMarketPlaceId() != null 
+							&& !productCategoryJsonModel.getMarketPlaceId().isEmpty()) {
+						productCategoryMappingJsonModel.setMarketPlaceId(productCategoryJsonModel.getMarketPlaceId());				
+					}
 				}
 			}
 		} catch(Exception e) {

@@ -4,23 +4,31 @@ import java.util.List;
 
 public interface ProductService {
 
-	public String insertProduct(ProductJsonModel productJsonModel);
+	public ProductJsonObject convertProductSimpleJsonModelToObject(ProductJsonModel productJsonModel);
 	
-	public ProductJsonModel checkProductExist(String skuId, String customerId);
+	public ProductJsonModel convertProductJsonObjectToModel(ProductJsonObject productJsonObject);
 	
-	public boolean updateProduct(ProductJsonModel productJsonModelNew);
+	public ProductAccessoriesJsonModel convertProductAccessoriesJsonObjectToModel(ProductAttributeSetJsonObject productAttributeSetJsonObject);
 	
-	public boolean deleteProduct(ProductJsonModel productJsonModel);
+	public ProductAttributeSetJsonObject convertProductAccessoriesJsonModelToObject(ProductAccessoriesJsonModel productAccessoriesJsonModel);
+	
+	public String insertProduct(ProductJsonObject productJsonObject);
+	
+	public ProductJsonObject checkProductExist(String skuId, String customerId);
+	
+	public boolean updateProduct(ProductJsonObject productJsonObject);
+	
+	public boolean deleteProduct(ProductJsonObject productJsonObject);
 	
 	public boolean deleteProductAttributes(String productId);
 	
 	public boolean deleteProducts(String customerId);
 	
-	public ProductJsonModel getProductById(String productId);
+	public ProductJsonObject getProductById(String productId);
 	
-	public ProductJsonModel getProductBySkuId(String skuId);
+	public ProductJsonObject getProductBySkuId(String skuId);
 	
-	public List<ProductJsonModel> getProductsByCustomer(String customerId);
+	public List<ProductJsonObject> getProductsByCustomer(String customerId);
 	
 	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId);
 	
@@ -30,5 +38,7 @@ public interface ProductService {
 	
 	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList, String productId);
 	
-	public ProductJsonModel prepareProductJsonModel(ProductJsonModel productJsonModel);
+	public ProductJsonObject prepareProductCompoundJsonObject(ProductJsonModel productJsonModel);
+	
+	public String insertProductAccessories(ProductAttributeSetJsonObject productAttributeSetJsonObject, String productId, String customerId);
 }

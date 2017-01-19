@@ -1,7 +1,5 @@
 package net.saleschannel.api.product;
 
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 
 public class ProductAttributesJsonModel {
@@ -21,14 +19,6 @@ public class ProductAttributesJsonModel {
 	
 	//SC Product skuId
 	private String skuId;
-	
-	private String createdBy;
-	
-	private String updatedBy;
-	
-	private Date createdAt;
-	
-	private Date updatedAt;
 
 	public String getProductId() {
 		return productId;
@@ -70,36 +60,4 @@ public class ProductAttributesJsonModel {
 		this.id = id;
 	}
 
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-	
 }

@@ -93,7 +93,7 @@ public final class SalesChannelUtility {
 				int responseCode = huc.getResponseCode();
 				if (responseCode != 404) {
 					image = ImageIO.read(url);
-					imageName = saveToPath + getUUID(false) + SalesChannelConstants.DOT_SEPERATOR 
+					imageName = saveToPath + SalesChannelConstants.FILE_SEPERATOR + getUUID(false) + SalesChannelConstants.DOT_SEPERATOR 
 							+ SalesChannelConstants.PNG;
 					ImageIO.write(image, SalesChannelConstants.PNG, new File(imageName));
 					isProcessed = true;

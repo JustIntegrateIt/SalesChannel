@@ -59,4 +59,30 @@ public interface ProductDao {
 	public List<ProductAttributeCombinationJsonModel> getProductAttributeCombinationByProductAttributId(String productAttributId);
 	
 	public boolean deleteProductAttributeCombinationByProductAttributId(String productAttributId);
+	
+	/*ProductAccessories*/
+	public String insertProductAccessories(ProductAccessoriesJsonModel productAccessoriesJsonModel);
+	
+	public boolean updateProductAccessories(ProductAccessoriesJsonModel productAccessoriesJsonModel);
+	
+	public boolean deleteProductAccessoriesById(String productAccessoriesId);
+	
+	public boolean deleteProductAccessoriesByProductId(String productId);
+	
+	public ProductAccessoriesJsonModel getProductAccessoriesById(String productAccessoriesId);
+	
+	public List<ProductAccessoriesJsonModel> getProductAccessoriesByProductId(String productId);
+	
+	/*ProductImage*/
+	public String insertProductImage(ProductImage productImage);
+	
+	public boolean updateProductImage(ProductImage productImage);
+	
+	public boolean deleteImageById(String productImageId);
+	
+	public boolean deleteProductImageByProductId(String productId);
+	
+	public ProductImage getProductImageById(String productImageId);
+	
+	public List<ProductImage> getProductImageByProductId(String productId);
 }

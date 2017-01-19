@@ -23,14 +23,16 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	public ProductCategoryJsonObject convertProductCategoryJsonModelToObject(ProductCategoryJsonModel productCategoryJsonModel) {
 		ProductCategoryJsonObject productCategoryJsonObject = new ProductCategoryJsonObject();
 		try {
-			productCategoryJsonObject.setId(productCategoryJsonModel.getId());
-			productCategoryJsonObject.setCategoryName(productCategoryJsonModel.getCategoryName());
-			productCategoryJsonObject.setParentId(productCategoryJsonModel.getParentId());
-			if(productCategoryJsonModel.getParentId() != null && !productCategoryJsonModel.getParentId().isEmpty()) {
-				ProductCategoryJsonModel productCategoryModel = categoryDao.getProductCategoryById(productCategoryJsonModel.getParentId()
-						, productCategoryJsonModel.getCustomerId());
-				if(productCategoryModel != null && productCategoryModel.getCategoryName() != null && !productCategoryModel.getCategoryName().isEmpty()) {
-					productCategoryJsonObject.setParentCategoryName(productCategoryModel.getCategoryName());
+			if(productCategoryJsonModel != null) {
+				productCategoryJsonObject.setId(productCategoryJsonModel.getId());
+				productCategoryJsonObject.setCategoryName(productCategoryJsonModel.getCategoryName());
+				productCategoryJsonObject.setParentId(productCategoryJsonModel.getParentId());
+				if(productCategoryJsonModel.getParentId() != null && !productCategoryJsonModel.getParentId().isEmpty()) {
+					ProductCategoryJsonModel productCategoryModel = categoryDao.getProductCategoryById(productCategoryJsonModel.getParentId()
+							, productCategoryJsonModel.getCustomerId());
+					if(productCategoryModel != null && productCategoryModel.getCategoryName() != null && !productCategoryModel.getCategoryName().isEmpty()) {
+						productCategoryJsonObject.setParentCategoryName(productCategoryModel.getCategoryName());
+					}
 				}
 			}
 		} catch(Exception e) {
@@ -44,9 +46,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	public ProductCategoryJsonModel convertProductCategoryJsonObjectToModel(ProductCategoryJsonObject productCategoryJsonObject) {
 		ProductCategoryJsonModel productCategoryJsonModel = new ProductCategoryJsonModel();
 		try {
-			productCategoryJsonModel.setId(productCategoryJsonObject.getId());
-			productCategoryJsonModel.setCategoryName(productCategoryJsonObject.getCategoryName());
-			productCategoryJsonModel.setCustomerId(productCategoryJsonObject.getCustomerId());
+			if(productCategoryJsonObject != null) {
+				productCategoryJsonModel.setId(productCategoryJsonObject.getId());
+				productCategoryJsonModel.setCategoryName(productCategoryJsonObject.getCategoryName());
+				productCategoryJsonModel.setCustomerId(productCategoryJsonObject.getCustomerId());
+			}
 		} catch(Exception e) {
 			productCategoryJsonModel = null;
 			LOGGERS.error("error while convertProductCategoryJsonObjectToModel");

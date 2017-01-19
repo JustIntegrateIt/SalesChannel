@@ -32,6 +32,11 @@ public class SalesChannelConstants {
 	
 	/** Collection names. */
 	public static final String SC_CUSTOMER = "sc_customer";
+	public static final String SC_MARKETPLACE = "sc_marketplace";
+	public static final String SC_MARKETPLACE_REGION = "sc_marketplace_region";
+	public static final String SC_MARKETPLACE_HEADER = "sc_marketplace_header";
+	public static final String SC_MARKETPLACE_CUSTOMER = "sc_marketplace_customer";
+	public static final String SC_MARKETPLACE_PRODUCT = "sc_marketplace_product";
 	public static final String SC_PRODUCT = "sc_product";
 	public static final String SC_ATTRIBUTE = "sc_attribute";
 	public static final String SC_PRODUCT_ATTRIBUTE = "sc_product_attribute";

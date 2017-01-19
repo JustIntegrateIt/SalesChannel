@@ -324,13 +324,182 @@ public class ProductDaoImpl implements ProductDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombination")
 					.and("productAttributeId").is(productAttributId));
-			this.mongoOps.findAndRemove(query, ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);
+			this.mongoOps.remove(query, ProductAttributeCombinationJsonModel.class);
 			status = true;
 		} catch(Exception e) {
-			LOGGERS.error("error while get Product Attribute Combination by productAttributId in database");
+			LOGGERS.error("error while delete Product Attribute Combination by productAttributId in database");
 			e.printStackTrace();
 		}
 		return status;
 	}
 
+	public String insertProductAccessories(ProductAccessoriesJsonModel productAccessoriesJsonModel) {
+		String productAccessoriesId = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			productAccessoriesId = objectId.toString();
+			productAccessoriesJsonModel.setId(productAccessoriesId);
+			this.mongoOps.insert(productAccessoriesJsonModel, 
+					SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+		} catch(Exception e) {
+			LOGGERS.error("error while insert product accessories in database");
+			e.printStackTrace();
+		}
+		return productAccessoriesId;
+	}
+	
+	public boolean updateProductAccessories(ProductAccessoriesJsonModel productAccessoriesJsonModel) {
+		boolean status = false;
+		try {
+			this.mongoOps.save(productAccessoriesJsonModel, 
+					SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while update product accessories in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public boolean deleteProductAccessoriesById(String productAccessoriesId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAccessoriesJsonModel")
+					.and("_id").is(new ObjectId(productAccessoriesId)));
+			this.mongoOps.findAndRemove(query, ProductAccessoriesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete Product accessories by productAccessoriesId in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public boolean deleteProductAccessoriesByProductId(String productId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAccessoriesJsonModel")
+					.and("productId").is(productId));
+			this.mongoOps.remove(query, ProductAccessoriesJsonModel.class);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete Product Accessories by productId in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public ProductAccessoriesJsonModel getProductAccessoriesById(String productAccessoriesId) {
+		ProductAccessoriesJsonModel productAccessoriesJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAccessoriesJsonModel")
+					.and("_id").is(new ObjectId(productAccessoriesId)));
+			productAccessoriesJsonModel = this.mongoOps.findOne(query, ProductAccessoriesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get Product Accessories by productAccessoriesId in database");
+			e.printStackTrace();
+		}
+		return productAccessoriesJsonModel;
+	}
+	
+	public List<ProductAccessoriesJsonModel> getProductAccessoriesByProductId(String productId) {
+		List<ProductAccessoriesJsonModel> productAccessoriesJsonModelList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAccessoriesJsonModel")
+					.and("productId").is(productId));
+			productAccessoriesJsonModelList = this.mongoOps.find(query, ProductAccessoriesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get Product Accessories by productId in database");
+			e.printStackTrace();
+		}
+		return productAccessoriesJsonModelList;
+	}
+	
+	public String insertProductImage(ProductImage productImage) {
+		String productImageId = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			productImageId = objectId.toString();
+			productImage.setId(productImageId);
+			this.mongoOps.insert(productImage, SalesChannelConstants.SC_PRODUCT_IMAGE);
+		} catch(Exception e) {
+			LOGGERS.error("error while insert product image in database");
+			e.printStackTrace();
+		}
+		return productImageId;
+	}
+	
+	public boolean updateProductImage(ProductImage productImage) {
+		boolean status = false;
+		try {
+			this.mongoOps.save(productImage, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while update product image in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public boolean deleteImageById(String productImageId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+					.and("_id").is(new ObjectId(productImageId)));
+			this.mongoOps.findAndRemove(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete Product Image by productImageId in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public boolean deleteProductImageByProductId(String productId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+					.and("productId").is(productId));
+			this.mongoOps.remove(query, ProductImage.class);
+			status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete Product Image by productId in database");
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public ProductImage getProductImageById(String productImageId) {
+		ProductImage productImage = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+					.and("_id").is(new ObjectId(productImageId)));
+			productImage = this.mongoOps.findOne(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+		} catch(Exception e) {
+			LOGGERS.error("error while get Product Image by productImageId in database");
+			e.printStackTrace();
+		}
+		return productImage;
+	}
+	
+	public List<ProductImage> getProductImageByProductId(String productId) {
+		List<ProductImage> productImageList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+					.and("productId").is(new ObjectId(productId)));
+			productImageList = this.mongoOps.find(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+		} catch(Exception e) {
+			LOGGERS.error("error while get Product Image by productId in database");
+			e.printStackTrace();
+		}
+		return productImageList;
+	}
 }

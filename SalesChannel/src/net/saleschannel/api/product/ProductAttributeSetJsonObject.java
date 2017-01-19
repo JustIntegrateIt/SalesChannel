@@ -1,7 +1,5 @@
 package net.saleschannel.api.product;
 
-import java.util.Date;
-
 public class ProductAttributeSetJsonObject {
 	
 	//POJO to map ProductAttributes
@@ -10,14 +8,6 @@ public class ProductAttributeSetJsonObject {
 	private String value;
 	
 	private String description;
-
-	private String createBy;
-	
-	private String updatedBy;
-	
-	private Date createdAt;
-	
-	private Date updatedAt;
 	
 	public String getName() {
 		return name;
@@ -41,38 +31,6 @@ public class ProductAttributeSetJsonObject {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 
 }
