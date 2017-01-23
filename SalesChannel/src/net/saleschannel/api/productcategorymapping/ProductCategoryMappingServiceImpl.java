@@ -19,9 +19,10 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 	
 	public ProductCategoryMappingJsonObject convertProductCategoryMappingJsonModelToObject(
 			ProductCategoryMappingJsonModel productCategoryMappingJsonModel) {
-		ProductCategoryMappingJsonObject productCategoryMappingJsonObject = new ProductCategoryMappingJsonObject();
+		ProductCategoryMappingJsonObject productCategoryMappingJsonObject = null;
 		try {
 			if(productCategoryMappingJsonModel != null) {
+				productCategoryMappingJsonObject = new ProductCategoryMappingJsonObject();
 				productCategoryMappingJsonObject.setId(productCategoryMappingJsonModel.getId());
 				productCategoryMappingJsonObject.setCustomerCategoryId(productCategoryMappingJsonModel.getCustomerProductCategoryId());
 				productCategoryMappingJsonObject.setMarketPlaceCategoryId(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId());
@@ -44,7 +45,6 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 				}
 			}
 		} catch(Exception e) {
-			productCategoryMappingJsonObject = null;
 			LOGGERS.error("error occured while convertProductCategoryMappingJsonModelToObject");
 			e.printStackTrace();
 		}
@@ -53,9 +53,10 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 
 	public ProductCategoryMappingJsonModel convertProductCategoryMappingJsonObjectToModel(
 			ProductCategoryMappingJsonObject productCategoryMappingJsonObject) {
-		ProductCategoryMappingJsonModel productCategoryMappingJsonModel = new ProductCategoryMappingJsonModel();
+		ProductCategoryMappingJsonModel productCategoryMappingJsonModel = null;
 		try {
 			if(productCategoryMappingJsonObject != null) {
+				productCategoryMappingJsonModel = new ProductCategoryMappingJsonModel();
 				productCategoryMappingJsonModel.setId(productCategoryMappingJsonObject.getId());
 				productCategoryMappingJsonModel.setCustomerProductCategoryId(productCategoryMappingJsonObject.getCustomerCategoryId());
 				productCategoryMappingJsonModel.setMarketPlaceProductCategoryId(productCategoryMappingJsonObject.getMarketPlaceCategoryId());
@@ -70,7 +71,6 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 				}
 			}
 		} catch(Exception e) {
-			productCategoryMappingJsonModel = null;
 			LOGGERS.error("error occured while convertProductCategoryMappingJsonObjectToModel");
 			e.printStackTrace();
 		}
@@ -134,11 +134,12 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 
 	public List<ProductCategoryMappingJsonObject> getProductCategoryMappingByCustomerIdAndMarketPlaceId(
 			String customerId, String marketPlaceId) {
-		List<ProductCategoryMappingJsonObject> productCategoryMappingJsonObjectList = new ArrayList<ProductCategoryMappingJsonObject>();
+		List<ProductCategoryMappingJsonObject> productCategoryMappingJsonObjectList = null;
 		try {
 			List<ProductCategoryMappingJsonModel> productCategoryMappingJsonModelList = categoryMappingDao.getProductCategoryMappingByCustomerIdAndMarketPlaceId(customerId
 					, marketPlaceId);
 			if(productCategoryMappingJsonModelList != null && productCategoryMappingJsonModelList.size() > 0) {
+				productCategoryMappingJsonObjectList = new ArrayList<ProductCategoryMappingJsonObject>();
 				for(ProductCategoryMappingJsonModel productCategoryMappingJsonModel : productCategoryMappingJsonModelList) {
 					ProductCategoryMappingJsonObject productCategoryMappingJsonObject = convertProductCategoryMappingJsonModelToObject(productCategoryMappingJsonModel);
 					if(productCategoryMappingJsonObject != null) {
@@ -154,10 +155,11 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 
 	public List<ProductCategoryMappingJsonObject> getProductCategoryMappingByCustomerId(
 			String customerId) {
-		List<ProductCategoryMappingJsonObject> productCategoryMappingJsonObjectList = new ArrayList<ProductCategoryMappingJsonObject>();
+		List<ProductCategoryMappingJsonObject> productCategoryMappingJsonObjectList = null;
 		try {
 			List<ProductCategoryMappingJsonModel> productCategoryMappingJsonModelList = categoryMappingDao.getProductCategoryMappingByCustomerId(customerId);
 			if(productCategoryMappingJsonModelList != null && productCategoryMappingJsonModelList.size() > 0) {
+				productCategoryMappingJsonObjectList = new ArrayList<ProductCategoryMappingJsonObject>();
 				for(ProductCategoryMappingJsonModel productCategoryMappingJsonModel : productCategoryMappingJsonModelList) {
 					ProductCategoryMappingJsonObject productCategoryMappingJsonObject = convertProductCategoryMappingJsonModelToObject(productCategoryMappingJsonModel);
 					if(productCategoryMappingJsonObject != null) {

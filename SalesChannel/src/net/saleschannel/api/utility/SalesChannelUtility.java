@@ -8,6 +8,8 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
@@ -175,4 +177,26 @@ public final class SalesChannelUtility {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		return resizedImage;
 	}
+	
+	/**
+	 * Method used to check whether the string contains special characters.
+	 *
+	 * @param String the string value
+	 * @return boolean
+	 */
+	public static boolean checkSpecialCharacters(String string) {
+		boolean isPresent = false;
+		try {
+			Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
+			if(string != null && !string.isEmpty()) {
+				Matcher matcher = pattern.matcher(string);
+			    isPresent = matcher.find();				
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error occured which check a string contains special character.");
+			e.printStackTrace();
+		}
+		return isPresent;
+	}
+	
 }

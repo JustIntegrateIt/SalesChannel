@@ -35,6 +35,10 @@
 	<bean name="/customerLogin" class="net.saleschannel.api.customer.CustomerLoginController" scope="prototype">
 		<property name="customerService" ref="customerService" />
     </bean>
+    
+    <bean name="/customer" class="net.saleschannel.api.customer.CustomerController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+    </bean>
 	
 	<bean id="customerService" class="net.saleschannel.api.customer.CustomerServiceImpl">
 		<property name="customerDao" ref="customerDao" />
@@ -90,7 +94,23 @@
 	<bean id="categoryMappingDao" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- category bean Creation and API Ends  -->
+	<!-- category mapping bean Creation and API Ends  -->
+	
+	<!-- market place bean Creation and API Starts  -->
+	<bean name="/marketplace" class="net.saleschannel.api.marketplace.MarketPlaceController" scope="prototype">
+		<property name="categoryMappingService" ref="categoryMappingService" />
+		<property name="categoryDao" ref="categoryDao" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+	
+	<bean id="marketPlaceService" class="net.saleschannel.api.marketplace.MarketPlaceServiceImpl">
+		<property name="marketPlaceDao" ref="marketPlaceDao" />
+	</bean>
+	
+	<bean id="marketPlaceDao" class="net.saleschannel.api.marketplace.MarketPlaceDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- market place bean Creation and API Ends  -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

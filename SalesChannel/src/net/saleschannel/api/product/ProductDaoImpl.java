@@ -123,7 +123,7 @@ public class ProductDaoImpl implements ProductDao {
 		AttributeJsonModel attributeExist = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.Attribute")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.AttributeJsonModel")
 					.and("name").is(attributeName));
 			attributeExist = this.mongoOps.findOne(query, AttributeJsonModel.class, SalesChannelConstants.SC_ATTRIBUTE);
 		} catch(Exception e) {
@@ -154,7 +154,7 @@ public class ProductDaoImpl implements ProductDao {
 		AttributeJsonModel attribute = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.Attribute")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.AttributeJsonModel")
 					.and("_id").is(new ObjectId(attributeId)));
 			attribute = this.mongoOps.findOne(query, 
 					AttributeJsonModel.class, SalesChannelConstants.SC_ATTRIBUTE);			
@@ -199,7 +199,7 @@ public class ProductDaoImpl implements ProductDao {
 		ProductAttributesJsonModel productAttributesExist = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributesJsonModel")
 					.and("skuId").is(skuId).and("productId").is(productId));
 			productAttributesExist = this.mongoOps.findOne(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
 		} catch(Exception e) {
@@ -235,7 +235,7 @@ public class ProductDaoImpl implements ProductDao {
 		List<ProductAttributesJsonModel> productAttributes = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributesJsonModel")
 					.and("productId").is(productId));
 			productAttributes = this.mongoOps.find(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
 		} catch(Exception e) {
@@ -249,9 +249,9 @@ public class ProductDaoImpl implements ProductDao {
 		boolean status = false;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributes")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributesJsonModel")
 					.and("productId").is(productId));
-			this.mongoOps.findAndRemove(query, ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);			
+			this.mongoOps.remove(query, ProductAttributesJsonModel.class);			
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product attribute by productId in database");
@@ -307,7 +307,7 @@ public class ProductDaoImpl implements ProductDao {
 		List<ProductAttributeCombinationJsonModel> productAttributeCombinations = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombination")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombinationJsonModel")
 					.and("productAttributeId").is(productAttributId));
 			productAttributeCombinations = this.mongoOps.find(query, ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);			
 		} catch(Exception e) {
@@ -322,7 +322,7 @@ public class ProductDaoImpl implements ProductDao {
 		boolean status = false;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombination")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombinationJsonModel")
 					.and("productAttributeId").is(productAttributId));
 			this.mongoOps.remove(query, ProductAttributeCombinationJsonModel.class);
 			status = true;

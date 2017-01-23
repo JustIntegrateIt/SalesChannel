@@ -1,12 +1,12 @@
 package net.saleschannel.api.customer;
 
-import java.util.Date;
-
 import org.springframework.data.annotation.Id;
 
-public class CustomerJsonModel {
+import net.saleschannel.api.base.SalesChannelBaseJsonObject;
 
-	//SC Customer id
+public class CustomerJsonObject  extends SalesChannelBaseJsonObject {
+	
+	//SC Customer Id
 	@Id
 	private String id;
 	
@@ -22,9 +22,6 @@ public class CustomerJsonModel {
 	//SC Customer Password
 	private String password;
 	
-	//SC Auth Token
-	private String authToken;
-		
 	//SC Customer Email
 	private String email;
 	
@@ -54,15 +51,7 @@ public class CustomerJsonModel {
 	
 	//SC Customer Active Status
 	private boolean isActive;
-
-	private String createBy;
-	
-	private String updatedBy;
-	
-	private Date createdAt;
-	
-	private Date updatedAt;
-
+		
 	public String getId() {
 		return id;
 	}
@@ -101,14 +90,6 @@ public class CustomerJsonModel {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getAuthToken() {
-		return authToken;
-	}
-
-	public void setAuthToken(String authToken) {
-		this.authToken = authToken;
 	}
 
 	public String getEmail() {
@@ -190,36 +171,5 @@ public class CustomerJsonModel {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getUpdatedBy() {
-		return updatedBy;
-	}
-
-	public void setUpdatedBy(String updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+		
 }

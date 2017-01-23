@@ -66,6 +66,7 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 			ProductCategoryMappingJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			String categoryMappingId = categoryMappingService.insertProductCategoryMapping(obj);
 			if(categoryMappingId != null) {
 				salesChannelErrorObject.setStatusCode(200);
@@ -88,6 +89,7 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 			ProductCategoryMappingJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			boolean status = categoryMappingService.updateProductCategoryMapping(obj);
 			if(status) {
 				salesChannelErrorObject.setStatusCode(200);

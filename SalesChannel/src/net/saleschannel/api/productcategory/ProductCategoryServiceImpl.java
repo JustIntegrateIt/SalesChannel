@@ -21,9 +21,10 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 
 	public ProductCategoryJsonObject convertProductCategoryJsonModelToObject(ProductCategoryJsonModel productCategoryJsonModel) {
-		ProductCategoryJsonObject productCategoryJsonObject = new ProductCategoryJsonObject();
+		ProductCategoryJsonObject productCategoryJsonObject = null;
 		try {
 			if(productCategoryJsonModel != null) {
+				productCategoryJsonObject = new ProductCategoryJsonObject();
 				productCategoryJsonObject.setId(productCategoryJsonModel.getId());
 				productCategoryJsonObject.setCategoryName(productCategoryJsonModel.getCategoryName());
 				productCategoryJsonObject.setParentId(productCategoryJsonModel.getParentId());
@@ -36,7 +37,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 				}
 			}
 		} catch(Exception e) {
-			productCategoryJsonObject = null;
 			LOGGERS.error("error while convertProductCategoryJsonModelToObject");
 			e.printStackTrace();
 		}
@@ -44,15 +44,15 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 	
 	public ProductCategoryJsonModel convertProductCategoryJsonObjectToModel(ProductCategoryJsonObject productCategoryJsonObject) {
-		ProductCategoryJsonModel productCategoryJsonModel = new ProductCategoryJsonModel();
+		ProductCategoryJsonModel productCategoryJsonModel = null;
 		try {
 			if(productCategoryJsonObject != null) {
+				productCategoryJsonModel = new ProductCategoryJsonModel();
 				productCategoryJsonModel.setId(productCategoryJsonObject.getId());
 				productCategoryJsonModel.setCategoryName(productCategoryJsonObject.getCategoryName());
 				productCategoryJsonModel.setCustomerId(productCategoryJsonObject.getCustomerId());
 			}
 		} catch(Exception e) {
-			productCategoryJsonModel = null;
 			LOGGERS.error("error while convertProductCategoryJsonObjectToModel");
 			e.printStackTrace();
 		}
@@ -135,10 +135,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 
 	public List<ProductCategoryJsonObject> getProductCategoryByCustomerId(String customerId) {
-		List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
+		List<ProductCategoryJsonObject> productCategoryJsonObjectList = null;
 		try {
 			List<ProductCategoryJsonModel>  productCategoryJsonModelList = categoryDao.getProductCategoryByCustomerId(customerId);
 			if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+				productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
 				for(ProductCategoryJsonModel productCategoryJsonModel : productCategoryJsonModelList) {
 					ProductCategoryJsonObject productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);
 					if(productCategoryJsonObject != null)
@@ -153,10 +154,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 	}
 	
 	public List<ProductCategoryJsonObject> getProductCategoryByMarketPlaceId(String marketPlaceId) {
-		List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
+		List<ProductCategoryJsonObject> productCategoryJsonObjectList = null;
 		try {
 			List<ProductCategoryJsonModel>  productCategoryJsonModelList = categoryDao.getProductCategoryByMarketPlaceId(marketPlaceId);
 			if(productCategoryJsonModelList != null && productCategoryJsonModelList.size() > 0) {
+				productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
 				for(ProductCategoryJsonModel productCategoryJsonModel : productCategoryJsonModelList) {
 					ProductCategoryJsonObject productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);
 					if(productCategoryJsonObject != null)

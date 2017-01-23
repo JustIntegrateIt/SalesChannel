@@ -45,11 +45,13 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 			ProductJsonObject productJsonObject = new ProductJsonObject();
 			if(skuId != null) {
 				productJsonObject = productService.checkProductExist(skuId, getCustomerId());
-				productJsonObjects.add(productJsonObject);
+				if(productJsonObject != null)
+					productJsonObjects.add(productJsonObject);
 			}
 			else if(productId != null) {
 				productJsonObject = productService.getProductById(productId);
-				productJsonObjects.add(productJsonObject);
+				if(productJsonObject != null)
+					productJsonObjects.add(productJsonObject);
 			}
 			else if(isAll) {
 				productJsonObjects = productService.getProductsByCustomer(getCustomerId());
@@ -74,6 +76,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 	public Representation insertOrUpdateDetails(Representation entity,	ProductJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			String productId = productService.insertProduct(obj);
 			if(productId != null) {
 				salesChannelErrorObject.setStatusCode(200);
@@ -95,6 +98,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 	public Representation updateDetails(Representation entity,	ProductJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			boolean status = productService.updateProduct(obj);
 			if(status) {
 				salesChannelErrorObject.setStatusCode(200);
@@ -280,7 +284,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				}
 			}
 		}
-		//GET method
+		//GET DELETE method
 		else if (method.equals(SalesChannelConstants.GET) || method.equals(SalesChannelConstants.DELETE)) {
 			if (!form.isEmpty()) {
 				for (final Parameter parameter : form) {

@@ -72,6 +72,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 			ProductCategoryJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			String categoryId = categoryService.insertProductCategory(obj);
 			if(categoryId != null) {
 				salesChannelErrorObject.setStatusCode(200);
@@ -94,6 +95,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 			ProductCategoryJsonObject obj) {
 		Representation representation = null;
 		try {
+			obj.setCustomerId(getCustomerId());
 			boolean status = categoryService.updateProductCategory(obj);
 			if(status) {
 				salesChannelErrorObject.setStatusCode(200);
@@ -182,7 +184,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 			//CategoryName validation
 			if(obj.getCategoryName() != null && !obj.getCategoryName().isEmpty()) {
 				ProductCategoryJsonModel categoryJsonModel = categoryService.isProductCategoryExist(obj);
-				if(categoryJsonModel != null && categoryJsonModel.getId() != null) {
+				if(categoryJsonModel != null) {
 					jsonObject2.put("4001", "Database Error.Record already exist.@#categoryName#@");
 					return jsonObject2;
 				}

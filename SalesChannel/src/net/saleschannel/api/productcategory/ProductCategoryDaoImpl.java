@@ -173,11 +173,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 					query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 							.and("customerId").is(productCategoryJsonModel.getCustomerId()).and("categoryName").is(productCategoryJsonModel.getCategoryName()));
 					categoryJsonModel = this.mongoOps.findOne(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
-				} else {
-					categoryJsonModel = new ProductCategoryJsonModel();
 				}
-			}  else {
-				categoryJsonModel = new ProductCategoryJsonModel();
 			}
 		} catch(Exception e) {
 			categoryJsonModel = new ProductCategoryJsonModel();

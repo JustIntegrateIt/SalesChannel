@@ -17,7 +17,7 @@ import org.restlet.representation.Representation;
 import net.saleschannel.api.SalesChannelServerResource;
 import net.saleschannel.api.constants.SalesChannelConstants;
 
-public class CustomerLoginController extends SalesChannelServerResource<CustomerJsonModel>{
+public class CustomerLoginController extends SalesChannelServerResource<CustomerLoginJsonModel>{
 
 	private static final Logger LOGGERS = Logger.getLogger(CustomerLoginController.class);
 	
@@ -31,13 +31,13 @@ public class CustomerLoginController extends SalesChannelServerResource<Customer
 
 	@Override
 	public Representation insertOrUpdateDetails(Representation entity,
-			CustomerJsonModel obj) {
+			CustomerLoginJsonModel obj) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Representation updateDetails(Representation entity,	CustomerJsonModel obj) {
+	public Representation updateDetails(Representation entity,	CustomerLoginJsonModel obj) {
 		Representation representation = null;
 		try {
 			String authToken = customerService.authenticateLogin(obj);
@@ -64,7 +64,7 @@ public class CustomerLoginController extends SalesChannelServerResource<Customer
 	}
 
 	@Override
-	public JSONObject validate(CustomerJsonModel obj, String method,
+	public JSONObject validate(CustomerLoginJsonModel obj, String method,
 			JSONObject jsonObject, Form form) throws JSONException {
 		JSONObject jsonObject2 = jsonObject;
 		if (method.equals(SalesChannelConstants.PUT)) {
@@ -83,10 +83,10 @@ public class CustomerLoginController extends SalesChannelServerResource<Customer
 	}
 
 	@Override
-	public CustomerJsonModel getJsonObject(InputStream stream)
+	public CustomerLoginJsonModel getJsonObject(InputStream stream)
 			throws JsonParseException, JsonMappingException, IOException {
 		final ObjectMapper mapper = new ObjectMapper();
-		final CustomerJsonModel customerJsonModel = mapper.readValue(stream, CustomerJsonModel.class);
+		final CustomerLoginJsonModel customerJsonModel = mapper.readValue(stream, CustomerLoginJsonModel.class);
 		return customerJsonModel;
 	}
 

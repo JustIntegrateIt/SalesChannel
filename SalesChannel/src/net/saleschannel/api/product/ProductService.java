@@ -20,6 +20,8 @@ public interface ProductService {
 	
 	public boolean deleteProduct(ProductJsonObject productJsonObject);
 	
+	public boolean deleteProductJsonModel(ProductJsonModel productJsonModel);
+	
 	public boolean deleteProductAttributes(String productId);
 	
 	public boolean deleteProducts(String customerId);

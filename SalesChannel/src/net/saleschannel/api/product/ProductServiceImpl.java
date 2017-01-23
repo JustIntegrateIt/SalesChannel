@@ -18,9 +18,10 @@ public class ProductServiceImpl implements ProductService {
 	private ProductDaoImpl productDao;
 	
 	public ProductJsonObject convertProductSimpleJsonModelToObject(ProductJsonModel productJsonModel) {
-		ProductJsonObject productJsonObject = new ProductJsonObject();
+		ProductJsonObject productJsonObject = null;
 		try {
 			if(productJsonModel != null) {
+				productJsonObject = new ProductJsonObject();
 				productJsonObject.setId(productJsonModel.getId());
 				productJsonObject.setCost(productJsonModel.getCost());
 				productJsonObject.setDescription(productJsonModel.getDescription());
@@ -40,7 +41,6 @@ public class ProductServiceImpl implements ProductService {
 				productJsonObject.setProductAccessories(productAccessoriesJsonObjectList);
 			}
 		} catch(Exception e) {
-			productJsonObject = null;
 			LOGGERS.error("error occured while convert ProductSimpleJsonModel To Object");
 			e.printStackTrace();
 		}
@@ -48,9 +48,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public ProductJsonModel convertProductJsonObjectToModel(ProductJsonObject productJsonObject) {
-		ProductJsonModel productJsonModel = new ProductJsonModel();
+		ProductJsonModel productJsonModel = null;
 		try {
 			if(productJsonObject != null) {
+				productJsonModel = new ProductJsonModel();
 				productJsonModel.setId(productJsonObject.getId());
 				productJsonModel.setCustomerId(productJsonObject.getCustomerId());
 				productJsonModel.setCost(productJsonObject.getCost());
@@ -62,7 +63,6 @@ public class ProductServiceImpl implements ProductService {
 				productJsonModel.setSkuId(productJsonObject.getSkuId());
 			}
 		} catch(Exception e) {
-			productJsonModel = null;
 			LOGGERS.error("error occured while convert ProductJsonObject To Model");
 			e.printStackTrace();
 		}
@@ -70,13 +70,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public ProductJsonObject prepareProductCompoundJsonObject(ProductJsonModel productJsonModel) {
-		List<ProductAttributeSetModel> productAttributeSetModelList = new ArrayList<ProductAttributeSetModel>();
-		List<ProductAttributeSetJsonObject> productAccessoriesJsonObjectList = new ArrayList<ProductAttributeSetJsonObject>();
+		List<ProductAttributeSetModel> productAttributeSetModelList = null;
+		List<ProductAttributeSetJsonObject> productAccessoriesJsonObjectList = null;
 		ProductJsonObject productJsonObject = new ProductJsonObject();
+		productJsonObject.setId(productJsonModel.getId());
+		productJsonObject.setCost(productJsonModel.getCost());
+		productJsonObject.setDescription(productJsonModel.getDescription());
+		productJsonObject.setProductCategory(productJsonModel.getProductCategory());
+		productJsonObject.setProductName(productJsonModel.getProductName());
+		productJsonObject.setProductType(productJsonModel.getProductType());
+		productJsonObject.setQuantity(productJsonModel.getQuantity());
+		productJsonObject.setSkuId(productJsonModel.getSkuId());
 		try {
 			if(productJsonModel != null) {
 				List<ProductAttributesJsonModel> productAttributes = productDao.getProductAttributeByProductId(productJsonModel.getId());
 				if(productAttributes != null && productAttributes.size() > 0) {
+					productAttributeSetModelList = new ArrayList<ProductAttributeSetModel>();
 					for(ProductAttributesJsonModel productAttribute : productAttributes) {
 						ProductAttributeSetModel productAttributeSetModel = new ProductAttributeSetModel();
 						List<ProductAttributeSetJsonObject> productAttributeSetList = new ArrayList<ProductAttributeSetJsonObject>();
@@ -119,6 +128,7 @@ public class ProductServiceImpl implements ProductService {
 				}
 				List<ProductAccessoriesJsonModel> productAccessoriesList = productDao.getProductAccessoriesByProductId(productJsonModel.getId());
 				if(productAccessoriesList != null && productAccessoriesList.size() > 0) {
+					productAccessoriesJsonObjectList = new ArrayList<ProductAttributeSetJsonObject>();
 					for(ProductAccessoriesJsonModel productAccessories : productAccessoriesList) {
 						ProductAttributeSetJsonObject productAttributeSet = convertProductAccessoriesJsonModelToObject(productAccessories);
 						productAccessoriesJsonObjectList.add(productAttributeSet);
@@ -135,15 +145,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public ProductAccessoriesJsonModel convertProductAccessoriesJsonObjectToModel(ProductAttributeSetJsonObject productAttributeSetJsonObject) {
-		ProductAccessoriesJsonModel productAccessoriesJsonModel = new ProductAccessoriesJsonModel();
+		ProductAccessoriesJsonModel productAccessoriesJsonModel = null;
 		try {
 			if(productAttributeSetJsonObject != null) {
+				productAccessoriesJsonModel = new ProductAccessoriesJsonModel();
 				productAccessoriesJsonModel.setName(productAttributeSetJsonObject.getName());
 				productAccessoriesJsonModel.setValue(productAttributeSetJsonObject.getValue());
 				productAccessoriesJsonModel.setDescription(productAttributeSetJsonObject.getDescription());
 			}
 		} catch(Exception e) {
-			productAccessoriesJsonModel = null;
 			LOGGERS.error("error occured while convert ProductAccessories Json Object To Model");
 			e.printStackTrace();
 		}
@@ -151,15 +161,15 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public ProductAttributeSetJsonObject convertProductAccessoriesJsonModelToObject(ProductAccessoriesJsonModel productAccessoriesJsonModel) {
-		ProductAttributeSetJsonObject productAttributeSetJsonObject = new ProductAttributeSetJsonObject();
+		ProductAttributeSetJsonObject productAttributeSetJsonObject = null;
 		try {
 			if(productAccessoriesJsonModel != null) {
+				productAttributeSetJsonObject = new ProductAttributeSetJsonObject();
 				productAttributeSetJsonObject.setName(productAccessoriesJsonModel.getName());
 				productAttributeSetJsonObject.setValue(productAccessoriesJsonModel.getValue());
 				productAttributeSetJsonObject.setDescription(productAccessoriesJsonModel.getDescription());
 			}
 		} catch(Exception e) {
-			productAttributeSetJsonObject = null;
 			LOGGERS.error("error occured while convert ProductAccessories Json Model To Object");
 			e.printStackTrace();
 		}
@@ -406,11 +416,32 @@ public class ProductServiceImpl implements ProductService {
 		try {
 			status = deleteProductAttributes(productId);
 			if(status) {
-				status = productDao.deleteProduct(productId);
+				status = productDao.deleteProductAccessoriesByProductId(productId);
+				if(status) {
+					status = productDao.deleteProduct(productId);
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			LOGGERS.error("error while delete product.");
+		}
+		return status;
+	}
+	
+	public boolean deleteProductJsonModel(ProductJsonModel productJsonModel) {
+		String productId = productJsonModel.getId();
+		boolean status = false;
+		try {
+			status = deleteProductAttributes(productId);
+			if(status) {
+				status = productDao.deleteProductAccessoriesByProductId(productId);
+				if(status) {
+					status = productDao.deleteProduct(productId);
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			LOGGERS.error("error while delete Product Json Model.");
 		}
 		return status;
 	}
@@ -440,7 +471,7 @@ public class ProductServiceImpl implements ProductService {
 			List<ProductJsonModel> productJsonModelList = productDao.getProductsByCustomer(customerId);
 			if(productJsonModelList != null && productJsonModelList.size() > 0) {
 				for(ProductJsonModel productJsonModel : productJsonModelList) {
-					status = productDao.deleteProduct(productJsonModel.getId());
+					status = deleteProductJsonModel(productJsonModel);
 				}
 			}
 		} catch(Exception e) {
@@ -456,10 +487,10 @@ public class ProductServiceImpl implements ProductService {
 			ProductJsonModel productJsonModel = productDao.getProductById(productId);
 			if(productJsonModel != null) {
 				if(productJsonModel.getProductType() != null 
-						&& productJsonModel.getProductType().equals(ProductTypes.Simple)) {
+						&& productJsonModel.getProductType().equals(ProductTypes.getByName(ProductTypes.Simple.toString()).toString())) {
 					productJsonObject = convertProductSimpleJsonModelToObject(productJsonModel);	
 				} else if(productJsonModel.getProductType() != null 
-						&& productJsonModel.getProductType().equals(ProductTypes.Configurable)) {
+						&& productJsonModel.getProductType().equals(ProductTypes.getByName(ProductTypes.Configurable.toString()).toString())) {
 					productJsonObject = prepareProductCompoundJsonObject(productJsonModel);	
 				}
 			}
@@ -491,19 +522,22 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	public List<ProductJsonObject> getProductsByCustomer(String customerId) {
-		List<ProductJsonObject> productJsonObjectList = new ArrayList<ProductJsonObject>();
+		List<ProductJsonObject> productJsonObjectList = null;
 		try {
 			List<ProductJsonModel> productModels = productDao.getProductsByCustomer(customerId);
-			for(ProductJsonModel productJsonModel : productModels) {
-				if(productJsonModel != null) {
-					if(productJsonModel.getProductType() != null 
-							&& productJsonModel.getProductType().equals(ProductTypes.Simple)) {
-						ProductJsonObject productJsonObject = convertProductSimpleJsonModelToObject(productJsonModel);
-						productJsonObjectList.add(productJsonObject);
-					} else if(productJsonModel.getProductType() != null 
-							&& productJsonModel.getProductType().equals(ProductTypes.Configurable)) {
-						ProductJsonObject productJsonObject = prepareProductCompoundJsonObject(productJsonModel);
-						productJsonObjectList.add(productJsonObject);
+			if(productModels != null && productModels.size() > 0) {
+				for(ProductJsonModel productJsonModel : productModels) {
+					productJsonObjectList = new ArrayList<ProductJsonObject>();
+					if(productJsonModel != null) {
+						if(productJsonModel.getProductType() != null 
+								&& productJsonModel.getProductType().equals(ProductTypes.Simple)) {
+							ProductJsonObject productJsonObject = convertProductSimpleJsonModelToObject(productJsonModel);
+							productJsonObjectList.add(productJsonObject);
+						} else if(productJsonModel.getProductType() != null 
+								&& productJsonModel.getProductType().equals(ProductTypes.Configurable)) {
+							ProductJsonObject productJsonObject = prepareProductCompoundJsonObject(productJsonModel);
+							productJsonObjectList.add(productJsonObject);
+						}
 					}
 				}
 			}
@@ -515,9 +549,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public List<AttributeJsonModel> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
-		List<AttributeJsonModel> attributes = new ArrayList<AttributeJsonModel>();
+		List<AttributeJsonModel> attributes = null;
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
+				attributes = new ArrayList<AttributeJsonModel>();
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
 					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
 						AttributeJsonModel attribute = new AttributeJsonModel();
@@ -538,9 +573,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	public List<ProductAttributesJsonModel> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList) {
-		List<ProductAttributesJsonModel> productAttributes = new ArrayList<ProductAttributesJsonModel>();
+		List<ProductAttributesJsonModel> productAttributes = null;
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
+				productAttributes = new ArrayList<ProductAttributesJsonModel>();
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
 					ProductAttributesJsonModel productAttribute = new ProductAttributesJsonModel();
 					for(ProductAttributeSetJsonObject productAttributeSet : productAttributeSetModel.getProductAttributeSet()) {
@@ -562,9 +598,10 @@ public class ProductServiceImpl implements ProductService {
 	
 	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList,
 			String productId) {
-		List<ProductAttributeCombinationJsonModel> productAttributeCombinations = new ArrayList<ProductAttributeCombinationJsonModel>();
+		List<ProductAttributeCombinationJsonModel> productAttributeCombinations = null;
 		try {
 			if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
+				productAttributeCombinations = new ArrayList<ProductAttributeCombinationJsonModel>();
 				for (ProductAttributeSetModel productAttributeSetModel : productAttributeSetModelList) {
 					ProductAttributesJsonModel productAttributeId = null;
 					AttributeJsonModel attributeId = null;

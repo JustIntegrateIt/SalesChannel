@@ -20,20 +20,20 @@ private static final Logger LOGGERS = Logger.getLogger(CustomerDaoImpl.class);
         this.mongoOps=mongoOps;
     }
 	
-	public String authenticateLogin(CustomerJsonModel customerJsonModel) {
+	public String authenticateLogin(CustomerLoginJsonModel customerLoginJsonModel) {
 		String authToken = null;
 		try {
 			final SalesChannelEncryptionDecryption encryptDecryptService = new SalesChannelEncryptionDecryption(SalesChannelBaseDao.endecryptionKey);
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
-					.and("userName").is(customerJsonModel.getUserName())
-					.and("password").is(encryptDecryptService.encryptWithHash(customerJsonModel.getPassword())));
-			CustomerJsonModel customer =  this.mongoOps.findOne(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
-			if(customer != null) {
+					.and("userName").is(customerLoginJsonModel.getUserName())
+					.and("password").is(encryptDecryptService.encryptWithHash(customerLoginJsonModel.getPassword())));
+			CustomerJsonModel customerJsonModel =  this.mongoOps.findOne(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+			if(customerJsonModel != null) {
 				ObjectId objectId = new ObjectId();
 				authToken = objectId.toString();
-				customer.setAuthToken(authToken);
-				this.mongoOps.save(customer, SalesChannelConstants.SC_CUSTOMER);
+				customerJsonModel.setAuthToken(authToken);
+				this.mongoOps.save(customerJsonModel, SalesChannelConstants.SC_CUSTOMER);
 			}
 			return authToken;		
 		} catch(Exception e) {
@@ -55,6 +55,83 @@ private static final Logger LOGGERS = Logger.getLogger(CustomerDaoImpl.class);
 			e.printStackTrace();
 		}
 		return customerJsonModel;
+	}
+	
+	public String createCustomer(CustomerJsonModel customerJsonModel) {
+		String customerId = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			customerJsonModel.setId(objectId.toString());
+			customerId = objectId.toString(); 
+			this.mongoOps.insert(customerJsonModel, SalesChannelConstants.SC_CUSTOMER);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return customerId;
+	}
+	
+	public boolean updateCustomer(CustomerJsonModel customerJsonModel) {
+		boolean status = false;
+		try {
+			this.mongoOps.save(customerJsonModel, SalesChannelConstants.SC_CUSTOMER);
+			status = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	public CustomerJsonModel getCustomer(String customerId) {
+		CustomerJsonModel customerJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
+					.and("_id").is(new ObjectId(customerId)));
+			customerJsonModel = this.mongoOps.findOne(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return customerJsonModel;
+	}
+	
+	public CustomerJsonModel getCustomerByEmail(String email) {
+		CustomerJsonModel customerJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
+					.and("email").is(email));
+			customerJsonModel = this.mongoOps.findOne(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return customerJsonModel;
+	}
+	
+	public CustomerJsonModel getCustomerByUserName(String userName) {
+		CustomerJsonModel customerJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
+					.and("userName").is(userName));
+			customerJsonModel = this.mongoOps.findOne(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return customerJsonModel;
+	}
+	
+	public boolean deleteCustomer(String customerId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
+					.and("_id").is(new ObjectId(customerId)));
+			this.mongoOps.findAndRemove(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+			status = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return status;
 	}
 
 }
