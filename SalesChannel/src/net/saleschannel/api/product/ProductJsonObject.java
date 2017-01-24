@@ -30,6 +30,9 @@ public class ProductJsonObject extends SalesChannelBaseJsonObject {
 	//SC Product skuId
 	private String skuId;
 	
+	//SC Product image
+	private String image;
+	
 	//POJO to map Product Attributes request
 	private List<ProductAttributeSetModel> productAttributes;
 	
@@ -116,5 +119,13 @@ public class ProductJsonObject extends SalesChannelBaseJsonObject {
 	public void setProductAccessories(
 			List<ProductAttributeSetJsonObject> productAccessories) {
 		this.productAccessories = productAccessories;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

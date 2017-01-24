@@ -3,6 +3,8 @@ package net.saleschannel.api.product;
 public class ProductAttributeSetJsonObject {
 	
 	//POJO to map ProductAttributes
+	private String valueId;
+	
 	private String name;
 	
 	private String value;
@@ -31,6 +33,14 @@ public class ProductAttributeSetJsonObject {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getValueId() {
+		return valueId;
+	}
+
+	public void setValueId(String valueId) {
+		this.valueId = valueId;
 	}
 
 }

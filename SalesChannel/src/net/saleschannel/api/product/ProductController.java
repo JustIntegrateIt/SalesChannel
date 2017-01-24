@@ -61,8 +61,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productJsonObjects);
 			} else {
-				salesChannelErrorObject.setStatusCode(3000);
-				salesChannelErrorObject.setMessage(getErrorMessage(3000));
+				salesChannelErrorObject.setStatusCode(30004);
+				salesChannelErrorObject.setMessage(getErrorMessage(30004));
 			}
 			representation = new JsonRepresentation(new JSONObject(salesChannelErrorObject));
 		} catch (Exception e) {
@@ -83,8 +83,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Product Added Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(30000);
+				salesChannelErrorObject.setMessage(getErrorMessage(30000));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -105,8 +105,8 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Product Updated Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(30002);
+				salesChannelErrorObject.setMessage(getErrorMessage(30002));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -149,11 +149,11 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Product deleted successfully");
 			} else if(isExist) {
-				salesChannelErrorObject.setStatusCode(4002);
-				salesChannelErrorObject.setMessage(getErrorMessage(4002));
+				salesChannelErrorObject.setStatusCode(30003);
+				salesChannelErrorObject.setMessage(getErrorMessage(30003));
 			} else {
-				salesChannelErrorObject.setStatusCode(4003);
-				salesChannelErrorObject.setMessage(getErrorMessage(4003));
+				salesChannelErrorObject.setStatusCode(30004);
+				salesChannelErrorObject.setMessage(getErrorMessage(30004));
 			}
 			representation = new JsonRepresentation(new JSONObject(salesChannelErrorObject));
 		} catch (Exception e) {
@@ -172,17 +172,17 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 			obj.setCustomerId(getCustomerId());
 			//productName validation
 			if(obj.getProductName() == null || obj.getProductName().isEmpty()) {
-				jsonObject2.put("1000", "Product Name is empty.@#productName#@");
+				jsonObject2.put("30011", "Product Name is empty.@#productName#@");
 				return jsonObject2;
 			}
 			//productType validation
 			if(obj.getProductType() == null || obj.getProductType().isEmpty()) {
-				jsonObject2.put("1000", "Product Type is empty.@#productType#@");
+				jsonObject2.put("30012", "Product Type is empty.@#productType#@");
 				return jsonObject2;
 			} else {
 				ProductTypes productType = ProductTypes.getByName(obj.getProductType());
 				if(productType == null) {
-					jsonObject2.put("1004", "Product Type value is not valid. Please send any of these "
+					jsonObject2.put("30013", "Product Type value is not valid. Please send any of these "
 				+ProductTypes.Simple+", "+ProductTypes.Configurable+", "+ProductTypes.Virtual+", "
 				+ProductTypes.Downloadable+", "+ProductTypes.Grouped+", "+ProductTypes.Bundled
 				+".@#productType#@");
@@ -191,34 +191,34 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 					if(productType.equals(ProductTypes.Simple)) {
 						//cost validation
 						if(obj.getCost() == null || obj.getCost().equals("")) {
-							jsonObject2.put("1000", "Product Cost is empty.@#cost#@");
+							jsonObject2.put("30014", "Product Cost is empty.@#cost#@");
 							return jsonObject2;
 						} else {
 							try {
 								obj.setCost(obj.getCost().intValue());
 							} catch(Exception e) {
 								LOGGERS.error(e.getStackTrace());
-								jsonObject2.put("1002", "Product Cost is not valid.@#cost#@");
+								jsonObject2.put("30015", "Product Cost is not valid.@#cost#@");
 								return jsonObject2;
 							}
 						}
 						//quantity validation
 						if(obj.getQuantity() == null || obj.getQuantity().equals("")) {
-							jsonObject2.put("1000", "Product Quantity is empty.@#quantity#@");
+							jsonObject2.put("30016", "Product Quantity is empty.@#quantity#@");
 							return jsonObject2;
 						} else {
 							try {
 								obj.setQuantity(obj.getQuantity().intValue());
 							} catch(Exception e) {
 								LOGGERS.error(e.getStackTrace());
-								jsonObject2.put("1002", "Product Quantity is not valid.@#quantity#@");
+								jsonObject2.put("30017", "Product Quantity is not valid.@#quantity#@");
 								return jsonObject2;
 							}
 						}
 					} else if(productType.equals(ProductTypes.Configurable)) {
 						//productAttributes validation
 						if(obj.getProductAttributes() == null || obj.getProductAttributes().equals("")) {
-							jsonObject2.put("1000", "Product Attributes is empty.@#productAttributes#@");
+							jsonObject2.put("30018", "Product Attributes is empty.@#productAttributes#@");
 							return jsonObject2;
 						}
 					}
@@ -226,20 +226,20 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 			}
 			//productCategory validation
 			if(obj.getProductCategory() == null || obj.getProductCategory().isEmpty()) {
-				jsonObject2.put("1000", "Product Category is empty.@#productCategory#@");
+				jsonObject2.put("30019", "Product Category is empty.@#productCategory#@");
 				return jsonObject2;
 			} else {
 				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryByNameAndCustomerId(
 						getCustomerId(), obj.getProductCategory());
 				if(productCategoryJsonObject == null) {
-					jsonObject2.put("1004", "Product Category is Invalid.@#productCategory#@");
+					jsonObject2.put("30020", "Product Category is Invalid.@#productCategory#@");
 					return jsonObject2;	
 				}
 				
 			}
 			//skuId validation
 			if(obj.getSkuId() == null || obj.getSkuId().isEmpty()) {
-				jsonObject2.put("1000", "Product skuId is empty.@#skuId#@");
+				jsonObject2.put("30021", "Product skuId is empty.@#skuId#@");
 				return jsonObject2;
 			}
 			//productAttribute skuId validation
@@ -249,7 +249,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 				if(productAttributesList != null && productAttributesList.size() > 0) {
 					for(ProductAttributesJsonModel productAttributes : productAttributesList) {
 						if(productAttributes.getSkuId() == null || productAttributes.getSkuId().isEmpty()) {
-							jsonObject2.put("1000", "skuId is empty in attribute set.@#skuId#@");
+							jsonObject2.put("30022", "skuId is empty in attribute set.@#skuId#@");
 							return jsonObject2;
 						}
 					}
@@ -259,7 +259,7 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 			if (method.equals(SalesChannelConstants.POST) && obj.getId() == null) {
 				ProductJsonObject productJsonObject = productService.checkProductExist(obj.getSkuId(), obj.getCustomerId()); 
 				if(productJsonObject != null) {
-					jsonObject2.put("4001", "Database Error.Record already exist.");
+					jsonObject2.put("30023", "Database Error.Record already exist.");
 					return jsonObject2;
 				}
 			}
@@ -267,19 +267,19 @@ public class ProductController extends SalesChannelServerResource<ProductJsonObj
 			else if (method.equals(SalesChannelConstants.PUT)) {
 				//productId validation
 				if(obj.getId() == null || obj.getId().isEmpty()) {
-					jsonObject2.put("1000", "Product Id is empty.@#id#@");
+					jsonObject2.put("30024", "Product Id is empty.@#id#@");
 					return jsonObject2;
 				}
 				//product isExist validation
 				ProductJsonObject productJsonObject = productService.getProductById(obj.getId()); 
 				if(productJsonObject == null) {
-					jsonObject2.put("4002", "Database Error.Record not exist.");
+					jsonObject2.put("30025", "Database Error.Record not exist.");
 					return jsonObject2;
 				}
 				if(productJsonObject != null && productJsonObject.getCustomerId() != null 
 						&& !productJsonObject.getCustomerId().isEmpty() && !productJsonObject.getCustomerId().equals(
 								obj.getCustomerId())) {
-					jsonObject2.put("1004", "Validation Error.Invalid productId passed.");
+					jsonObject2.put("30026", "Validation Error.Invalid productId passed.");
 					return jsonObject2;
 				}
 			}

@@ -56,8 +56,8 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productCategoryJsonObjectList);
 			} else {
-				salesChannelErrorObject.setStatusCode(3000);
-				salesChannelErrorObject.setMessage(getErrorMessage(3000));
+				salesChannelErrorObject.setStatusCode(40004);
+				salesChannelErrorObject.setMessage(getErrorMessage(40004));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -79,8 +79,8 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Category Inserted Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(40001);
+				salesChannelErrorObject.setMessage(getErrorMessage(40001));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -102,8 +102,8 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Category Updated Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(40002);
+				salesChannelErrorObject.setMessage(getErrorMessage(40002));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -145,11 +145,11 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Product Category deleted Successfully.");
 			} else if(isExist) {
-				salesChannelErrorObject.setStatusCode(4002);
-				salesChannelErrorObject.setMessage(getErrorMessage(4002));
+				salesChannelErrorObject.setStatusCode(40003);
+				salesChannelErrorObject.setMessage(getErrorMessage(40003));
 			} else {
-				salesChannelErrorObject.setStatusCode(4003);
-				salesChannelErrorObject.setMessage(getErrorMessage(4003));
+				salesChannelErrorObject.setStatusCode(40004);
+				salesChannelErrorObject.setMessage(getErrorMessage(40004));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -167,14 +167,14 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 		if (method.equals(SalesChannelConstants.PUT) || method.equals(SalesChannelConstants.POST)) {
 			//CategoryName validation
 			if(obj.getCategoryName() == null || obj.getCategoryName().isEmpty()) {
-				jsonObject2.put("1000", "category Name is empty.@#categoryName#@");
+				jsonObject2.put("40011", "category Name is empty.@#categoryName#@");
 				return jsonObject2;
 			}
 			//parent Category validation
 			if(obj.getParentId() != null && !obj.getParentId().isEmpty()) {
 				ProductCategoryJsonObject categoryJsonObject = categoryService.getProductCategoryById(obj.getParentId(), getCustomerId());
 				if(categoryJsonObject == null || categoryJsonObject.getId() == null) {
-					jsonObject2.put("1004", "Invalid value passed.@#parentId#@");
+					jsonObject2.put("40012", "Invalid value passed.@#parentId#@");
 					return jsonObject2;
 				}
 			}
@@ -185,7 +185,7 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 			if(obj.getCategoryName() != null && !obj.getCategoryName().isEmpty()) {
 				ProductCategoryJsonModel categoryJsonModel = categoryService.isProductCategoryExist(obj);
 				if(categoryJsonModel != null) {
-					jsonObject2.put("4001", "Database Error.Record already exist.@#categoryName#@");
+					jsonObject2.put("40013", "Database Error.Record already exist.@#categoryName#@");
 					return jsonObject2;
 				}
 			}

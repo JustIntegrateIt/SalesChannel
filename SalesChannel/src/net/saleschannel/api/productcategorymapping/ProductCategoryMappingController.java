@@ -50,8 +50,8 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productCategoryMappingJsonObjectList);
 			} else {
-				salesChannelErrorObject.setStatusCode(3000);
-				salesChannelErrorObject.setMessage(getErrorMessage(3000));
+				salesChannelErrorObject.setStatusCode(50004);
+				salesChannelErrorObject.setMessage(getErrorMessage(50004));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -73,8 +73,8 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Category Mapping Inserted Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(50001);
+				salesChannelErrorObject.setMessage(getErrorMessage(50001));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -96,8 +96,8 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Category Mapping Updated Successfully.");
 			} else {
-				salesChannelErrorObject.setStatusCode(4000);
-				salesChannelErrorObject.setMessage(getErrorMessage(4000));
+				salesChannelErrorObject.setStatusCode(50002);
+				salesChannelErrorObject.setMessage(getErrorMessage(50002));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -137,11 +137,11 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Product Category Mapping deleted Successfully.");
 			} else if(isExist) {
-				salesChannelErrorObject.setStatusCode(4002);
-				salesChannelErrorObject.setMessage(getErrorMessage(4002));
+				salesChannelErrorObject.setStatusCode(50003);
+				salesChannelErrorObject.setMessage(getErrorMessage(50003));
 			} else {
-				salesChannelErrorObject.setStatusCode(4003);
-				salesChannelErrorObject.setMessage(getErrorMessage(4003));
+				salesChannelErrorObject.setStatusCode(50004);
+				salesChannelErrorObject.setMessage(getErrorMessage(50004));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
@@ -160,12 +160,12 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 		if (method.equals(SalesChannelConstants.PUT) || method.equals(SalesChannelConstants.POST)) {
 			//Customer Category Id validation
 			if(obj.getCustomerCategoryId() == null || obj.getCustomerCategoryId().isEmpty()) {
-				jsonObject2.put("1000", "Customer category Id is empty.@#customerCategoryId#@");
+				jsonObject2.put("50011", "Customer category Id is empty.@#customerCategoryId#@");
 				return jsonObject2;
 			}
 			//MarketPlace Category Id validation
 			if(obj.getMarketPlaceCategoryId() == null || obj.getMarketPlaceCategoryId().isEmpty()) {
-				jsonObject2.put("1000", "MarketPlace category Id is empty.@#marketPlaceCategoryId#@");
+				jsonObject2.put("50012", "MarketPlace category Id is empty.@#marketPlaceCategoryId#@");
 				return jsonObject2;
 			}
 		}

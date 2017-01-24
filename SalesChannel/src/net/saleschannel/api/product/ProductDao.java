@@ -74,15 +74,17 @@ public interface ProductDao {
 	public List<ProductAccessoriesJsonModel> getProductAccessoriesByProductId(String productId);
 	
 	/*ProductImage*/
-	public String insertProductImage(ProductImage productImage);
+	public String insertProductImage(ProductImageJsonModel productImage);
 	
-	public boolean updateProductImage(ProductImage productImage);
+	public boolean updateProductImage(ProductImageJsonModel productImage);
 	
 	public boolean deleteImageById(String productImageId);
 	
 	public boolean deleteProductImageByProductId(String productId);
 	
-	public ProductImage getProductImageById(String productImageId);
+	public ProductImageJsonModel getProductImageById(String productImageId);
 	
-	public List<ProductImage> getProductImageByProductId(String productId);
+	public List<ProductImageJsonModel> getProductImageByProductId(String productId);
+	
+	public List<ProductImageJsonModel> getProductImageByProductAttributeId(String productAttributeId);
 }

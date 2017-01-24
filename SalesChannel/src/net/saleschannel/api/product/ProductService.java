@@ -38,9 +38,22 @@ public interface ProductService {
 	
 	public List<ProductAttributesJsonModel> prepareProductAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
 	
-	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList, String productId);
+	public List<ProductAttributeCombinationJsonModel> prepareProductAttributeCombination(List<ProductAttributeSetModel> productAttributeSetModelList
+			, String productId, String customerId);
 	
-	public ProductJsonObject prepareProductCompoundJsonObject(ProductJsonModel productJsonModel);
+	public ProductJsonObject prepareConfigurableProductJsonObject(ProductJsonModel productJsonModel);
 	
 	public String insertProductAccessories(ProductAttributeSetJsonObject productAttributeSetJsonObject, String productId, String customerId);
+	
+	public String saveUpdateImage(String image, String imageName, String imageId, String customerId, String productId, String productAttributeId);
+	
+	public ProductAttributeSetJsonObject convertProductImageJsonModelToObject(ProductImageJsonModel productImageJsonModel);
+	
+	public List<ProductAttributesJsonObject> getProductAttributesByProductId(String productId);
+	
+	public ProductAttributesJsonObject getProductAttributesByProductAttributeId(String productAttributeId);
+	
+	public List<ProductAccessoriesJsonObject> getProductAccessoriesByProductId(String productAccessoriesId);
+	
+	public ProductAttributeSetJsonObject getProductAccessoriesByProductAccessoriesId(String productAccessoriesId);
 }

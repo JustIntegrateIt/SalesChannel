@@ -55,6 +55,11 @@
 		<property name="customerService" ref="customerService" />
 		<property name="categoryService" ref="categoryService" />
     </bean>
+    
+    <bean name="/productAttribute" class="net.saleschannel.api.product.ProductAttributesController" scope="prototype">
+		<property name="productService" ref="productService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
 	
 	<bean id="productService" class="net.saleschannel.api.product.ProductServiceImpl">
 		<property name="productDao" ref="productDao" />

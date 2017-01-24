@@ -34,6 +34,9 @@ public class ProductJsonModel {
 	//SC Product skuId
 	private String skuId;
 	
+	//SC Product image
+	private String image;
+		
 	private String createBy;
 	
 	private String updatedBy;
@@ -144,5 +147,13 @@ public class ProductJsonModel {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 }

@@ -4,7 +4,10 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
@@ -68,7 +71,7 @@ public final class SalesChannelUtility {
 	 *
 	 * @param imageURL the image url link
 	 * @param saveToPath the save to path in local
-	 * @return boolean
+	 * @return path of the image saved
 	 */
 	public static String getImagefromUrl(String imageURL, String saveToPath) {
 		BufferedImage image = null;	
@@ -114,6 +117,81 @@ public final class SalesChannelUtility {
 	}
 	
 	/**
+	 * Method used to convert image stream string into image.
+	 *
+	 * @param imageStream the image stream as string
+	 * @param saveToPath the save to path in local
+	 * @return path of the image saved
+	 */
+	public static String createImagefromStream(String imageStream, String saveToPath) {
+		BufferedImage image = null;	
+		String imageName = null;
+		boolean isProcessed = false;
+		try {
+			File theDir = new File(saveToPath);
+			boolean result = true;
+			// if the directory does not exist, create it
+			if (!theDir.exists()) {
+				LOGGERS.debug("creating directory: " + saveToPath);
+				try{
+					theDir.mkdirs();
+			    } 
+			    catch(Exception e){
+			    	result = false;
+			    	LOGGERS.debug("error creating directory: " + saveToPath);
+			    	e.printStackTrace();
+			    }        
+			}
+			if(result) {    
+				InputStream imageInputStream = new ByteArrayInputStream(imageStream.getBytes());
+				image = ImageIO.read(imageInputStream);
+				imageName = saveToPath + SalesChannelConstants.FILE_SEPERATOR + getUUID(false) + SalesChannelConstants.DOT_SEPERATOR 
+						+ SalesChannelConstants.PNG;
+				ImageIO.write(image, SalesChannelConstants.PNG, new File(imageName));
+				isProcessed = true;
+		    }
+		} catch (Exception e) {
+			LOGGERS.debug("error converting image stream into image");
+			e.printStackTrace();
+		}
+		if(!isProcessed) {
+			imageName = null;
+		}
+		return imageName;
+	}
+	
+	/**
+	 * Method used to convert image into InputStream.
+	 *
+	 * @param imagePath the path where image saved in local
+	 * @return InputStream of image
+	 */
+	public static InputStream convertImageIntoStream(String imagePath) {
+		InputStream imageStream = null;
+		try {
+			File image = new File(imagePath);
+			if (image.exists()) {
+				LOGGERS.info("image exist in:"+imagePath);
+				try{
+					ByteArrayOutputStream os = new ByteArrayOutputStream();
+					ImageIO.write(ImageIO.read(image), "png", os);
+					imageStream = new ByteArrayInputStream(os.toByteArray());
+			    } 
+			    catch(Exception e){
+			    	LOGGERS.debug("error while convert image into stream" + imagePath);
+			    	e.printStackTrace();
+			    }        
+			} else {
+				LOGGERS.info("image not exist in:"+imagePath);
+			}
+		} catch (Exception e) {
+			LOGGERS.debug("error converting image into stream");
+			e.printStackTrace();
+		}
+		return imageStream;
+	}
+	
+	/**
 	 * Method used to convertImage format.
 	 *
 	 * @param imagePath the image directory path
@@ -133,7 +211,8 @@ public final class SalesChannelUtility {
 				if (image.exists()) {
 					convertedImage = imagePath + SalesChannelConstants.FILE_SEPERATOR 
 							+ imageName + SalesChannelConstants.NAME_SEPERATOR + toWidth 
-							+ SalesChannelConstants.CROSS + toHeight + SalesChannelConstants.PNG;
+							+ SalesChannelConstants.CROSS + toHeight + SalesChannelConstants.DOT_SEPERATOR
+							+ toType;
 					BufferedImage originalImage = ImageIO.read(new File(actualPath));
 					int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB
 							: originalImage.getType();

@@ -2,7 +2,7 @@ package net.saleschannel.api.marketplace;
 
 import org.springframework.data.annotation.Id;
 
-public class MarketPlaceHeaders {
+public class MarketPlaceHeadersJsonModel {
 
 	//SC Market Place Header Id
 	@Id
@@ -20,6 +20,9 @@ public class MarketPlaceHeaders {
 	//SC Market Place Header parameter value
 	private String headerParamValue;
 
+	//SC Customer Id
+	private String customerId;
+		
 	public String getId() {
 		return id;
 	}
@@ -58,6 +61,14 @@ public class MarketPlaceHeaders {
 
 	public void setHeaderParamValue(String headerParamValue) {
 		this.headerParamValue = headerParamValue;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 }
 

@@ -419,7 +419,7 @@ public class ProductDaoImpl implements ProductDao {
 		return productAccessoriesJsonModelList;
 	}
 	
-	public String insertProductImage(ProductImage productImage) {
+	public String insertProductImage(ProductImageJsonModel productImage) {
 		String productImageId = null;
 		try {
 			ObjectId objectId = new ObjectId();
@@ -433,7 +433,7 @@ public class ProductDaoImpl implements ProductDao {
 		return productImageId;
 	}
 	
-	public boolean updateProductImage(ProductImage productImage) {
+	public boolean updateProductImage(ProductImageJsonModel productImage) {
 		boolean status = false;
 		try {
 			this.mongoOps.save(productImage, SalesChannelConstants.SC_PRODUCT_IMAGE);
@@ -449,9 +449,9 @@ public class ProductDaoImpl implements ProductDao {
 		boolean status = false;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
 					.and("_id").is(new ObjectId(productImageId)));
-			this.mongoOps.findAndRemove(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			this.mongoOps.findAndRemove(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete Product Image by productImageId in database");
@@ -464,9 +464,9 @@ public class ProductDaoImpl implements ProductDao {
 		boolean status = false;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
 					.and("productId").is(productId));
-			this.mongoOps.remove(query, ProductImage.class);
+			this.mongoOps.remove(query, ProductImageJsonModel.class);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete Product Image by productId in database");
@@ -475,13 +475,13 @@ public class ProductDaoImpl implements ProductDao {
 		return status;
 	}
 	
-	public ProductImage getProductImageById(String productImageId) {
-		ProductImage productImage = null;
+	public ProductImageJsonModel getProductImageById(String productImageId) {
+		ProductImageJsonModel productImage = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
 					.and("_id").is(new ObjectId(productImageId)));
-			productImage = this.mongoOps.findOne(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			productImage = this.mongoOps.findOne(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Image by productImageId in database");
 			e.printStackTrace();
@@ -489,15 +489,29 @@ public class ProductDaoImpl implements ProductDao {
 		return productImage;
 	}
 	
-	public List<ProductImage> getProductImageByProductId(String productId) {
-		List<ProductImage> productImageList = null;
+	public List<ProductImageJsonModel> getProductImageByProductId(String productId) {
+		List<ProductImageJsonModel> productImageList = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImage")
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
 					.and("productId").is(new ObjectId(productId)));
-			productImageList = this.mongoOps.find(query, ProductImage.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			productImageList = this.mongoOps.find(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Image by productId in database");
+			e.printStackTrace();
+		}
+		return productImageList;
+	}
+	
+	public List<ProductImageJsonModel> getProductImageByProductAttributeId(String productAttributeId) {
+		List<ProductImageJsonModel> productImageList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
+					.and("productAttributeId").is(productAttributeId));
+			productImageList = this.mongoOps.find(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+		} catch(Exception e) {
+			LOGGERS.error("error while get Product Image by productAttributeId in database");
 			e.printStackTrace();
 		}
 		return productImageList;
