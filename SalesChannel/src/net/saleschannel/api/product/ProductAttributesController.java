@@ -54,7 +54,7 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 			}
 			representation = new JsonRepresentation(new JSONObject(salesChannelErrorObject));
 		} catch (Exception e) {
-			LOGGERS.error("Error occured while fetch Product.");
+			LOGGERS.error("Error occured while fetch Product Attributes.");
 			e.printStackTrace();
 		}
 		return representation;
@@ -63,44 +63,160 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 	@Override
 	public Representation insertOrUpdateDetails(Representation entity,
 			ProductAttributesJsonObject obj) {
-		// TODO Auto-generated method stub
-		return null;
+		Representation representation = null;
+		try {
+			obj.setCustomerId(getCustomerId());
+			if(productId != null && !productId.isEmpty()) {
+				if(obj.getProductAttributes() != null && obj.getProductAttributes().size() > 0) {
+					String productAttributeId = null;
+					productAttributeId = productService.insertUpdateProductAttributes(obj, productId);
+					if(productAttributeId != null) {
+						salesChannelErrorObject.setStatusCode(200);
+						salesChannelErrorObject.setMessage(getErrorMessage(200));
+						salesChannelErrorObject.setData("Product Attribute Added Successfully.");
+					} else {
+						salesChannelErrorObject.setStatusCode(30100);
+						salesChannelErrorObject.setMessage(getErrorMessage(30100));
+					}
+				} else {
+					salesChannelErrorObject.setStatusCode(1005);
+					salesChannelErrorObject.setMessage(getErrorMessage(1005));
+				}	
+			} else {
+				salesChannelErrorObject.setStatusCode(30001);
+				salesChannelErrorObject.setMessage(getErrorMessage(30001));
+			}
+			representation = new JsonRepresentation(salesChannelErrorObject);
+		} catch (Exception e) {
+			LOGGERS.error("Error occured while insertOrUpdateDetails Product Attributes.");
+			e.printStackTrace();
+		}
+		return representation;
 	}
 
 	@Override
 	public Representation updateDetails(Representation entity,
 			ProductAttributesJsonObject obj) {
-		// TODO Auto-generated method stub
-		return null;
+		Representation representation = null;
+		try {
+			obj.setCustomerId(getCustomerId());
+			if(productId != null && !productId.isEmpty()) {
+				if(obj.getProductAttributes() != null && obj.getProductAttributes().size() > 0) {
+					String productAttributeId = null;
+					productAttributeId = productService.insertUpdateProductAttributes(obj, productId);
+					if(productAttributeId != null) {
+						salesChannelErrorObject.setStatusCode(200);
+						salesChannelErrorObject.setMessage(getErrorMessage(200));
+						salesChannelErrorObject.setData("Product Attribute updated.");
+					} else {
+						salesChannelErrorObject.setStatusCode(30102);
+						salesChannelErrorObject.setMessage(getErrorMessage(30102));
+					}
+				} else {
+					salesChannelErrorObject.setStatusCode(1005);
+					salesChannelErrorObject.setMessage(getErrorMessage(1005));
+				}	
+			} else {
+				salesChannelErrorObject.setStatusCode(30001);
+				salesChannelErrorObject.setMessage(getErrorMessage(30001));
+			}
+			representation = new JsonRepresentation(salesChannelErrorObject);
+		} catch (Exception e) {
+			LOGGERS.error("Error occured while updateDetails Product Attributes.");
+			e.printStackTrace();
+		}
+		return representation;
 	}
 
 	@Override
 	public Representation deleteDetails() {
-		// TODO Auto-generated method stub
-		return null;
+		Representation representation = null;
+		try {
+			boolean isExist = false;
+			boolean status = false;
+			List<ProductAttributesJsonObject> productAttributesJsonObjectList = new ArrayList<ProductAttributesJsonObject>();
+			if(productId != null && !productId.isEmpty()) {
+				productAttributesJsonObjectList = productService.getProductAttributesByProductId(productId);
+				if(productAttributesJsonObjectList != null && productAttributesJsonObjectList.size() > 0) {
+					isExist = true;
+					status = productService.deleteProductAttributes(productId);
+				}
+			}
+			else if(productAttributeId != null && !productAttributeId.isEmpty()) {
+				ProductAttributesJsonObject productAttributesJsonObject = productService.getProductAttributesByProductAttributeId(productAttributeId);
+				if(productAttributesJsonObject != null) {
+					isExist = true;
+					status = productService.deleteProductAttributesByProductAttributeId(productAttributeId);
+				}
+			}
+			if(status && isExist) {
+				salesChannelErrorObject.setStatusCode(200);
+				salesChannelErrorObject.setMessage(getErrorMessage(200));
+				salesChannelErrorObject.setData("Product Attribute deleted.");
+			} else if(isExist) {
+				salesChannelErrorObject.setStatusCode(30103);
+				salesChannelErrorObject.setMessage(getErrorMessage(30103));
+			} else {
+				salesChannelErrorObject.setStatusCode(30104);
+				salesChannelErrorObject.setMessage(getErrorMessage(30104));
+			}
+			representation = new JsonRepresentation(new JSONObject(salesChannelErrorObject));
+		} catch (Exception e) {
+			LOGGERS.error("Error occured while fetch Product Attributes.");
+			e.printStackTrace();
+		}
+		return representation;
 	}
 
 	@Override
 	public JSONObject validate(ProductAttributesJsonObject obj,
-			String method, JSONObject jsonObject, Form form)
-			throws JSONException {
+			String method, JSONObject jsonObject, Form form) throws JSONException {
 		JSONObject jsonObject2 = jsonObject;
-		//GET DELETE method
-		if (method.equals(SalesChannelConstants.GET) || method.equals(SalesChannelConstants.DELETE)) {
-			if (!form.isEmpty()) {
-				for (final Parameter parameter : form) {
-					jsonObject = SalesChannelUtility.validateParameters(parameter.getName(), parameter.getValue());
-					if (jsonObject.length() != 0) {
-						return jsonObject2;
-					} else {
-						if (parameter.getName().equalsIgnoreCase("productAttributeId")) {
-							productAttributeId = parameter.getValue();
-						}
-						else if (parameter.getName().equalsIgnoreCase("productId")) {
-							productId = parameter.getValue();
-						}
+		//GET DELETE PUT POST method
+		if (!form.isEmpty()) {
+			for (final Parameter parameter : form) {
+				jsonObject = SalesChannelUtility.validateParameters(parameter.getName(), parameter.getValue());
+				if (jsonObject.length() != 0) {
+					return jsonObject2;
+				} else {
+					if (parameter.getName().equalsIgnoreCase("productAttributeId")) {
+						productAttributeId = parameter.getValue();
+					}
+					else if (parameter.getName().equalsIgnoreCase("productId")) {
+						productId = parameter.getValue();
 					}
 				}
+			}
+		}
+		//PUT method
+		if (method.equals(SalesChannelConstants.PUT)) {
+			if(obj.getProductAttributeId() != null && !obj.getProductAttributeId().isEmpty()) {
+				ProductAttributesJsonObject productAttributesJsonObject = productService.getProductAttributesByProductAttributeId(productAttributeId);
+				if(productAttributesJsonObject == null) {
+					jsonObject2.put("30106", "Product Attribute Id is not valid.@#productAttributeId#@");
+					return jsonObject2;
+				}
+			} else {
+				jsonObject2.put("30105", "Product Attribute Id is empty.@#productAttributeId#@");
+				return jsonObject2;
+			}
+		}
+		//PUT POST method
+		if (method.equals(SalesChannelConstants.PUT) || method.equals(SalesChannelConstants.POST)) {
+			if(obj.getProductAttributes() != null && obj.getProductAttributes().size() > 0) {
+				for(ProductAttributeSetJsonObject productAttributeSetJsonObject : obj.getProductAttributes()) {
+					if(productAttributeSetJsonObject.getName() == null || productAttributeSetJsonObject.getName().isEmpty()) {
+						jsonObject2.put("30108", "One of Product Attribute Set Name is empty.@#name#@");
+						return jsonObject2;
+					}
+					if(productAttributeSetJsonObject.getValue() == null || productAttributeSetJsonObject.getValue().isEmpty()) {
+						jsonObject2.put("30109", "One of Product Attribute Set Value is empty.@#value#@");
+						return jsonObject2;
+					}
+				}
+			} else {
+				jsonObject2.put("30107", "Product Attribute Set is empty.@#productAttributes#@");
+				return jsonObject2;
 			}
 		}
 		return jsonObject2;

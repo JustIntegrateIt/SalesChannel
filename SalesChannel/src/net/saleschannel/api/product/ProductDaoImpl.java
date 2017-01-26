@@ -222,13 +222,35 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	public boolean deleteProductAttribute(String productAttributeId) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributesJsonModel")
+					.and("_id").is(new ObjectId(productAttributeId)));
+			ProductAttributesJsonModel productAttributesJsonModel = this.mongoOps.findAndRemove(query, 
+					ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
+			if(productAttributesJsonModel != null)
+				status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete productAttributesJsonModel by id in database");
+			e.printStackTrace();
+		}
+		return status;
 	}
 
 	public ProductAttributesJsonModel getProductAttributeById(String productAttributeId) {
-		// TODO Auto-generated method stub
-		return null;
+		ProductAttributesJsonModel productAttributesJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributesJsonModel")
+					.and("_id").is(productAttributeId));
+			productAttributesJsonModel = this.mongoOps.findAndRemove(query, 
+					ProductAttributesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE);
+		} catch(Exception e) {
+			LOGGERS.error("error while get productAttributesJsonModel by id in database");
+			e.printStackTrace();
+		}
+		return productAttributesJsonModel;
 	}
 
 	public List<ProductAttributesJsonModel> getProductAttributeByProductId(String productId) {
@@ -290,16 +312,36 @@ public class ProductDaoImpl implements ProductDao {
 		return status;
 	}
 
-	public boolean deleteProductAttributeCombination(
-			String productAttributeCombinationId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteProductAttributeCombination(String productAttributeCombinationId) {
+		boolean status = false;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombinationJsonModel")
+					.and("_id").is(new ObjectId(productAttributeCombinationId)));
+			ProductAttributeCombinationJsonModel productAttributeCombinationJsonModel = this.mongoOps.findAndRemove(query, 
+					ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);
+			if(productAttributeCombinationJsonModel != null)
+				status = true;
+		} catch(Exception e) {
+			LOGGERS.error("error while delete productAttributeCombinationJsonModel by id in database");
+			e.printStackTrace();
+		}
+		return status;
 	}
 
-	public ProductAttributeCombinationJsonModel getProductAttributeCombinationById(
-			String productAttributeCombinationId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ProductAttributeCombinationJsonModel getProductAttributeCombinationById(String productAttributeCombinationId) {
+		ProductAttributeCombinationJsonModel productAttributeCombinationJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAttributeCombinationJsonModel")
+					.and("_id").is(productAttributeCombinationId));
+			productAttributeCombinationJsonModel = this.mongoOps.findOne(query, 
+					ProductAttributeCombinationJsonModel.class, SalesChannelConstants.SC_PRODUCT_ATTRIBUTE_COMBINATION);
+		} catch(Exception e) {
+			LOGGERS.error("error while get productAttributeCombinationJsonModel by id in database");
+			e.printStackTrace();
+		}
+		return productAttributeCombinationJsonModel;
 	}
 
 	public List<ProductAttributeCombinationJsonModel> getProductAttributeCombinationByProductAttributId(
@@ -367,8 +409,9 @@ public class ProductDaoImpl implements ProductDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductAccessoriesJsonModel")
 					.and("_id").is(new ObjectId(productAccessoriesId)));
-			this.mongoOps.findAndRemove(query, ProductAccessoriesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
-			status = true;
+			ProductAccessoriesJsonModel productAccessoriesJsonModel = this.mongoOps.findAndRemove(query, ProductAccessoriesJsonModel.class, SalesChannelConstants.SC_PRODUCT_ACCESSORIES);
+			if(productAccessoriesJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete Product accessories by productAccessoriesId in database");
 			e.printStackTrace();
@@ -451,8 +494,9 @@ public class ProductDaoImpl implements ProductDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
 					.and("_id").is(new ObjectId(productImageId)));
-			this.mongoOps.findAndRemove(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
-			status = true;
+			ProductImageJsonModel productImageJsonModel = this.mongoOps.findAndRemove(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
+			if(productImageJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete Product Image by productImageId in database");
 			e.printStackTrace();
@@ -494,7 +538,7 @@ public class ProductDaoImpl implements ProductDao {
 		try {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.product.ProductImageJsonModel")
-					.and("productId").is(new ObjectId(productId)));
+					.and("productId").is(productId));
 			productImageList = this.mongoOps.find(query, ProductImageJsonModel.class, SalesChannelConstants.SC_PRODUCT_IMAGE);
 		} catch(Exception e) {
 			LOGGERS.error("error while get Product Image by productId in database");

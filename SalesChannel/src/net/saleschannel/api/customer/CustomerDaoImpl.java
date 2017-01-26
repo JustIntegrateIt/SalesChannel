@@ -126,8 +126,9 @@ private static final Logger LOGGERS = Logger.getLogger(CustomerDaoImpl.class);
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.customer.CustomerJsonModel")
 					.and("_id").is(new ObjectId(customerId)));
-			this.mongoOps.findAndRemove(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
-			status = true;
+			CustomerJsonModel customerJsonModel = this.mongoOps.findAndRemove(query, CustomerJsonModel.class, SalesChannelConstants.SC_CUSTOMER);
+			if(customerJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

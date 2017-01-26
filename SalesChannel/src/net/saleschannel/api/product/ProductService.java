@@ -24,6 +24,8 @@ public interface ProductService {
 	
 	public boolean deleteProductAttributes(String productId);
 	
+	public boolean deleteProductAttributesByProductAttributeId(String productAttributeId);
+	
 	public boolean deleteProducts(String customerId);
 	
 	public ProductJsonObject getProductById(String productId);
@@ -33,6 +35,10 @@ public interface ProductService {
 	public List<ProductJsonObject> getProductsByCustomer(String customerId);
 	
 	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId);
+	
+	public String insertUpdateProductAttributes(ProductAttributesJsonObject productAttributesJsonObject, String productId);
+	
+	public List<AttributeJsonModel> prepareAttributesFromProductAttributeSetJsonObject(List<ProductAttributeSetJsonObject> productAttributeSetModelList);
 	
 	public List<AttributeJsonModel> prepareAttributes(List<ProductAttributeSetModel> productAttributeSetModelList);
 	
@@ -53,7 +59,11 @@ public interface ProductService {
 	
 	public ProductAttributesJsonObject getProductAttributesByProductAttributeId(String productAttributeId);
 	
-	public List<ProductAccessoriesJsonObject> getProductAccessoriesByProductId(String productAccessoriesId);
+	public ProductAccessoriesJsonObject getProductAccessoriesByProductId(String productId);
 	
 	public ProductAttributeSetJsonObject getProductAccessoriesByProductAccessoriesId(String productAccessoriesId);
+	
+	public boolean deleteProductsAccessoriesByProductId(String productId);
+	
+	public boolean deleteProductsAccessoriesByProductAccessoriesId(String productAccessoriesId);
 }

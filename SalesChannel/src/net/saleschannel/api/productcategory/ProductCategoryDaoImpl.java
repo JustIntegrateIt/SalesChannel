@@ -108,8 +108,9 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("_id").is(productCategoryId).and("customerId").is(customerId));
-			this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
-			status = true;
+			ProductCategoryJsonModel productCategoryJsonModel = this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+			if(productCategoryJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by Id in database");
 			e.printStackTrace();
@@ -123,8 +124,9 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("customerId").is(customerId).and("categoryName").is(categoryName));
-			this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
-			status = true;
+			ProductCategoryJsonModel productCategoryJsonModel = this.mongoOps.findAndRemove(query, ProductCategoryJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY);
+			if(productCategoryJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by name and customerId in database");
 			e.printStackTrace();

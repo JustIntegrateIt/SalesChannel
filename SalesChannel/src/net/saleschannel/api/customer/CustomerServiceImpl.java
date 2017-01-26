@@ -33,8 +33,9 @@ public class CustomerServiceImpl implements CustomerService {
 				customerJsonObject.setCity(customerJsonModel.getCity());
 				customerJsonObject.setProvince(customerJsonModel.getProvince());
 				customerJsonObject.setProvinceCode(customerJsonModel.getProvinceCode());
+				customerJsonObject.setCountry(customerJsonModel.getCountry());
 				customerJsonObject.setLocale(customerJsonModel.getLocale());
-				customerJsonObject.setActive(customerJsonModel.isActive());
+				customerJsonObject.setIsActive(customerJsonModel.isActive());
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error while convertCustomerJsonModelToObject");
@@ -52,7 +53,9 @@ public class CustomerServiceImpl implements CustomerService {
 				customerJsonModel.setId(customerJsonObject.getId());
 				customerJsonModel.setCustomerFirstName(customerJsonObject.getCustomerFirstName());
 				customerJsonModel.setCustomerLastName(customerJsonObject.getCustomerLastName());
-				customerJsonModel.setUserName(customerJsonObject.getUserName());
+				if(customerJsonObject.getId() == null || customerJsonObject.getId().isEmpty()) {
+					customerJsonModel.setUserName(customerJsonObject.getUserName());
+				}
 				if(customerJsonObject.getPassword() != null && !customerJsonObject.getPassword().isEmpty()) {
 					customerJsonModel.setPassword(encryptDecryptService.encryptWithHash(customerJsonObject.getPassword()));
 				}
@@ -65,7 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
 				customerJsonModel.setProvinceCode(customerJsonObject.getProvinceCode());
 				customerJsonModel.setCountry(customerJsonObject.getCountry());
 				customerJsonModel.setLocale(customerJsonObject.getLocale());
-				customerJsonModel.setActive(customerJsonObject.isActive());
+				customerJsonModel.setActive(customerJsonObject.getIsActive());
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error while convertCustomerJsonObjcetToModel");

@@ -61,6 +61,7 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 		String requestString = getRequest().toString();
 		
 		try {
+			final Method method = getMethod();
 			String screenPath = getResourcePath();
 			final SalesChannelBaseJsonObject baseJsonObject = validateAuthentication();
 			final SalesChannelEncryptionDecryption encryptDecryptService = new SalesChannelEncryptionDecryption(SalesChannelBaseDao.endecryptionKey);
@@ -84,7 +85,25 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 			}
 			
 			//#2.Check if auth token sent in header, return error response
-			if (screenPath != null && !screenPath.isEmpty() && !screenPath.equals("customerLogin") 
+			if (screenPath != null && !screenPath.isEmpty() && !screenPath.equals("customerLogin")
+					&& !screenPath.equals("customer")
+					&& (baseJsonObject.getAuthToken() == null || baseJsonObject.getAuthToken().isEmpty())) {
+				salesChannelErrorObject.setStatusCode(401);
+				salesChannelErrorObject.setMessage("authToken is missing !");
+				representation = new JsonRepresentation(salesChannelErrorObject);
+				
+				try {
+					//representation = new JsonRepresentation(encryptDecryptService.encryptWithHash(representation.getText()));
+					representation = new JsonRepresentation(representation.getText());
+				} catch (final IOException e) {
+					LOGGERS.error("Error in setting the encrypted json text: " + e.getMessage());
+				}
+				
+				getResponse().setEntity(representation);
+				resetValues();
+				return representation;
+			} else if(method != null && !method.toString().isEmpty() && screenPath.equals("customer")
+					&& !method.toString().equals(SalesChannelConstants.POST)
 					&& (baseJsonObject.getAuthToken() == null || baseJsonObject.getAuthToken().isEmpty())) {
 				salesChannelErrorObject.setStatusCode(401);
 				salesChannelErrorObject.setMessage("authToken is missing !");
@@ -104,7 +123,6 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 			
 			JSONObject jsonObject = new JSONObject();
 			Representation reqRepresentation = getRequestEntity();
-			final Method method = getMethod();
 			
 			//#3.Check if invalid JSON request passed
 			Object jsonModelObj = null;

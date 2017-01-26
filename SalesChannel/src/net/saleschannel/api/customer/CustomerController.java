@@ -23,8 +23,6 @@ import net.saleschannel.api.utility.SalesChannelUtility;
 public class CustomerController extends SalesChannelServerResource<CustomerJsonObject> {
 
 	private static final Logger LOGGERS = Logger.getLogger(CustomerController.class);
-
-	private CustomerServiceImpl customerService;
 	
 	private String customerId = null;
 	
@@ -33,7 +31,7 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 		Representation representation = null;
 		try {
 			if(customerId != null && !customerId.isEmpty()) {
-				CustomerJsonObject customerJsonObject = customerService.getCustomer(customerId);
+				CustomerJsonObject customerJsonObject = getCustomerService().getCustomer(customerId);
 				if(customerJsonObject != null) {
 					salesChannelErrorObject.setStatusCode(200);
 					salesChannelErrorObject.setMessage(getErrorMessage(200));
@@ -60,7 +58,7 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 		Representation representation = null;
 		try {
 			obj.setCustomerId(getCustomerId());
-			boolean status = customerService.createCustomer(obj);
+			boolean status = getCustomerService().createCustomer(obj);
 			if(status) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
@@ -82,7 +80,7 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 		Representation representation = null;
 		try {
 			obj.setCustomerId(getCustomerId());
-			boolean status = customerService.updateCustomer(obj);
+			boolean status = getCustomerService().updateCustomer(obj);
 			if(status) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
@@ -103,7 +101,7 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 		Representation representation = null;
 		try {
 			if(customerId != null && !customerId.isEmpty()) {
-				boolean status = customerService.deleteCustomer(customerId);
+				boolean status = getCustomerService().deleteCustomer(customerId);
 				if(status) {
 					salesChannelErrorObject.setStatusCode(200);
 					salesChannelErrorObject.setMessage(getErrorMessage(200));
@@ -149,21 +147,23 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 				jsonObject2.put("10013", "Customer LastName is empty.@#customerLastName#@");
 				return jsonObject2;
 			}
-			//Customer UserName validation
-			if(obj.getUserName() != null && !obj.getUserName().isEmpty()) {
-				if(obj.getUserName().length() > 6 && obj.getUserName().length() < 16) {
-					CustomerJsonObject customerJsonObject = customerService.getCustomerByUserName(obj.getUserName());
-					if(customerJsonObject != null) {
-						jsonObject2.put("10017", "Customer UserName already exist.@#userName#@");
+			if(method.equals(SalesChannelConstants.POST)) {
+				//Customer UserName validation
+				if(obj.getUserName() != null && !obj.getUserName().isEmpty()) {
+					if(obj.getUserName().length() > 6 && obj.getUserName().length() < 16) {
+						CustomerJsonObject customerJsonObject = getCustomerService().getCustomerByUserName(obj.getUserName());
+						if(customerJsonObject != null) {
+							jsonObject2.put("10017", "Customer UserName already exist.@#userName#@");
+							return jsonObject2;
+						}
+					} else {
+						jsonObject2.put("10016", "Customer UserName should between 6 to 16 characters.@#userName#@");
 						return jsonObject2;
 					}
 				} else {
-					jsonObject2.put("10016", "Customer UserName should between 6 to 16 characters.@#userName#@");
+					jsonObject2.put("10015", "Customer UserName is empty.@#userName#@");
 					return jsonObject2;
 				}
-			} else {
-				jsonObject2.put("10015", "Customer UserName is empty.@#userName#@");
-				return jsonObject2;
 			}
 			//Customer Password validation
 			if(obj.getPassword() != null && !obj.getPassword().isEmpty()) {
@@ -178,7 +178,7 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 			//Customer Email validation
 			if(obj.getEmail() != null && !obj.getEmail().isEmpty()) {
 				if(obj.getEmail().contains("@")) {
-					CustomerJsonObject customerJsonObject = customerService.getCustomerByEmail(obj.getEmail());
+					CustomerJsonObject customerJsonObject = getCustomerService().getCustomerByEmail(obj.getEmail());
 					if(customerJsonObject != null) {
 						jsonObject2.put("10022", "Customer Email already exist.@#email#@");
 						return jsonObject2;
@@ -240,10 +240,10 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 			}
 		}
 		//POST method
-		else if (method.equals(SalesChannelConstants.POST)) {
+		else if (method.equals(SalesChannelConstants.PUT)) {
 			//Customer Id validation
 			if(obj.getId() != null && obj.getId().isEmpty()) {
-				CustomerJsonObject customerJsonObject = customerService.getCustomer(obj.getId());
+				CustomerJsonObject customerJsonObject = getCustomerService().getCustomer(obj.getId());
 				if(customerJsonObject == null) {
 					jsonObject2.put("10033", "Customer Id is invalid.@#id#@");
 					return jsonObject2;
@@ -287,11 +287,4 @@ public class CustomerController extends SalesChannelServerResource<CustomerJsonO
 		return paramList;
 	}
 	
-	public CustomerServiceImpl getCustomerService() {
-		return customerService;
-	}
-
-	public void setCustomerService(CustomerServiceImpl customerService) {
-		this.customerService = customerService;
-	}
 }

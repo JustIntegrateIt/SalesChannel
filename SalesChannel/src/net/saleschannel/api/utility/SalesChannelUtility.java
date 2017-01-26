@@ -268,7 +268,7 @@ public final class SalesChannelUtility {
 		try {
 			Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
 			if(string != null && !string.isEmpty()) {
-				Matcher matcher = pattern.matcher(string);
+				Matcher matcher = pattern.matcher(string.replace(" ", ""));
 			    isPresent = matcher.find();				
 			}
 		} catch(Exception e) {

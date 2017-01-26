@@ -99,8 +99,9 @@ public class ProductCategoryMappingDaoImpl implements ProductCategoryMappingDao 
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategorymapping.ProductCategoryMappingJsonModel")
 				.and("_id").is(productCategoryMappingId));
-			this.mongoOps.findAndRemove(query, ProductCategoryMappingJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_MAPPING);
-			status = true;
+			ProductCategoryMappingJsonModel productCategoryMappingJsonModel = this.mongoOps.findAndRemove(query, ProductCategoryMappingJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_MAPPING);
+			if(productCategoryMappingJsonModel != null)
+				status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category mapping by Id in database");
 			e.printStackTrace();
