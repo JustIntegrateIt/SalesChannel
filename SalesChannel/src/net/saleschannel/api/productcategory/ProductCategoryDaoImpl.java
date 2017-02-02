@@ -140,7 +140,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("customerId").is(customerId));
-			this.mongoOps.remove(query, ProductCategoryJsonModel.class);
+			this.mongoOps.remove(query, SalesChannelConstants.SC_PRODUCT_CATEGORY);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by customerId in database");
@@ -155,7 +155,7 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategory.ProductCategoryJsonModel")
 				.and("marketPlaceId").is(marketPlaceId));
-			this.mongoOps.remove(query, ProductCategoryJsonModel.class);
+			this.mongoOps.remove(query, SalesChannelConstants.SC_PRODUCT_CATEGORY);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by marketPlaceId in database");

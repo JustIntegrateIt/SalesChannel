@@ -36,19 +36,26 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
+			boolean isValidReq = false;
 			List<ProductCategoryMappingJsonObject> productCategoryMappingJsonObjectList = new ArrayList<ProductCategoryMappingJsonObject>();
 			if(categoryMappingId != null && !categoryMappingId.isEmpty()) {
+				isValidReq = true;
 				ProductCategoryMappingJsonObject productCategoryMappingJsonObject = categoryMappingService.getProductCategoryMappingById(categoryMappingId);
 				productCategoryMappingJsonObjectList.add(productCategoryMappingJsonObject);
 			} else if(marketPlaceId != null && !marketPlaceId.isEmpty()) {
+				isValidReq = true;
 				productCategoryMappingJsonObjectList = categoryMappingService.getProductCategoryMappingByCustomerIdAndMarketPlaceId(getCustomerId(), marketPlaceId);
 			} else if(isAll) {
+				isValidReq = true;
 				productCategoryMappingJsonObjectList = categoryMappingService.getProductCategoryMappingByCustomerId(getCustomerId());
 			}
 			if(productCategoryMappingJsonObjectList != null && productCategoryMappingJsonObjectList.size() > 0) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productCategoryMappingJsonObjectList);
+			} else if(!isValidReq) {
+				salesChannelErrorObject.setStatusCode(1005);
+				salesChannelErrorObject.setMessage(getErrorMessage(1005));
 			} else {
 				salesChannelErrorObject.setStatusCode(50004);
 				salesChannelErrorObject.setMessage(getErrorMessage(50004));

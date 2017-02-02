@@ -2,12 +2,13 @@ package net.saleschannel.api.product;
 
 import java.util.List;
 
-import net.saleschannel.api.base.SalesChannelBaseJsonObject;
-
-public class ProductJsonObject extends SalesChannelBaseJsonObject {
+public class ProductJsonObject {
 
 	//SC Product Id
 	private String id;
+	
+	//SC Customer Id
+	private String customerId;
 
 	//SC Product Name
 	private String productName;
@@ -127,5 +128,13 @@ public class ProductJsonObject extends SalesChannelBaseJsonObject {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 }

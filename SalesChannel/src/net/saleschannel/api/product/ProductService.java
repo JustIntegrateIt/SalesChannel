@@ -14,7 +14,9 @@ public interface ProductService {
 	
 	public String insertProduct(ProductJsonObject productJsonObject);
 	
-	public ProductJsonObject checkProductExist(String skuId, String customerId);
+	public ProductJsonModel checkProductExist(String skuId, String customerId);
+	
+	public ProductJsonObject getProduct(String skuId, String customerId);
 	
 	public boolean updateProduct(ProductJsonObject productJsonObject);
 	
@@ -35,6 +37,8 @@ public interface ProductService {
 	public List<ProductJsonObject> getProductsByCustomer(String customerId);
 	
 	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId);
+	
+	public ProductAttributesJsonModel getProductAttributeById(String productAttributeId);
 	
 	public String insertUpdateProductAttributes(ProductAttributesJsonObject productAttributesJsonObject, String productId);
 	
@@ -66,4 +70,6 @@ public interface ProductService {
 	public boolean deleteProductsAccessoriesByProductId(String productId);
 	
 	public boolean deleteProductsAccessoriesByProductAccessoriesId(String productAccessoriesId);
+	
+	public ProductImageJsonModel getProductImageById(String imageId);
 }

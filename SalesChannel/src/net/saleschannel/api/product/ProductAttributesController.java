@@ -34,11 +34,14 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
+			boolean isValidReq = false;
 			List<ProductAttributesJsonObject> productAttributesJsonObjectList = new ArrayList<ProductAttributesJsonObject>();
 			if(productId != null && !productId.isEmpty()) {
+				isValidReq = true;
 				productAttributesJsonObjectList = productService.getProductAttributesByProductId(productId);
 			}
 			else if(productAttributeId != null && !productAttributeId.isEmpty()) {
+				isValidReq = true;
 				ProductAttributesJsonObject productAttributesJsonObject = productService.getProductAttributesByProductAttributeId(productAttributeId);
 				if(productAttributesJsonObject != null) {
 					productAttributesJsonObjectList.add(productAttributesJsonObject);
@@ -48,6 +51,9 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productAttributesJsonObjectList);
+			} else if(!isValidReq) {
+				salesChannelErrorObject.setStatusCode(1005);
+				salesChannelErrorObject.setMessage(getErrorMessage(1005));
 			} else {
 				salesChannelErrorObject.setStatusCode(30104);
 				salesChannelErrorObject.setMessage(getErrorMessage(30104));
@@ -143,8 +149,8 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 				}
 			}
 			else if(productAttributeId != null && !productAttributeId.isEmpty()) {
-				ProductAttributesJsonObject productAttributesJsonObject = productService.getProductAttributesByProductAttributeId(productAttributeId);
-				if(productAttributesJsonObject != null) {
+				ProductAttributesJsonModel productAttributesJsonModel = productService.getProductAttributeById(productAttributeId);
+				if(productAttributesJsonModel != null) {
 					isExist = true;
 					status = productService.deleteProductAttributesByProductAttributeId(productAttributeId);
 				}
@@ -191,8 +197,8 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 		//PUT method
 		if (method.equals(SalesChannelConstants.PUT)) {
 			if(obj.getProductAttributeId() != null && !obj.getProductAttributeId().isEmpty()) {
-				ProductAttributesJsonObject productAttributesJsonObject = productService.getProductAttributesByProductAttributeId(productAttributeId);
-				if(productAttributesJsonObject == null) {
+				ProductAttributesJsonModel productAttributes = productService.getProductAttributeById(obj.getProductAttributeId());
+				if(productAttributes == null) {
 					jsonObject2.put("30106", "Product Attribute Id is not valid.@#productAttributeId#@");
 					return jsonObject2;
 				}
@@ -213,10 +219,36 @@ public class ProductAttributesController extends SalesChannelServerResource<Prod
 						jsonObject2.put("30109", "One of Product Attribute Set Value is empty.@#value#@");
 						return jsonObject2;
 					}
+					if(method.equals(SalesChannelConstants.POST)) {
+						productAttributeSetJsonObject.setValueId(null);
+					}
 				}
 			} else {
 				jsonObject2.put("30107", "Product Attribute Set is empty.@#productAttributes#@");
 				return jsonObject2;
+			}
+			//skuId validation
+			if(method.equals(SalesChannelConstants.POST)) {
+				obj.setProductAttributeId(null);
+				List<ProductAttributeSetModel> productAttributeSetList = new ArrayList<ProductAttributeSetModel>();
+				ProductAttributeSetModel productAttributeSet = new ProductAttributeSetModel();
+				productAttributeSet.setProductAttributeSet(obj.getProductAttributes());
+				productAttributeSetList.add(productAttributeSet);
+				List<ProductAttributesJsonModel> productAttributesList = productService.prepareProductAttributes(productAttributeSetList);
+				if(productAttributesList != null && productAttributesList.size() > 0) {
+					for(ProductAttributesJsonModel productAttributes : productAttributesList) {
+						if(productAttributes.getSkuId() != null && !productAttributes.getSkuId().isEmpty()) {
+							ProductAttributesJsonModel productAttribute = productService.checkProductAttributeExist(productId, productAttributes.getSkuId());
+							if(productAttribute != null) {
+								jsonObject2.put("30108", "Product Attribute Already Exist With this skuId.@#skuId#@");
+								return jsonObject2;
+							}
+						} else {
+							jsonObject2.put("30022", "skuId is empty in attribute set.@#skuId#@");
+							return jsonObject2;
+						}
+					}
+				}
 			}
 		}
 		return jsonObject2;

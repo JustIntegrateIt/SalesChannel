@@ -108,8 +108,17 @@
 	
 	<!-- market place bean Creation and API Starts  -->
 	<bean name="/marketplace" class="net.saleschannel.api.marketplace.MarketPlaceController" scope="prototype">
-		<property name="categoryMappingService" ref="categoryMappingService" />
-		<property name="categoryDao" ref="categoryDao" />
+		<property name="marketPlaceService" ref="marketPlaceService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+    
+    <bean name="/marketplaceRegion" class="net.saleschannel.api.marketplace.MarketPlaceRegionController" scope="prototype">
+		<property name="marketPlaceService" ref="marketPlaceService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+    
+    <bean name="/marketplaceCustomer" class="net.saleschannel.api.marketplace.MarketPlaceCustomerRegionController" scope="prototype">
+		<property name="marketPlaceService" ref="marketPlaceService" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	

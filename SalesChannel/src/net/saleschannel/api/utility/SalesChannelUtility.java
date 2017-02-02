@@ -117,6 +117,32 @@ public final class SalesChannelUtility {
 	}
 	
 	/**
+	 * Method used to delete image.
+	 *
+	 * @param imagePath the path of image saved in local
+	 * @return boolean
+	 */
+	public static boolean deleteImage(String imagePath) {
+		boolean isProcessed = false;
+		try {
+			File image = new File(imagePath);
+			if (image.exists()) {
+				try{
+					isProcessed = image.delete();
+			    } 
+			    catch(Exception e){
+			    	LOGGERS.debug("error while delete image: " + imagePath);
+			    	e.printStackTrace();
+			    }        
+			}
+		} catch (Exception e) {
+			LOGGERS.debug("error delete image");
+			e.printStackTrace();
+		}
+		return isProcessed;
+	}
+	
+	/**
 	 * Method used to convert image stream string into image.
 	 *
 	 * @param imageStream the image stream as string

@@ -38,23 +38,31 @@ public class ProductCategoryController extends SalesChannelServerResource<Produc
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
+			boolean isValidReq = false;
 			List<ProductCategoryJsonObject> productCategoryJsonObjectList = new ArrayList<ProductCategoryJsonObject>();
 			if(productCategoryId != null && !productCategoryId.isEmpty()) {
+				isValidReq = true;
 				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryById(productCategoryId, getCustomerId());
 				productCategoryJsonObjectList.add(productCategoryJsonObject);
 			} else if(categoryName != null && !categoryName.isEmpty()) {
+				isValidReq = true;
 				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryByNameAndCustomerId(
 						getCustomerId(), categoryName);
 				productCategoryJsonObjectList.add(productCategoryJsonObject);
 			} else if(marketPlaceId != null && !marketPlaceId.isEmpty()) {
+				isValidReq = true;
 				productCategoryJsonObjectList = categoryService.getProductCategoryByMarketPlaceId(marketPlaceId);
 			} else if(isAll) {
+				isValidReq = true;
 				productCategoryJsonObjectList = categoryService.getProductCategoryByCustomerId(getCustomerId());
 			}
 			if(productCategoryJsonObjectList != null && productCategoryJsonObjectList.size() > 0) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productCategoryJsonObjectList);
+			} else if(!isValidReq) {
+				salesChannelErrorObject.setStatusCode(1005);
+				salesChannelErrorObject.setMessage(getErrorMessage(1005));
 			} else {
 				salesChannelErrorObject.setStatusCode(40004);
 				salesChannelErrorObject.setMessage(getErrorMessage(40004));

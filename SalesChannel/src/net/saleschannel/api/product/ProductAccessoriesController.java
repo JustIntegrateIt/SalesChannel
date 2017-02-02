@@ -34,21 +34,29 @@ public class ProductAccessoriesController extends SalesChannelServerResource<Pro
 	public Representation fetchDetails() {
 		Representation representation = null;
 		try {
+			boolean isValidReq = false;
 			ProductAccessoriesJsonObject productAccessoriesJsonObject = new ProductAccessoriesJsonObject();
 			if(productId != null && !productId.isEmpty()) {
+				isValidReq = true;
 				productAccessoriesJsonObject = productService.getProductAccessoriesByProductId(productId);
 			}
 			else if(productAccessoriesId != null && !productAccessoriesId.isEmpty()) {
+				isValidReq = true;
+				List<ProductAttributeSetJsonObject> productAccessories = new ArrayList<ProductAttributeSetJsonObject>();
 				ProductAttributeSetJsonObject productAttributeSetJsonObject = productService.getProductAccessoriesByProductAccessoriesId(productAccessoriesId);
 				if(productAttributeSetJsonObject != null) {
-					productAccessoriesJsonObject.getProductAccessories().add(productAttributeSetJsonObject);
+					productAccessories.add(productAttributeSetJsonObject);
 				}
+				productAccessoriesJsonObject.setProductAccessories(productAccessories);
 			}
 			if(productAccessoriesJsonObject != null && productAccessoriesJsonObject.getProductAccessories() != null 
 					&& productAccessoriesJsonObject.getProductAccessories().size() > 0) {
 				salesChannelErrorObject.setStatusCode(200);
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData(productAccessoriesJsonObject);
+			} else if(!isValidReq) {
+				salesChannelErrorObject.setStatusCode(1005);
+				salesChannelErrorObject.setMessage(getErrorMessage(1005));
 			} else {
 				salesChannelErrorObject.setStatusCode(30204);
 				salesChannelErrorObject.setMessage(getErrorMessage(30204));
@@ -198,10 +206,19 @@ public class ProductAccessoriesController extends SalesChannelServerResource<Pro
 			if(obj.getProductAccessories() != null && obj.getProductAccessories().size() > 0) {
 				for(ProductAttributeSetJsonObject productAttributeSetJsonObject : obj.getProductAccessories()) {
 					if(productAttributeSetJsonObject.getValueId() != null && !productAttributeSetJsonObject.getValueId().isEmpty()) {
-						ProductAttributeSetJsonObject productAccessories = productService.getProductAccessoriesByProductAccessoriesId(productAttributeSetJsonObject.getValueId());
-						if(productAccessories == null) {
-							jsonObject2.put("30206", "Product Accessories Id is not valid.@#valueId#@");
-							return jsonObject2;
+						if(productAttributeSetJsonObject.getName() != null && !productAttributeSetJsonObject.getName().isEmpty() 
+								&& productAttributeSetJsonObject.getName().contains("image")) {
+							ProductImageJsonModel productImageJsonModel = productService.getProductImageById(productAttributeSetJsonObject.getValueId());
+							if(productImageJsonModel == null) {
+								jsonObject2.put("30207", "Product Accessories Image Id is not valid.@#valueId#@");
+								return jsonObject2;
+							}
+						} else {
+							ProductAttributeSetJsonObject productAccessories = productService.getProductAccessoriesByProductAccessoriesId(productAttributeSetJsonObject.getValueId());
+							if(productAccessories == null) {
+								jsonObject2.put("30206", "Product Accessories Id is not valid.@#valueId#@");
+								return jsonObject2;
+							}
 						}
 					} else {
 						jsonObject2.put("30205", "Product Accessories Id is empty.@#valueId#@");
@@ -221,6 +238,9 @@ public class ProductAccessoriesController extends SalesChannelServerResource<Pro
 					if(productAttributeSetJsonObject.getValue() == null || productAttributeSetJsonObject.getValue().isEmpty()) {
 						jsonObject2.put("30208", "Product Accessories value is empty.@#value#@");
 						return jsonObject2;
+					}
+					if(method.equals(SalesChannelConstants.POST)) {
+						productAttributeSetJsonObject.setValueId(null);
 					}
 				}
 			} else {

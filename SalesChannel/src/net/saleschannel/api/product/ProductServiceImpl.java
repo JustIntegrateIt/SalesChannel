@@ -24,6 +24,7 @@ public class ProductServiceImpl implements ProductService {
 			if(productJsonModel != null) {
 				productJsonObject = new ProductJsonObject();
 				productJsonObject.setId(productJsonModel.getId());
+				productJsonObject.setCustomerId(productJsonModel.getCustomerId());
 				productJsonObject.setCost(productJsonModel.getCost());
 				productJsonObject.setDescription(productJsonModel.getDescription());
 				productJsonObject.setProductCategory(productJsonModel.getProductCategory());
@@ -55,7 +56,12 @@ public class ProductServiceImpl implements ProductService {
 						productAccessoriesJsonObjectList.add(productAttributeSet);
 					}
 				}
-				productJsonObject.setProductAccessories(productAccessoriesJsonObjectList);
+				if(productAccessoriesJsonObjectList != null && productAccessoriesJsonObjectList.size() > 0) {
+					productJsonObject.setProductAccessories(productAccessoriesJsonObjectList);	
+				} else {
+					productJsonObject.setProductAccessories(null);
+				}
+				
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error occured while convert ProductSimpleJsonModel To Object");
@@ -95,6 +101,7 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductAttributeSetJsonObject> productAccessoriesJsonObjectList = new ArrayList<ProductAttributeSetJsonObject>();
 		ProductJsonObject productJsonObject = new ProductJsonObject();
 		productJsonObject.setId(productJsonModel.getId());
+		productJsonObject.setCustomerId(productJsonModel.getCustomerId());
 		productJsonObject.setCost(productJsonModel.getCost());
 		productJsonObject.setDescription(productJsonModel.getDescription());
 		productJsonObject.setProductCategory(productJsonModel.getProductCategory());
@@ -161,7 +168,11 @@ public class ProductServiceImpl implements ProductService {
 						productAttributeSetModel.setProductAttributeSet(productAttributeSetList);
 						productAttributeSetModelList.add(productAttributeSetModel);
 					}
-					productJsonObject.setProductAttributes(productAttributeSetModelList);
+					if(productAttributeSetModelList != null && productAttributeSetModelList.size() > 0) {
+						productJsonObject.setProductAttributes(productAttributeSetModelList);
+					} else {
+						productJsonObject.setProductAttributes(null);
+					}
 				}
 			
 				List<ProductAccessoriesJsonModel> productAccessoriesList = productDao.getProductAccessoriesByProductId(productJsonModel.getId());
@@ -182,7 +193,11 @@ public class ProductServiceImpl implements ProductService {
 						}
 					}
 				}
-				productJsonObject.setProductAccessories(productAccessoriesJsonObjectList);
+				if(productAccessoriesJsonObjectList != null && productAccessoriesJsonObjectList.size() > 0) {
+					productJsonObject.setProductAccessories(productAccessoriesJsonObjectList);	
+				} else {
+					productJsonObject.setProductAccessories(null);
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -313,13 +328,13 @@ public class ProductServiceImpl implements ProductService {
 		return productId;
 	}
 
-	public ProductJsonObject checkProductExist(String skuId, String customerId) {
+	public ProductJsonObject getProduct(String skuId, String customerId) {
 		ProductJsonObject productJsonObject = null;
 		try {
 			ProductJsonModel productJsonModel = productDao.checkProductExist(skuId, customerId);
 			if(productJsonModel != null) {
 				if(productJsonModel.getProductType() != null 
-						&& !productJsonModel.getProductType().equals(ProductTypes.getByName(ProductTypes.Simple.toString()).toString())) {
+						&& productJsonModel.getProductType().equals(ProductTypes.getByName(ProductTypes.Simple.toString()).toString())) {
 					productJsonObject = convertProductSimpleJsonModelToObject(productJsonModel);	
 				} else if(productJsonModel.getProductType() != null 
 						&& productJsonModel.getProductType().equals(ProductTypes.getByName(ProductTypes.Configurable.toString()).toString())) {
@@ -327,9 +342,21 @@ public class ProductServiceImpl implements ProductService {
 				} 
 			}
 		} catch(Exception e) {
+			LOGGERS.error("error while get Product");
 			e.printStackTrace();
 		}
 		return productJsonObject;
+	}
+	
+	public ProductJsonModel checkProductExist(String skuId, String customerId) {
+		ProductJsonModel productJsonModel = null;
+		try {
+			productJsonModel = productDao.checkProductExist(skuId, customerId);
+		} catch(Exception e) {
+			LOGGERS.error("error while check Product Exist");
+			e.printStackTrace();
+		}
+		return productJsonModel;
 	}
 	
 	public ProductAttributesJsonModel checkProductAttributeExist(String productId, String skuId) {
@@ -341,6 +368,17 @@ public class ProductServiceImpl implements ProductService {
 			e.printStackTrace();
 		}
 		return productAttributeExist;
+	}
+	
+	public ProductAttributesJsonModel getProductAttributeById(String productAttributeId) {
+		ProductAttributesJsonModel productAttribute = null;
+		try {
+			productAttribute = productDao.getProductAttributeById(productAttributeId);
+		} catch (Exception e) {
+			LOGGERS.error("error occured while get product attribute by id.");
+			e.printStackTrace();
+		}
+		return productAttribute;
 	}
 	
 	public boolean updateProduct(ProductJsonObject productJsonObject) {
@@ -359,6 +397,24 @@ public class ProductServiceImpl implements ProductService {
 						productJsonModelOld.setProductCategory(productJsonObject.getProductCategory());
 						productJsonModelOld.setProductName(productJsonObject.getProductName());
 						productJsonModelOld.setQuantity(productJsonObject.getQuantity());
+						if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()
+								&& productJsonModelOld.getImage() != null && !productJsonModelOld.getImage().isEmpty()) {
+							ProductImageJsonModel imageOld = productDao.getProductImageById(productJsonModelOld.getImage());
+							if(imageOld != null) {
+								SalesChannelUtility.deleteImage(imageOld.getActualPath());
+							}
+							String imageId = null;
+							if(imageOld != null) {
+								imageId = saveUpdateImage(productJsonObject.getImage(), imageOld.getImageName(), imageOld.getId(), productJsonObject.getCustomerId(), imageOld.getProductId(), null);
+							} else {
+								imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+							}			
+							productJsonModelOld.setImage(imageId);
+						}
+						else if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()) {
+							String imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+							productJsonModelOld.setImage(imageId);
+						}
 						//code to perform synced files
 						status = productDao.updateProduct(productJsonModelOld);
 						if(status) {
@@ -388,6 +444,24 @@ public class ProductServiceImpl implements ProductService {
 							productJsonModelOld.setProductCategory(productJsonObject.getProductCategory());
 							productJsonModelOld.setProductName(productJsonObject.getProductName());
 							productJsonModelOld.setQuantity(productJsonObject.getQuantity());
+							if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()
+									&& productJsonModelOld.getImage() != null && !productJsonModelOld.getImage().isEmpty()) {
+								ProductImageJsonModel imageOld = productDao.getProductImageById(productJsonModelOld.getImage());
+								if(imageOld != null) {
+									SalesChannelUtility.deleteImage(imageOld.getActualPath());
+								}
+								String imageId = null;
+								if(imageOld != null) {
+									imageId = saveUpdateImage(productJsonObject.getImage(), imageOld.getImageName(), imageOld.getId(), productJsonObject.getCustomerId(), imageOld.getProductId(), null);
+								} else {
+									imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+								}
+								productJsonModelOld.setImage(imageId);
+							}
+							else if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()) {
+								String imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+								productJsonModelOld.setImage(imageId);
+							}
 							//code to perform synced files
 							status = productDao.updateProduct(productJsonModelOld);
 							if(status) {
@@ -425,6 +499,24 @@ public class ProductServiceImpl implements ProductService {
 						productJsonModelOld.setProductCategory(productJsonObject.getProductCategory());
 						productJsonModelOld.setProductName(productJsonObject.getProductName());
 						productJsonModelOld.setQuantity(productJsonObject.getQuantity());
+						if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()
+								&& productJsonModelOld.getImage() != null && !productJsonModelOld.getImage().isEmpty()) {
+							ProductImageJsonModel imageOld = productDao.getProductImageById(productJsonModelOld.getImage());
+							if(imageOld != null) {
+								SalesChannelUtility.deleteImage(imageOld.getActualPath());
+							}
+							String imageId = null;
+							if(imageOld != null) {
+								imageId = saveUpdateImage(productJsonObject.getImage(), imageOld.getImageName(), imageOld.getId(), productJsonObject.getCustomerId(), imageOld.getProductId(), null);
+							} else {
+								imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+							}
+							productJsonModelOld.setImage(imageId);
+						}
+						else if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()) {
+							String imageId = saveUpdateImage(productJsonObject.getImage(), null, null, productJsonObject.getCustomerId(), productJsonObject.getId(), null);
+							productJsonModelOld.setImage(imageId);
+						}
 						status = productDao.updateProduct(productJsonModelOld);
 						//insert ProductAttributes
 						if(status) {
@@ -443,7 +535,11 @@ public class ProductServiceImpl implements ProductService {
 										if(productAttributeExist == null && (productAttribute.getId() == null || productAttribute.getId().isEmpty())) {
 											productAttributeId = productDao.insertProductAttribute(productAttribute);
 										} else {
-											productDao.updateProductAttribute(productAttribute);
+											if(productAttribute.getCost() != null)
+												productAttributeExist.setCost(productAttribute.getCost());
+											if(productAttribute.getQuantity() != null)
+												productAttributeExist.setQuantity(productAttribute.getQuantity());
+											productDao.updateProductAttribute(productAttributeExist);
 											productAttributeId = productAttribute.getId();
 										}
 										i++;
@@ -504,6 +600,24 @@ public class ProductServiceImpl implements ProductService {
 			if(status) {
 				status = productDao.deleteProductAccessoriesByProductId(productId);
 				if(status) {
+					//delete images of the product related to all tables  
+					ProductJsonModel product = productDao.getProductById(productId);
+					if(product != null && product.getImage() != null && !product.getImage().isEmpty()) {
+						ProductImageJsonModel image = productDao.getProductImageById(product.getImage());
+						if(image != null && image.getId() != null && !image.getId().isEmpty()) {
+							if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+								productDao.deleteImageById(image.getId());
+							}
+						}
+						List<ProductImageJsonModel> imageList = productDao.getProductImageByProductId(productId);
+						if(imageList != null && imageList.size() > 0) {
+							for(ProductImageJsonModel productImage : imageList) {
+								if(SalesChannelUtility.deleteImage(productImage.getActualPath())) {
+									productDao.deleteImageById(productImage.getId());	
+								}
+							}
+						}
+					}
 					status = productDao.deleteProduct(productId);
 				}
 			}
@@ -522,6 +636,24 @@ public class ProductServiceImpl implements ProductService {
 			if(status) {
 				status = productDao.deleteProductAccessoriesByProductId(productId);
 				if(status) {
+					//delete images of the product related to all tables 
+					ProductJsonModel product = productDao.getProductById(productId);
+					if(product != null && product.getImage() != null && !product.getImage().isEmpty()) {
+						ProductImageJsonModel image = productDao.getProductImageById(product.getImage());
+						if(image != null && image.getId() != null && !image.getId().isEmpty()) {
+							if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+								productDao.deleteImageById(image.getId());
+							}
+						}
+						List<ProductImageJsonModel> imageList = productDao.getProductImageByProductId(productId);
+						if(imageList != null && imageList.size() > 0) {
+							for(ProductImageJsonModel productImage : imageList) {
+								if(SalesChannelUtility.deleteImage(productImage.getActualPath())) {
+									productDao.deleteImageById(productImage.getId());	
+								}
+							}
+						}
+					}
 					status = productDao.deleteProduct(productId);
 				}
 			}
@@ -544,6 +676,18 @@ public class ProductServiceImpl implements ProductService {
 			if(status) {
 				status = productDao.deleteProductAttributeByProductId(productId);
 			}
+			if(status) {
+				List<ProductImageJsonModel> imageList = productDao.getProductImageByProductId(productId);
+				if(imageList != null && imageList.size() > 0) {
+					for(ProductImageJsonModel image : imageList) {
+						if(image.getProductAttributeId() != null && !image.getProductAttributeId().isEmpty()) {
+							if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+								productDao.deleteImageById(image.getId());
+							}
+						}
+					}
+				}
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			LOGGERS.error("error while delete product attributes.");
@@ -560,6 +704,16 @@ public class ProductServiceImpl implements ProductService {
 			}
 			if(status) {
 				status = productDao.deleteProductAttribute(productAttributeId);
+			}
+			if(status) {
+				List<ProductImageJsonModel> imageList = productDao.getProductImageByProductAttributeId(productAttributeId);
+				if(imageList != null && imageList.size() > 0) {
+					for(ProductImageJsonModel image : imageList) {
+						if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+							productDao.deleteImageById(image.getId());
+						}
+					}
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -653,6 +807,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	public String insertUpdateProductAttributes(ProductAttributesJsonObject productAttributesJsonObject, String productId) {
 		boolean status = false;
+		boolean isInsert = false;
 		try {
 			List<AttributeJsonModel> attributeJsonModelList = prepareAttributesFromProductAttributeSetJsonObject(productAttributesJsonObject.getProductAttributes());
 			for(AttributeJsonModel attribute : attributeJsonModelList) {
@@ -682,9 +837,11 @@ public class ProductServiceImpl implements ProductService {
 				}
 			}	
 			if(productAttributesJsonObject.getProductAttributeId() == null || productAttributesJsonObject.getProductAttributeId().isEmpty()) {
+				productAttribute.setProductId(productId);
 				String id = productDao.insertProductAttribute(productAttribute);
 				productAttributesJsonObject.setProductAttributeId(id);
 				status = true;
+				isInsert = true;
 			} else {
 				status = productDao.updateProductAttribute(productAttributesJsonModel);
 			}
@@ -698,11 +855,16 @@ public class ProductServiceImpl implements ProductService {
 							&& !productAttributeSet.getName().contains("image")) {
 						AttributeJsonModel attributeId = productDao.checkAttributeExist(productAttributeSet.getName());
 						if(productAttributesJsonObject.getProductAttributeId() != null && attributeId != null) {
-							productAttributeCombination.setId(productAttributeSet.getValueId());
+							if(isInsert){
+								productAttributeCombination.setId(null);								
+							} else {
+								productAttributeCombination.setId(productAttributeSet.getValueId());
+							}
 							productAttributeCombination.setAttributeId(attributeId.getId());
+							productAttributeCombination.setProductId(productId);
 							productAttributeCombination.setProductAttributeId(productAttributesJsonObject.getProductAttributeId());
 							productAttributeCombination.setValue(productAttributeSet.getValue());
-							if(productAttributeSet.getValueId() != null && !productAttributeSet.getValueId().isEmpty()) {
+							if(productAttributeCombination.getId() != null && !productAttributeCombination.getId().isEmpty()) {
 								productDao.updateProductAttributeCombination(productAttributeCombination);
 							} else {
 								productDao.insertProductAttributeCombination(productAttributeCombination);
@@ -710,6 +872,9 @@ public class ProductServiceImpl implements ProductService {
 						}
 					} else if(productAttributesJsonObject.getProductAttributeId() != null && productAttributeSet.getName().contains("image")) {
 						if(productAttributeSet.getValue() != null && !productAttributeSet.getValue().isEmpty()) {
+							if(isInsert) {
+								productAttributeSet.setValueId(null);
+							}
 							saveUpdateImage(productAttributeSet.getValue(), productAttributeSet.getName(), productAttributeSet.getValueId(), productAttributesJsonObject.getCustomerId(), productId, productAttributesJsonObject.getProductAttributeId());
 						}
 					}
@@ -846,7 +1011,13 @@ public class ProductServiceImpl implements ProductService {
 			if(productAttributeSetJsonObject.getName() != null && !productAttributeSetJsonObject.getName().isEmpty() 
 					&& productAttributeSetJsonObject.getName().contains("image")) {
 				if(productAttributeSetJsonObject.getValue() != null && !productAttributeSetJsonObject.getValue().isEmpty()) {
-					saveUpdateImage(productAttributeSetJsonObject.getValue(), productAttributeSetJsonObject.getName(), productAttributeSetJsonObject.getValueId(), customerId, productId, null);
+					if(productAttributeSetJsonObject.getValueId() != null && !productAttributeSetJsonObject.getValueId().isEmpty()) {
+						ProductImageJsonModel imageOld = productDao.getProductImageById(productAttributeSetJsonObject.getValueId());
+						if(imageOld != null) {
+							SalesChannelUtility.deleteImage(imageOld.getActualPath());
+						}
+					}
+					productAccessoriesId = saveUpdateImage(productAttributeSetJsonObject.getValue(), productAttributeSetJsonObject.getName(), productAttributeSetJsonObject.getValueId(), customerId, productId, null);
 				}
 			} else {
 				ProductAccessoriesJsonModel productAccessoriesJsonModel = convertProductAccessoriesJsonObjectToModel(productAttributeSetJsonObject);
@@ -1032,14 +1203,17 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	public ProductAccessoriesJsonObject getProductAccessoriesByProductId(String productId) {
-		ProductAccessoriesJsonObject productAccessoriesJsonObjectList = new ProductAccessoriesJsonObject();
+		ProductAccessoriesJsonObject productAccessoriesJsonObjectList = null;
 		try {
 			List<ProductAccessoriesJsonModel> productAccessoriesList = productDao.getProductAccessoriesByProductId(productId);
+			productAccessoriesJsonObjectList = new ProductAccessoriesJsonObject();
+			List<ProductAttributeSetJsonObject> productAttributeSetList = new ArrayList<ProductAttributeSetJsonObject>();
 			if(productAccessoriesList != null && productAccessoriesList.size() > 0) {
 				for(ProductAccessoriesJsonModel productAccessories : productAccessoriesList) {
 					ProductAttributeSetJsonObject productAttributeSet = convertProductAccessoriesJsonModelToObject(productAccessories);
-					productAccessoriesJsonObjectList.getProductAccessories().add(productAttributeSet);
+					productAttributeSetList.add(productAttributeSet);
 				}
+				productAccessoriesJsonObjectList.setProductAccessories(productAttributeSetList);
 			}
 			
 			//Product Accessories Image
@@ -1047,8 +1221,9 @@ public class ProductServiceImpl implements ProductService {
 			if(productImageJsonModelList != null && productImageJsonModelList.size() > 0) {
 				for(ProductImageJsonModel productImageJsonModel : productImageJsonModelList) {
 					ProductAttributeSetJsonObject productAttributeSet = convertProductImageJsonModelToObject(productImageJsonModel);
-					productAccessoriesJsonObjectList.getProductAccessories().add(productAttributeSet);
+					productAttributeSetList.add(productAttributeSet);
 				}
+				productAccessoriesJsonObjectList.setProductAccessories(productAttributeSetList);
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error while get ProductAccessories By ProductId");
@@ -1082,6 +1257,18 @@ public class ProductServiceImpl implements ProductService {
 			if(productAccessoriesJsonModelList != null && productAccessoriesJsonModelList.size() > 0) {
 				status = productDao.deleteProductAccessoriesByProductId(productId);
 			}
+			if(!status) {
+				List<ProductImageJsonModel> imageList = productDao.getProductImageByProductId(productId);
+				if(imageList != null && imageList.size() > 0) {
+					for(ProductImageJsonModel image : imageList) {
+						if(image.getProductAttributeId() == null || image.getProductAttributeId().isEmpty()) {
+							if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+								productDao.deleteImageById(image.getId());
+							}
+						}
+					}
+				}
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			LOGGERS.error("error while delete product Accessories By ProductId.");
@@ -1095,12 +1282,30 @@ public class ProductServiceImpl implements ProductService {
 			ProductAccessoriesJsonModel productAccessoriesJsonModel = productDao.getProductAccessoriesById(productAccessoriesId);
 			if(productAccessoriesJsonModel != null) {
 				status = productDao.deleteProductAccessoriesById(productAccessoriesId);
+			} else {
+				ProductImageJsonModel image = productDao.getProductImageById(productAccessoriesId);
+				if(image != null) {
+					if(SalesChannelUtility.deleteImage(image.getActualPath())) {
+						status = productDao.deleteImageById(productAccessoriesId);
+					}
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			LOGGERS.error("error while delete product Accessories By productAccessoriesId.");
 		}
 		return status;
+	}
+	
+	public ProductImageJsonModel getProductImageById(String imageId) {
+		ProductImageJsonModel productImageJsonModel = null;
+		try {
+			productImageJsonModel = productDao.getProductImageById(imageId);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductAccessories By ProductAccessoriesId");
+			e.printStackTrace();
+		}
+		return productImageJsonModel;
 	}
 	
 	public ProductDaoImpl getProductDao() {

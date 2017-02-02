@@ -33,22 +33,22 @@ public class MarketPlaceRegionController extends SalesChannelServerResource<Mark
 		Representation representation = null;
 		try {
 			if(marketPlaceId != null && !marketPlaceId.isEmpty()) {
-				List<MarketPlaceJsonObject> marketPlaceJsonObjectList = marketPlaceService.getMarketPlaceRegions(marketPlaceId);
-				if(marketPlaceJsonObjectList != null && marketPlaceJsonObjectList.size() > 0) {
+				List<MarketPlaceRegionJsonObject> marketPlaceRegionJsonObjectList = getMarketPlaceService().getMarketPlaceRegions(marketPlaceId);
+				if(marketPlaceRegionJsonObjectList != null && marketPlaceRegionJsonObjectList.size() > 0) {
 					salesChannelErrorObject.setStatusCode(200);
 					salesChannelErrorObject.setMessage(getErrorMessage(200));
-					salesChannelErrorObject.setData(marketPlaceJsonObjectList);
+					salesChannelErrorObject.setData(marketPlaceRegionJsonObjectList);
 				} else {
-					salesChannelErrorObject.setStatusCode(3000);
-					salesChannelErrorObject.setMessage(getErrorMessage(3000));
+					salesChannelErrorObject.setStatusCode(20003);
+					salesChannelErrorObject.setMessage(getErrorMessage(20003));
 				}
 			} else {
 				salesChannelErrorObject.setStatusCode(20001);
-				salesChannelErrorObject.setMessage(getErrorMessage(200001));
+				salesChannelErrorObject.setMessage(getErrorMessage(20001));
 			}
 			representation = new JsonRepresentation(salesChannelErrorObject);
 		} catch (Exception e) {
-			LOGGERS.error("Error occured while fetchDetails Market Place.");
+			LOGGERS.error("Error occured while fetchDetails Market Place Region.");
 			e.printStackTrace();
 		}
 		return representation;
@@ -110,6 +110,14 @@ public class MarketPlaceRegionController extends SalesChannelServerResource<Mark
 		final ArrayList<String> paramList = new ArrayList<String>();
 		paramList.add("marketPlaceId");
 		return paramList;
+	}
+
+	public MarketPlaceServiceImpl getMarketPlaceService() {
+		return marketPlaceService;
+	}
+
+	public void setMarketPlaceService(MarketPlaceServiceImpl marketPlaceService) {
+		this.marketPlaceService = marketPlaceService;
 	}
 
 }

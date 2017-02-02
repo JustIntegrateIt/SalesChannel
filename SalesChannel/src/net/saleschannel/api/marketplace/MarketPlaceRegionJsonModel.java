@@ -14,7 +14,7 @@ public class MarketPlaceRegionJsonModel {
 	private String marketPlaceId;
 	
 	//Market Place Region Id
-	private String marketPlaceRegionId;
+	private String marketPlaceRegionKey;
 	
 	//Market Place Region Name
 	private String marketPlaceRegionName;
@@ -50,14 +50,6 @@ public class MarketPlaceRegionJsonModel {
 
 	public void setMarketPlaceId(String marketPlaceId) {
 		this.marketPlaceId = marketPlaceId;
-	}
-
-	public String getMarketPlaceRegionId() {
-		return marketPlaceRegionId;
-	}
-
-	public void setMarketPlaceRegionId(String marketPlaceRegionId) {
-		this.marketPlaceRegionId = marketPlaceRegionId;
 	}
 
 	public String getMarketPlaceRegionName() {
@@ -122,6 +114,14 @@ public class MarketPlaceRegionJsonModel {
 
 	public void setMarketPlaceLocale(String marketPlaceLocale) {
 		this.marketPlaceLocale = marketPlaceLocale;
+	}
+
+	public String getMarketPlaceRegionKey() {
+		return marketPlaceRegionKey;
+	}
+
+	public void setMarketPlaceRegionKey(String marketPlaceRegionKey) {
+		this.marketPlaceRegionKey = marketPlaceRegionKey;
 	}
 }
 

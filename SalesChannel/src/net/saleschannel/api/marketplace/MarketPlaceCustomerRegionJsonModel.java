@@ -13,17 +13,11 @@ public class MarketPlaceCustomerRegionJsonModel {
 	//SC Market Place Region Id
 	private String marketPlaceRegionId;
 	
+	//SC Market Place Id
+	private String marketPlaceId;
+	
 	//SC Customer Id
 	private String customerId;
-	
-	//Market Place Customer Seller ID
-	private String customerSellerId;
-		
-	//Market Place Customer Access Key
-	private String customerAccessKey;
-	
-	//Market Place Customer Secret Key
-	private String customerSecretKey;
 	
 	//Market Place Customer Active Status
 	private boolean isActive;
@@ -92,35 +86,19 @@ public class MarketPlaceCustomerRegionJsonModel {
 		this.updatedAt = updatedAt;
 	}
 
-	public String getCustomerSellerId() {
-		return customerSellerId;
-	}
-
-	public void setCustomerSellerId(String customerSellerId) {
-		this.customerSellerId = customerSellerId;
-	}
-
-	public String getCustomerAccessKey() {
-		return customerAccessKey;
-	}
-
-	public void setCustomerAccessKey(String customerAccessKey) {
-		this.customerAccessKey = customerAccessKey;
-	}
-
-	public String getCustomerSecretKey() {
-		return customerSecretKey;
-	}
-
-	public void setCustomerSecretKey(String customerSecretKey) {
-		this.customerSecretKey = customerSecretKey;
-	}
-
 	public boolean isActive() {
 		return isActive;
 	}
 
-	public void setActive(boolean isActive) {
+	public void setIsActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public String getMarketPlaceId() {
+		return marketPlaceId;
+	}
+
+	public void setMarketPlaceId(String marketPlaceId) {
+		this.marketPlaceId = marketPlaceId;
 	}
 }

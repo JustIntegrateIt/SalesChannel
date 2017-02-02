@@ -116,7 +116,7 @@ public class ProductCategoryMappingDaoImpl implements ProductCategoryMappingDao 
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategorymapping.ProductCategoryMappingJsonModel")
 				.and("customerId").is(customerId).and("marketPlaceId").is(marketPlaceId));
-			this.mongoOps.remove(query, ProductCategoryMappingJsonModel.class);
+			this.mongoOps.remove(query, SalesChannelConstants.SC_PRODUCT_CATEGORY_MAPPING);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category by name and customerId in database");
@@ -154,7 +154,7 @@ public class ProductCategoryMappingDaoImpl implements ProductCategoryMappingDao 
 			Query query = new Query();
 			query.addCriteria(Criteria.where("_class").is("net.saleschannel.api.productcategorymapping.ProductCategoryMappingJsonModel")
 				.and("customerId").is(customerId));
-			this.mongoOps.remove(query, ProductCategoryMappingJsonModel.class);
+			this.mongoOps.remove(query, SalesChannelConstants.SC_PRODUCT_CATEGORY_MAPPING);
 			status = true;
 		} catch(Exception e) {
 			LOGGERS.error("error while delete product category mapping by customerId in database");
