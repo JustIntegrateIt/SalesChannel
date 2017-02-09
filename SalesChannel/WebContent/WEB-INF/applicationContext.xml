@@ -29,9 +29,9 @@
 
 	<!-- Define all the routes -->
 
-	<!-- sales channel bean Creation Starts  -->
+	<!-- sales channel bean Creation Starts -->
 	
-	<!-- customer bean Creation and API Starts  -->
+	<!-- customer bean Creation and API Starts -->
 	<bean name="/customerLogin" class="net.saleschannel.api.customer.CustomerLoginController" scope="prototype">
 		<property name="customerService" ref="customerService" />
     </bean>
@@ -47,9 +47,9 @@
 	<bean id="customerDao" class="net.saleschannel.api.customer.CustomerDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- customer bean Creation and API Ends  -->
+	<!-- customer bean Creation and API Ends -->
 	
-	<!-- product bean Creation and API Starts  -->
+	<!-- product bean Creation and API Starts -->
 	<bean name="/product" class="net.saleschannel.api.product.ProductController" scope="prototype">
 		<property name="productService" ref="productService" />
 		<property name="customerService" ref="customerService" />
@@ -73,9 +73,9 @@
 	<bean id="productDao" class="net.saleschannel.api.product.ProductDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- product bean Creation and API Ends  -->
+	<!-- product bean Creation and API Ends -->
 	
-	<!-- category bean Creation and API Starts  -->
+	<!-- category bean Creation and API Starts -->
 	<bean name="/category" class="net.saleschannel.api.productcategory.ProductCategoryController" scope="prototype">
 		<property name="categoryService" ref="categoryService" />
 		<property name="customerService" ref="customerService" />
@@ -88,9 +88,9 @@
 	<bean id="categoryDao" class="net.saleschannel.api.productcategory.ProductCategoryDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- category bean Creation and API Ends  -->
+	<!-- category bean Creation and API Ends -->
 	
-	<!-- category mapping bean Creation and API Starts  -->
+	<!-- category mapping bean Creation and API Starts -->
 	<bean name="/categoryMapping" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingController" scope="prototype">
 		<property name="categoryMappingService" ref="categoryMappingService" />
 		<property name="categoryDao" ref="categoryDao" />
@@ -104,9 +104,9 @@
 	<bean id="categoryMappingDao" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- category mapping bean Creation and API Ends  -->
+	<!-- category mapping bean Creation and API Ends -->
 	
-	<!-- market place bean Creation and API Starts  -->
+	<!-- market place bean Creation and API Starts -->
 	<bean name="/marketplace" class="net.saleschannel.api.marketplace.MarketPlaceController" scope="prototype">
 		<property name="marketPlaceService" ref="marketPlaceService" />
 		<property name="customerService" ref="customerService" />
@@ -129,7 +129,38 @@
 	<bean id="marketPlaceDao" class="net.saleschannel.api.marketplace.MarketPlaceDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- market place bean Creation and API Ends  -->
+	<!-- market place bean Creation and API Ends -->
+	
+	<!-- warehouse bean Creation and API Starts -->
+	<bean name="/warehouse" class="net.saleschannel.api.warehouse.WarehouseController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="warehouseService" ref="warehouseService" />
+    </bean>
+	
+	<bean id="warehouseService" class="net.saleschannel.api.warehouse.WarehouseServiceImpl">
+		<property name="warehouseDao" ref="warehouseDao" />
+	</bean>
+	
+	<bean id="warehouseDao" class="net.saleschannel.api.warehouse.WarehouseDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- warehouse bean Creation and API Ends -->
+	
+	<!-- warehouse bean Creation and API Starts -->
+	<bean name="/inventory" class="net.saleschannel.api.inventory.InventoryController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="inventoryService" ref="inventoryService" />
+		<property name="warehouseService" ref="warehouseService" />
+    </bean>
+	
+	<bean id="inventoryService" class="net.saleschannel.api.inventory.InventoryServiceImpl">
+		<property name="inventoryDao" ref="inventoryDao" />
+	</bean>
+	
+	<bean id="inventoryDao" class="net.saleschannel.api.inventory.InventoryDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- warehouse bean Creation and API Ends -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

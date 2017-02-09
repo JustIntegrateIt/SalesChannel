@@ -41,7 +41,8 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 			if(categoryMappingId != null && !categoryMappingId.isEmpty()) {
 				isValidReq = true;
 				ProductCategoryMappingJsonObject productCategoryMappingJsonObject = categoryMappingService.getProductCategoryMappingById(categoryMappingId);
-				productCategoryMappingJsonObjectList.add(productCategoryMappingJsonObject);
+				if(productCategoryMappingJsonObject != null)
+					productCategoryMappingJsonObjectList.add(productCategoryMappingJsonObject);
 			} else if(marketPlaceId != null && !marketPlaceId.isEmpty()) {
 				isValidReq = true;
 				productCategoryMappingJsonObjectList = categoryMappingService.getProductCategoryMappingByCustomerIdAndMarketPlaceId(getCustomerId(), marketPlaceId);
@@ -176,7 +177,7 @@ public class ProductCategoryMappingController extends SalesChannelServerResource
 				return jsonObject2;
 			}
 		}
-		//GET method
+		//GET & DELETE method
 		else if (method.equals(SalesChannelConstants.GET) || method.equals(SalesChannelConstants.DELETE)) {
 			if (!form.isEmpty()) {
 				for (final Parameter parameter : form) {
