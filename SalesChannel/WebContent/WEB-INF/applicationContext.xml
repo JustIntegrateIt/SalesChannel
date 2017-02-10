@@ -152,6 +152,17 @@
 		<property name="inventoryService" ref="inventoryService" />
 		<property name="warehouseService" ref="warehouseService" />
     </bean>
+    
+    <bean name="/shelf" class="net.saleschannel.api.inventory.ShelfController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="inventoryService" ref="inventoryService" />
+		<property name="warehouseService" ref="warehouseService" />
+    </bean>
+    
+    <bean name="/bin" class="net.saleschannel.api.inventory.BinController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="inventoryService" ref="inventoryService" />
+    </bean>
 	
 	<bean id="inventoryService" class="net.saleschannel.api.inventory.InventoryServiceImpl">
 		<property name="inventoryDao" ref="inventoryDao" />

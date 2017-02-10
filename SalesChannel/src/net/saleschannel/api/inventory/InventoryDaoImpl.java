@@ -232,7 +232,7 @@ public class InventoryDaoImpl implements InventoryDao {
 		return binId;
 	}
 	
-	public boolean updateBin(BinJsonObject binJsonModel) {
+	public boolean updateBin(BinJsonModel binJsonModel) {
 		boolean status = false;
 		try {
 			this.mongoOps.save(binJsonModel, SalesChannelConstants.SC_BIN);

@@ -417,162 +417,242 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 	
 	public String createBin(BinJsonObject binJsonObject, String shelfId) {
+		String binId = null;
 		try {
-			
+			BinJsonModel binJsonModel = convertBinJsonObjectToModel(binJsonObject);
+			if(binJsonModel != null) {
+				binId = inventoryDao.createBin(binJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while create Bin");
 			e.printStackTrace();
 		}
-		return null;
+		return binId;
 	}
 	
 	public boolean updateBin(BinJsonObject binJsonObject, String shelfId) {
+		boolean status = false;
 		try {
-			
+			BinJsonModel binJsonModel = convertBinJsonObjectToModel(binJsonObject);
+			if(binJsonModel != null) {
+				status = inventoryDao.updateBin(binJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while update Bin");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 	
 	public BinJsonObject getBinById(String binId) {
+		BinJsonObject binJsonObject = null;
 		try {
-			
+			BinJsonModel binJsonModel = inventoryDao.getBinById(binId);
+			if(binJsonModel != null) {
+				binJsonObject = convertBinJsonModelToObject(binJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while get Bin By Id");
 			e.printStackTrace();
 		}
-		return null;
+		return binJsonObject;
 	}
 	
 	public List<BinJsonObject> getBinsByShelfId(String shelfId) {
+		List<BinJsonObject> binJsonObjectList = null;
 		try {
-			
+			List<BinJsonModel> binJsonModelList = inventoryDao.getBinsByShelfId(shelfId);
+			if(binJsonModelList != null && binJsonModelList.size() > 0) {
+				binJsonObjectList = new ArrayList<BinJsonObject>();
+				for(BinJsonModel binJsonModel : binJsonModelList) {
+					BinJsonObject binJsonObject = convertBinJsonModelToObject(binJsonModel);
+					if(binJsonObject != null) {
+						binJsonObjectList.add(binJsonObject);
+					}
+				}
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while get Bins By ShelfId");
 			e.printStackTrace();
 		}
-		return null;
+		return binJsonObjectList;
 	}
 	
 	public List<BinJsonObject> getBinsByInventoryId(String inventoryId) {
+		List<BinJsonObject> binJsonObjectList = null;
 		try {
-			
+			List<ShelfJsonModel> shelfJsonModelList = inventoryDao.getShelfsByInventoryId(inventoryId);
+			if(shelfJsonModelList != null && shelfJsonModelList.size() > 0) {
+				for(ShelfJsonModel shelfJsonModel : shelfJsonModelList) {
+					List<BinJsonModel> binJsonModelList = inventoryDao.getBinsByShelfId(shelfJsonModel.getId());
+					if(binJsonModelList != null && binJsonModelList.size() > 0) {
+						binJsonObjectList = new ArrayList<BinJsonObject>();
+						for(BinJsonModel binJsonModel : binJsonModelList) {
+							BinJsonObject binJsonObject = convertBinJsonModelToObject(binJsonModel);
+							if(binJsonObject != null) {
+								binJsonObjectList.add(binJsonObject);
+							}
+						}
+					}
+				}
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while get Bins By InventoryId");
 			e.printStackTrace();
 		}
-		return null;
+		return binJsonObjectList;
 	}
 	
 	public BinJsonModel checkBinById(String binId) {
+		BinJsonModel binJsonModel = null;
 		try {
-			
+			binJsonModel = inventoryDao.getBinById(binId);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while check Bin By Id");
 			e.printStackTrace();
 		}
-		return null;
+		return binJsonModel;
 	}
 	
 	public BinJsonModel checkBinByCode(String binCode) {
+		BinJsonModel binJsonModel = null;
 		try {
-			
+			binJsonModel = inventoryDao.checkBinByCode(binCode);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while check Bin By Code");
 			e.printStackTrace();
 		}
-		return null;
+		return binJsonModel;
 	}
 	
 	public boolean deleteBinByShelfId(String shelfId) {
+		boolean status = false;
 		try {
-			
+			status = inventoryDao.deleteBinByShelfId(shelfId);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while delete Bin By ShelfId");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 	
 	public boolean deleteBinByInventoryId(String inventoryId) {
+		boolean status = false;
 		try {
-			
+			List<ShelfJsonModel> shelfJsonModelList = inventoryDao.getShelfsByInventoryId(inventoryId);
+			if(shelfJsonModelList != null && shelfJsonModelList.size() > 0) {
+				for(ShelfJsonModel shelfJsonModel : shelfJsonModelList) {
+					status = inventoryDao.deleteBinByShelfId(shelfJsonModel.getId());
+				}
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while delete Bin By InventoryId");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 	
 	public boolean deleteBinById(String binId) {
+		boolean status = false;
 		try {
-			
+			status = inventoryDao.deleteBinById(binId);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while delete Bin By Id");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 	
 	public PositionJsonModel convertPositionJsonObjectToModel(PositionJsonObject positionJsonObject) {
+		PositionJsonModel positionJsonModel = null;
 		try {
-			
+			if(positionJsonObject != null) {
+				if(positionJsonObject.getId() != null && !positionJsonObject.getId().isEmpty()) {
+					positionJsonModel = inventoryDao.getPositionById(positionJsonObject.getId());
+					positionJsonModel.setRowPositionX(positionJsonObject.getRowPositionX());
+					positionJsonModel.setColumnPositionY(positionJsonObject.getColumnPositionY());
+					positionJsonModel.setThirdValueZ(positionJsonObject.getThirdValueZ());
+				} else {
+					positionJsonModel = new PositionJsonModel();
+					positionJsonModel.setRowPositionX(positionJsonObject.getRowPositionX());
+					positionJsonModel.setColumnPositionY(positionJsonObject.getColumnPositionY());
+					positionJsonModel.setThirdValueZ(positionJsonObject.getThirdValueZ());
+				}
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while convert PositionJsonObject To Model");
 			e.printStackTrace();
 		}
-		return null;
+		return positionJsonModel;
 	}
 	
 	public PositionJsonObject convertPositionJsonModelToObject(PositionJsonModel positionJsonModel) {
+		PositionJsonObject positionJsonObject = null;
 		try {
-			
+			if(positionJsonModel != null) {
+				positionJsonObject = new PositionJsonObject();
+				positionJsonObject.setId(positionJsonModel.getId());
+				positionJsonObject.setRowPositionX(positionJsonModel.getRowPositionX());
+				positionJsonObject.setColumnPositionY(positionJsonModel.getColumnPositionY());
+				positionJsonObject.setThirdValueZ(positionJsonModel.getThirdValueZ());
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while convert PositionJsonModel To Object");
 			e.printStackTrace();
 		}
-		return null;
+		return positionJsonObject;
 	}
 	
 	public String createPosition(PositionJsonObject positionJsonObject) {
+		String positionId = null;
 		try {
-			
+			PositionJsonModel positionJsonModel = convertPositionJsonObjectToModel(positionJsonObject);
+			if(positionJsonModel != null) {
+				positionId = inventoryDao.createPosition(positionJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while create position");
 			e.printStackTrace();
 		}
-		return null;
+		return positionId;
 	}
 	
 	public boolean updatePosition(PositionJsonObject positionJsonObject) {
+		boolean status = false;
 		try {
-			
+			PositionJsonModel positionJsonModel = convertPositionJsonObjectToModel(positionJsonObject);
+			if(positionJsonModel != null) {
+				status = inventoryDao.updatePosition(positionJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while update Position");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 	
 	public PositionJsonObject getPositionById(String positionId) {
+		PositionJsonObject positionJsonObject = null;
 		try {
-			
+			PositionJsonModel positionJsonModel = inventoryDao.getPositionById(positionId);
+			if(positionJsonModel != null) {
+				positionJsonObject = convertPositionJsonModelToObject(positionJsonModel);
+			}
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while get Position By Id");
 			e.printStackTrace();
 		}
-		return null;
+		return positionJsonObject;
 	}
 	
 	public boolean deletePositionById(String positionId) {
+		boolean status = false;
 		try {
-			
+			status = inventoryDao.deletePositionById(positionId);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while ");
+			LOGGERS.error("error occured while delete Position By Id");
 			e.printStackTrace();
 		}
-		return false;
+		return status;
 	}
 }

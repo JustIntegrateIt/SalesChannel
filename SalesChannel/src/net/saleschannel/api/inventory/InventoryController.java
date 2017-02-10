@@ -160,8 +160,8 @@ public class InventoryController extends SalesChannelServerResource<InventoryJso
 				salesChannelErrorObject.setMessage(getErrorMessage(200));
 				salesChannelErrorObject.setData("Inventory deleted Successfully.");
 			} else if(isExist) {
-				salesChannelErrorObject.setStatusCode(60003);
-				salesChannelErrorObject.setMessage(getErrorMessage(60003));
+				salesChannelErrorObject.setStatusCode(60103);
+				salesChannelErrorObject.setMessage(getErrorMessage(60103));
 			} else {
 				salesChannelErrorObject.setStatusCode(60104);
 				salesChannelErrorObject.setMessage(getErrorMessage(60104));
@@ -199,11 +199,11 @@ public class InventoryController extends SalesChannelServerResource<InventoryJso
 				if(obj.getId() != null && !obj.getId().isEmpty()) {
 					InventoryJsonModel inventoryJsonModel = inventoryService.checkInventoryById(obj.getId());
 					if(inventoryJsonModel == null) {
-						jsonObject2.put("60116", "Inventory Id is not valid.@#id#@");
+						jsonObject2.put("60114", "Inventory Id is not valid.@#id#@");
 						return jsonObject2;
 					}
 				} else {
-					jsonObject2.put("60115", "Inventory Id is empty.@#id#@");
+					jsonObject2.put("60113", "Inventory Id is empty.@#id#@");
 					return jsonObject2;
 				}
 			}

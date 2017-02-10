@@ -37,7 +37,7 @@ public interface InventoryDao {
 	//Bin Operations
 	public String createBin(BinJsonModel binJsonModel);
 	
-	public boolean updateBin(BinJsonObject binJsonModel);
+	public boolean updateBin(BinJsonModel binJsonModel);
 	
 	public BinJsonModel getBinById(String binId);
 	
