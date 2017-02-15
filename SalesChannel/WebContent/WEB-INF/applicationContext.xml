@@ -21,7 +21,7 @@
 		<property name="defaultTarget" ref="autoRestletAppliction" />
 	</bean>
 
-	<bean id="autoRestletAppliction" class="net.saleschannel.api.frontcontroller.SalesChannelApplication">
+	<bean id="autoRestletAppliction" class="com.saleschannel.api.frontcontroller.SalesChannelApplication">
 		<property name="inboundRoot" ref="router" />
 	</bean>
 
@@ -32,143 +32,150 @@
 	<!-- sales channel bean Creation Starts -->
 	
 	<!-- customer bean Creation and API Starts -->
-	<bean name="/customerLogin" class="net.saleschannel.api.customer.CustomerLoginController" scope="prototype">
+	<bean name="/customerLogin" class="com.saleschannel.api.customer.CustomerLoginController" scope="prototype">
 		<property name="customerService" ref="customerService" />
     </bean>
     
-    <bean name="/customer" class="net.saleschannel.api.customer.CustomerController" scope="prototype">
+    <bean name="/customer" class="com.saleschannel.api.customer.CustomerController" scope="prototype">
 		<property name="customerService" ref="customerService" />
     </bean>
 	
-	<bean id="customerService" class="net.saleschannel.api.customer.CustomerServiceImpl">
+	<bean id="customerService" class="com.saleschannel.api.customer.CustomerServiceImpl">
 		<property name="customerDao" ref="customerDao" />
 	</bean>
 	
-	<bean id="customerDao" class="net.saleschannel.api.customer.CustomerDaoImpl">
+	<bean id="customerDao" class="com.saleschannel.api.customer.CustomerDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- customer bean Creation and API Ends -->
 	
 	<!-- product bean Creation and API Starts -->
-	<bean name="/product" class="net.saleschannel.api.product.ProductController" scope="prototype">
+	<bean name="/product" class="com.saleschannel.api.product.ProductController" scope="prototype">
 		<property name="productService" ref="productService" />
 		<property name="customerService" ref="customerService" />
 		<property name="categoryService" ref="categoryService" />
+		<property name="inventoryService" ref="inventoryService" />
     </bean>
     
-    <bean name="/productAttribute" class="net.saleschannel.api.product.ProductAttributesController" scope="prototype">
+    <bean name="/productAttribute" class="com.saleschannel.api.product.ProductAttributesController" scope="prototype">
 		<property name="productService" ref="productService" />
 		<property name="customerService" ref="customerService" />
     </bean>
     
-    <bean name="/productAccessories" class="net.saleschannel.api.product.ProductAccessoriesController" scope="prototype">
+    <bean name="/productAccessories" class="com.saleschannel.api.product.ProductAccessoriesController" scope="prototype">
 		<property name="productService" ref="productService" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	
-	<bean id="productService" class="net.saleschannel.api.product.ProductServiceImpl">
+	<bean id="productService" class="com.saleschannel.api.product.ProductServiceImpl">
 		<property name="productDao" ref="productDao" />
 	</bean>
 	
-	<bean id="productDao" class="net.saleschannel.api.product.ProductDaoImpl">
+	<bean id="productDao" class="com.saleschannel.api.product.ProductDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- product bean Creation and API Ends -->
 	
 	<!-- category bean Creation and API Starts -->
-	<bean name="/category" class="net.saleschannel.api.productcategory.ProductCategoryController" scope="prototype">
+	<bean name="/category" class="com.saleschannel.api.productcategory.ProductCategoryController" scope="prototype">
 		<property name="categoryService" ref="categoryService" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	
-	<bean id="categoryService" class="net.saleschannel.api.productcategory.ProductCategoryServiceImpl">
+	<bean id="categoryService" class="com.saleschannel.api.productcategory.ProductCategoryServiceImpl">
 		<property name="categoryDao" ref="categoryDao" />
 	</bean>
 	
-	<bean id="categoryDao" class="net.saleschannel.api.productcategory.ProductCategoryDaoImpl">
+	<bean id="categoryDao" class="com.saleschannel.api.productcategory.ProductCategoryDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- category bean Creation and API Ends -->
 	
 	<!-- category mapping bean Creation and API Starts -->
-	<bean name="/categoryMapping" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingController" scope="prototype">
+	<bean name="/categoryMapping" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingController" scope="prototype">
 		<property name="categoryMappingService" ref="categoryMappingService" />
 		<property name="categoryDao" ref="categoryDao" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	
-	<bean id="categoryMappingService" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingServiceImpl">
+	<bean id="categoryMappingService" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingServiceImpl">
 		<property name="categoryMappingDao" ref="categoryMappingDao" />
 	</bean>
 	
-	<bean id="categoryMappingDao" class="net.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">
+	<bean id="categoryMappingDao" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- category mapping bean Creation and API Ends -->
 	
 	<!-- market place bean Creation and API Starts -->
-	<bean name="/marketplace" class="net.saleschannel.api.marketplace.MarketPlaceController" scope="prototype">
+	<bean name="/marketplace" class="com.saleschannel.api.marketplace.MarketPlaceController" scope="prototype">
 		<property name="marketPlaceService" ref="marketPlaceService" />
 		<property name="customerService" ref="customerService" />
     </bean>
     
-    <bean name="/marketplaceRegion" class="net.saleschannel.api.marketplace.MarketPlaceRegionController" scope="prototype">
+    <bean name="/marketplaceRegion" class="com.saleschannel.api.marketplace.MarketPlaceRegionController" scope="prototype">
 		<property name="marketPlaceService" ref="marketPlaceService" />
 		<property name="customerService" ref="customerService" />
     </bean>
     
-    <bean name="/marketplaceCustomer" class="net.saleschannel.api.marketplace.MarketPlaceCustomerRegionController" scope="prototype">
+    <bean name="/marketplaceCustomer" class="com.saleschannel.api.marketplace.MarketPlaceCustomerRegionController" scope="prototype">
 		<property name="marketPlaceService" ref="marketPlaceService" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	
-	<bean id="marketPlaceService" class="net.saleschannel.api.marketplace.MarketPlaceServiceImpl">
+	<bean id="marketPlaceService" class="com.saleschannel.api.marketplace.MarketPlaceServiceImpl">
 		<property name="marketPlaceDao" ref="marketPlaceDao" />
 	</bean>
 	
-	<bean id="marketPlaceDao" class="net.saleschannel.api.marketplace.MarketPlaceDaoImpl">
+	<bean id="marketPlaceDao" class="com.saleschannel.api.marketplace.MarketPlaceDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- market place bean Creation and API Ends -->
 	
 	<!-- warehouse bean Creation and API Starts -->
-	<bean name="/warehouse" class="net.saleschannel.api.warehouse.WarehouseController" scope="prototype">
+	<bean name="/warehouse" class="com.saleschannel.api.warehouse.WarehouseController" scope="prototype">
 		<property name="customerService" ref="customerService" />
 		<property name="warehouseService" ref="warehouseService" />
     </bean>
 	
-	<bean id="warehouseService" class="net.saleschannel.api.warehouse.WarehouseServiceImpl">
+	<bean id="warehouseService" class="com.saleschannel.api.warehouse.WarehouseServiceImpl">
 		<property name="warehouseDao" ref="warehouseDao" />
 	</bean>
 	
-	<bean id="warehouseDao" class="net.saleschannel.api.warehouse.WarehouseDaoImpl">
+	<bean id="warehouseDao" class="com.saleschannel.api.warehouse.WarehouseDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- warehouse bean Creation and API Ends -->
 	
 	<!-- warehouse bean Creation and API Starts -->
-	<bean name="/inventory" class="net.saleschannel.api.inventory.InventoryController" scope="prototype">
+	<bean name="/inventory" class="com.saleschannel.api.inventory.InventoryController" scope="prototype">
 		<property name="customerService" ref="customerService" />
 		<property name="inventoryService" ref="inventoryService" />
 		<property name="warehouseService" ref="warehouseService" />
     </bean>
     
-    <bean name="/shelf" class="net.saleschannel.api.inventory.ShelfController" scope="prototype">
+    <bean name="/shelf" class="com.saleschannel.api.inventory.ShelfController" scope="prototype">
 		<property name="customerService" ref="customerService" />
 		<property name="inventoryService" ref="inventoryService" />
 		<property name="warehouseService" ref="warehouseService" />
     </bean>
     
-    <bean name="/bin" class="net.saleschannel.api.inventory.BinController" scope="prototype">
+    <bean name="/bin" class="com.saleschannel.api.inventory.BinController" scope="prototype">
 		<property name="customerService" ref="customerService" />
+		<property name="inventoryService" ref="inventoryService" />
+    </bean>
+    
+    <bean name="/binContent" class="com.saleschannel.api.inventory.BinContentController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="productService" ref="productService" />
 		<property name="inventoryService" ref="inventoryService" />
     </bean>
 	
-	<bean id="inventoryService" class="net.saleschannel.api.inventory.InventoryServiceImpl">
+	<bean id="inventoryService" class="com.saleschannel.api.inventory.InventoryServiceImpl">
 		<property name="inventoryDao" ref="inventoryDao" />
 	</bean>
 	
-	<bean id="inventoryDao" class="net.saleschannel.api.inventory.InventoryDaoImpl">
+	<bean id="inventoryDao" class="com.saleschannel.api.inventory.InventoryDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- warehouse bean Creation and API Ends -->

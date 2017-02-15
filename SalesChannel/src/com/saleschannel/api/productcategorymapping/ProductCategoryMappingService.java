@@ -1,0 +1,28 @@
+package com.saleschannel.api.productcategorymapping;
+
+import java.util.List;
+
+public interface ProductCategoryMappingService {
+
+	public ProductCategoryMappingJsonObject convertProductCategoryMappingJsonModelToObject(ProductCategoryMappingJsonModel productCategoryMappingJsonModel);
+	
+	public ProductCategoryMappingJsonModel convertProductCategoryMappingJsonObjectToModel(ProductCategoryMappingJsonObject productCategoryMappingJsonObject);
+	
+	public String insertProductCategoryMapping(ProductCategoryMappingJsonObject categoryMappingJsonObject);
+	
+	public boolean updateProductCategoryMapping(ProductCategoryMappingJsonObject categoryMappingJsonObject);
+	
+	public ProductCategoryMappingJsonObject getProductCategoryMappingById(String categoryMappingId);
+	
+	public List<ProductCategoryMappingJsonObject> getProductCategoryMappingByCustomerIdAndMarketPlaceId(String customerId, String marketPlaceId);
+	
+	public List<ProductCategoryMappingJsonObject> getProductCategoryMappingByCustomerId(String customerId);
+	
+	public boolean deleteProductCategoryMappingById(String productCategoryMappingId);
+	
+	public boolean deleteProductCategoryMappingByCustomerIdAndMarketPlaceId(String customerId, String marketPlaceId);
+	
+	public boolean deleteProductCategoryMappingByCustomerId(String customerId);
+	
+	public ProductCategoryMappingJsonModel isProductCategoryMappingExist(ProductCategoryMappingJsonObject categoryMappingJsonObject);
+}
