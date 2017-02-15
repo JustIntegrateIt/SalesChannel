@@ -18,13 +18,13 @@ public class SalesChannelPropertyLoader {
 	public static Properties salesChannelProperties;
 	
 	/** The salesChannel property stream. */
-	public static InputStream salesChannelPropertyStream = SalesChannelPropertyLoader.class.getResourceAsStream("/net/saleschannel/api/config/salesChannel.properties");
+	public static InputStream salesChannelPropertyStream = SalesChannelPropertyLoader.class.getResourceAsStream("/com/saleschannel/api/config/salesChannel.properties");
 	
 	/** The salesChannel error properties. */
 	public static Properties salesChannelErrorProperties;
 	
 	/** The salesChannel error property stream. */
-	public static InputStream salesChannelErrorPropertyStream = SalesChannelPropertyLoader.class.getResourceAsStream("/net/saleschannel/api/config/errormessage.properties");;
+	public static InputStream salesChannelErrorPropertyStream = SalesChannelPropertyLoader.class.getResourceAsStream("/com/saleschannel/api/config/errormessage.properties");;
 	
 	/**
 	 * Load salesChannel property.
