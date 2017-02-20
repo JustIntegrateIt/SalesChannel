@@ -29,6 +29,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
 import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
+import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
  *
@@ -50,11 +51,11 @@ public class RequestReportSample {
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
          ***********************************************************************/
-        final String accessKeyId = "1QZHP81N5R44N89PFAKE";
-        final String secretAccessKey = "<Your Secret Access Key>";
+        final String accessKeyId = SalesChannelConstants.accessKeyId;
+        final String secretAccessKey = SalesChannelConstants.secretAccessKey;
 
-        final String appName = "<Your Application or Company Name>";
-        final String appVersion = "<Your Application Version or Build Number or Release Date>";
+        final String appName = SalesChannelConstants.appName;
+        final String appVersion = SalesChannelConstants.appVersion;
 
         MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
 
@@ -78,7 +79,7 @@ public class RequestReportSample {
         // Canada
         // config.setServiceURL("https://mws.amazonservices.ca/");
         // India
-        // config.setServiceURL("https://mws.amazonservices.in/");
+        config.setServiceURL("https://mws.amazonservices.in/");
 
         /************************************************************************
          * You can also try advanced configuration options. Available options are:
@@ -117,7 +118,7 @@ public class RequestReportSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
+        final String merchantId = SalesChannelConstants.merchantIdSellerId;
         final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
         // marketplaces from which data should be included in the report; look at the
         // API reference document on the MWS website to see which marketplaces are

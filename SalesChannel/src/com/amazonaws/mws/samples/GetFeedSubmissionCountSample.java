@@ -27,6 +27,7 @@ import com.amazonaws.mws.model.GetFeedSubmissionCountRequest;
 import com.amazonaws.mws.model.GetFeedSubmissionCountResponse;
 import com.amazonaws.mws.model.GetFeedSubmissionCountResult;
 import com.amazonaws.mws.model.ResponseMetadata;
+import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
  *
@@ -47,11 +48,11 @@ public class GetFeedSubmissionCountSample {
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
          ***********************************************************************/
-        final String accessKeyId = "<Your Access Key ID>";
-        final String secretAccessKey = "<Your Secret Access Key>";
+        final String accessKeyId = SalesChannelConstants.accessKeyId;
+        final String secretAccessKey = SalesChannelConstants.secretAccessKey;
 
-        final String appName = "<Your Application or Company Name>";
-        final String appVersion = "<Your Application Version or Build Number or Release Date>";
+        final String appName = SalesChannelConstants.appName;
+        final String appVersion = SalesChannelConstants.appVersion;
 
         MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
 
@@ -75,7 +76,7 @@ public class GetFeedSubmissionCountSample {
         // Canada
         // config.setServiceURL("https://mws.amazonservices.ca/");
         // India
-        // config.setServiceURL("https://mws.amazonservices.in/");
+        config.setServiceURL("https://mws.amazonservices.in/");
 
         /************************************************************************
          * You can also try advanced configuration options. Available options are:
@@ -114,7 +115,7 @@ public class GetFeedSubmissionCountSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
+        final String merchantId = SalesChannelConstants.merchantIdSellerId;
         final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetFeedSubmissionCountRequest request = new GetFeedSubmissionCountRequest();
@@ -123,7 +124,7 @@ public class GetFeedSubmissionCountSample {
 
         // @TODO: set request parameters here
 
-        // invokeGetFeedSubmissionCount(service, request);
+        invokeGetFeedSubmissionCount(service, request);
 
     }
 

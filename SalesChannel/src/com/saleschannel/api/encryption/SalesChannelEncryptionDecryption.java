@@ -247,5 +247,4 @@ public class SalesChannelEncryptionDecryption {
 		}
 		return false;
 	}
-	
 }

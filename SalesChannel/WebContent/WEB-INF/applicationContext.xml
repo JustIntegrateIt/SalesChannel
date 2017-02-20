@@ -26,7 +26,8 @@
 	</bean>
 
 	<bean name="router" class="org.restlet.ext.spring.SpringBeanRouter" />
-
+	
+	<bean id="applicationContextProvider" class="com.saleschannel.api.utility.ApplicationContextProvider"/>
 	<!-- Define all the routes -->
 
 	<!-- sales channel bean Creation Starts -->
@@ -179,6 +180,16 @@
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- warehouse bean Creation and API Ends -->
+	
+	<!-- Orders bean Creation and API Starts -->
+	<bean id="ordersService" class="com.saleschannel.api.order.OrdersServiceImpl">
+		<property name="ordersDao" ref="ordersDao" />
+	</bean>
+	
+	<bean id="ordersDao" class="com.saleschannel.api.order.OrdersDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- Orders bean Creation and API Ends -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

@@ -7,9 +7,14 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -304,4 +309,68 @@ public final class SalesChannelUtility {
 		return isPresent;
 	}
 	
+	/**
+	 * Get MD5 Hash Value for a file stream.
+	 *
+	 * @param filePath the path of file
+	 * @return hashValue
+	 */
+	public static String computeContentMD5Value(String filePath){
+		String md5Content = null;
+		DigestInputStream dis = null;
+		try {
+			FileInputStream fis = new FileInputStream(filePath);
+			dis = new DigestInputStream( fis,MessageDigest.getInstance( "MD5" ));
+
+	        byte[] buffer = new byte[dis.available()];
+	        while( dis.read( buffer ) > 0 );
+
+	        md5Content = new String(
+	            org.apache.commons.codec.binary.Base64.encodeBase64(
+	                dis.getMessageDigest().digest()) ); 
+
+	        // Effectively resets the stream to be beginning of the file
+	        // via a FileChannel.
+	        fis.getChannel().position( 0 );
+		} catch(Exception e) {
+			LOGGERS.error("error occured while get MD5 hashValue for file : "+filePath);
+			e.printStackTrace();
+		} finally {
+			try{
+				if(dis != null) {
+					dis.close();
+				}
+			} catch(Exception e) {
+				LOGGERS.error("error occured while close file inputstream");
+				e.printStackTrace();
+			}
+		}
+		return md5Content;
+	}
+	
+	/**
+	 * Consume the stream and return its Base-64 encoded MD5 checksum.
+	 * @param inputStream
+	 * @return hashValue
+	 */
+	public static String computeContentMD5Header(InputStream inputStream) {
+	    // Consume the stream to compute the MD5 as a side effect.
+	    DigestInputStream s;
+	    String md5Content = null;
+	    try {
+	        s = new DigestInputStream(inputStream, MessageDigest.getInstance("MD5"));
+	        // drain the buffer, as the digest is computed as a side-effect
+	        byte[] buffer = new byte[8192];
+	        while(s.read(buffer) > 0);
+	        md5Content = new String(org.apache.commons.codec.binary.Base64.encodeBase64(
+	                s.getMessageDigest().digest()), "UTF-8");
+	    } catch (NoSuchAlgorithmException e) {
+	    	LOGGERS.error("error occured while computeContentMD5Header");
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	    	LOGGERS.error("error occured while computeContentMD5Header");
+	    	e.printStackTrace();
+	    }
+	    return md5Content;
+	}
 }

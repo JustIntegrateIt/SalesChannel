@@ -21,9 +21,11 @@ package com.amazonaws.mws.samples;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
 import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
+import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
  *
@@ -45,11 +47,11 @@ public class GetReportCountSample {
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
          ***********************************************************************/
-        final String accessKeyId = "<Your Access Key ID>";
-        final String secretAccessKey = "<Your Secret Access Key>";
+        final String accessKeyId = SalesChannelConstants.accessKeyId;
+        final String secretAccessKey = SalesChannelConstants.secretAccessKey;
 
-        final String appName = "<Your Application or Company Name>";
-        final String appVersion = "<Your Application Version or Build Number or Release Date>";
+        final String appName = SalesChannelConstants.appName;
+        final String appVersion = SalesChannelConstants.appVersion;
 
         MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
 
@@ -73,7 +75,7 @@ public class GetReportCountSample {
         // Canada
         // config.setServiceURL("https://mws.amazonservices.ca/");
         // India
-        // config.setServiceURL("https://mws.amazonservices.in/");
+        config.setServiceURL("https://mws.amazonservices.in/");
 
         /************************************************************************
          * The argument (35) set below is the number of threads client should
@@ -119,7 +121,7 @@ public class GetReportCountSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
+        final String merchantId = SalesChannelConstants.merchantIdSellerId;
         final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportCountRequest request = new GetReportCountRequest();
