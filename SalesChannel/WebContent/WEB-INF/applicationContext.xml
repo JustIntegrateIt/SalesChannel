@@ -182,6 +182,11 @@
 	<!-- warehouse bean Creation and API Ends -->
 	
 	<!-- Orders bean Creation and API Starts -->
+	<bean name="/orders" class="com.saleschannel.api.order.OrdersController" scope="prototype">
+		<property name="customerService" ref="customerService" />
+		<property name="ordersService" ref="ordersService" />
+    </bean>
+    
 	<bean id="ordersService" class="com.saleschannel.api.order.OrdersServiceImpl">
 		<property name="ordersDao" ref="ordersDao" />
 	</bean>

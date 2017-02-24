@@ -192,7 +192,7 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 					resetValues();
 					return representation; //return-5
 				}
-				
+
 				// validate the request content passed
 				if (!method.getName().equals(SalesChannelConstants.GET) && !method.getName().equals(SalesChannelConstants.DELETE)) {
 					if(jsonModelObj != null) {

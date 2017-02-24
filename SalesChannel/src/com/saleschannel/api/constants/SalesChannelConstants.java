@@ -51,11 +51,11 @@ public class SalesChannelConstants {
 	public static final String SC_BIN = "sc_bin";
 	public static final String SC_BIN_CONTENT = "sc_bin_content";
 	public static final String SC_POSITION = "sc_position";
-	public static final String SC_AMAZON_ORDER = "sc_amazon_order";
+	public static final String SC_ORDER = "sc_order";
 	public static final String SC_AMAZON_ORDER_ITEMS = "sc_amazon_order_items";
 	public static final String SC_AMAZON_ORDER_INVOICE_DATA = "sc_amazon_order_invoice_data";
 	public static final String SC_AMAZON_ORDER_PAYMENT_EXECUTION_DETAILS = "sc_amazon_order_payment_execution_detail";
-	public static final String SC_AMAZON_ORDER_SHIPPING_ADDRESS = "sc_amazon_order_shipping_address"; 
+	public static final String SC_ORDER_SHIPPING_ADDRESS = "sc_order_shipping_address"; 
 	
 	/** AMZ MWS creadentials names. */
 	public static final String accessKeyId = "AKIAIC2MSCXCVWE3BLJQ";  
