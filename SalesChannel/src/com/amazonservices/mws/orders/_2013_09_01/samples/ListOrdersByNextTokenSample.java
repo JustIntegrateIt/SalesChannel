@@ -15,11 +15,6 @@
  */
 package com.amazonservices.mws.orders._2013_09_01.samples;
 
-import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -68,24 +63,26 @@ public class ListOrdersByNextTokenSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
-
-        // Get a client connection.
+    public ListOrdersByNextTokenResponse listOrdersByNextToken(String sellerId, String mwsAuthToken, String nextToken) {
+    	
+    	ListOrdersByNextTokenResponse listOrdersByNextTokenResponse = null;
+        
+    	// Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceOrdersSampleConfig.
         MarketplaceWebServiceOrdersClient client = MarketplaceWebServiceOrdersSampleConfig.getClient();
 
         // Create a request.
         ListOrdersByNextTokenRequest request = new ListOrdersByNextTokenRequest();
-        String sellerId = "A44435JW4FD32";
+        sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
+        mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String nextToken = "MRgZW55IGNhcm5hbCBwbGVhc3VyZS6%3D";
+        nextToken = "MRgZW55IGNhcm5hbCBwbGVhc3VyZS6%3D";
         request.setNextToken(nextToken);
 
         // Make the call.
-        ListOrdersByNextTokenSample.invokeListOrdersByNextToken(client, request);
-
+        listOrdersByNextTokenResponse = ListOrdersByNextTokenSample.invokeListOrdersByNextToken(client, request);
+        return listOrdersByNextTokenResponse;
     }
 
 }

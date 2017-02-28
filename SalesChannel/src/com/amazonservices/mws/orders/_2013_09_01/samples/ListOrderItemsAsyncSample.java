@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -88,25 +85,35 @@ public class ListOrderItemsAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<ListOrderItemsResponse> listOrderItemsAsync(String sellerId, String mwsAuthToken
+    		, String amazonOrderId) {
 
+    	List<ListOrderItemsResponse> orderItemsResponseList = null; 
         // Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<ListOrderItemsRequest> requestList = new ArrayList<ListOrderItemsRequest>();
         ListOrderItemsRequest request = new ListOrderItemsRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String amazonOrderId = "058-1233752-8214740";
         request.setAmazonOrderId(amazonOrderId);
         requestList.add(request);
 
         // Make the calls.
-        ListOrderItemsAsyncSample.invokeListOrderItems(client, requestList);
-
+        List<Object> orderItemsResponseObj = ListOrderItemsAsyncSample.invokeListOrderItems(client, requestList);
+        if(orderItemsResponseObj != null && orderItemsResponseObj.size() > 0) {
+        	orderItemsResponseList = new ArrayList<ListOrderItemsResponse>();
+            for(Object obj : orderItemsResponseObj) {
+            	if(obj instanceof ListOrderItemsResponse) {
+            		ListOrderItemsResponse orderItemsResponse = (ListOrderItemsResponse) obj;
+            		if(orderItemsResponse != null) {
+            			orderItemsResponseList.add(orderItemsResponse);
+            		}
+            	}
+            }
+        }
+        return orderItemsResponseList;
     }
 
 }

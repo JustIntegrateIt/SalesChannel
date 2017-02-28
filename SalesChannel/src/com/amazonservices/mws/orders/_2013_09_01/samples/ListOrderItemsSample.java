@@ -15,11 +15,6 @@
  */
 package com.amazonservices.mws.orders._2013_09_01.samples;
 
-import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -68,24 +63,25 @@ public class ListOrderItemsSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public ListOrderItemsResponse listOrderItems(String sellerId, String mwsAuthToken, String amazonOrderId) {
 
+    	ListOrderItemsResponse listOrderItemsResponse = null;
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceOrdersSampleConfig.
         MarketplaceWebServiceOrdersClient client = MarketplaceWebServiceOrdersSampleConfig.getClient();
 
         // Create a request.
         ListOrderItemsRequest request = new ListOrderItemsRequest();
-        String sellerId = "A44435JW4FD32";
+        sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
+        mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String amazonOrderId = "058-1233752-8214740";
+        amazonOrderId = "058-1233752-8214740";
         request.setAmazonOrderId(amazonOrderId);
 
         // Make the call.
-        ListOrderItemsSample.invokeListOrderItems(client, request);
-
+        listOrderItemsResponse = ListOrderItemsSample.invokeListOrderItems(client, request);
+        return listOrderItemsResponse;
     }
 
 }

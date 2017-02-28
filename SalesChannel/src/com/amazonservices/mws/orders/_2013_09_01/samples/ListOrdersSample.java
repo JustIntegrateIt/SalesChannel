@@ -18,6 +18,8 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 import java.util.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
+
+import com.amazonservices.mws.client.MwsUtl;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
@@ -66,26 +68,27 @@ public class ListOrdersSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public ListOrdersResponse listOrders(ListOrdersRequest request) {
 
+    	ListOrdersResponse listOrdersResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceOrdersSampleConfig.
         MarketplaceWebServiceOrdersClient client = MarketplaceWebServiceOrdersSampleConfig.getClient();
 
-        // Create a request.
-        ListOrdersRequest request = new ListOrdersRequest();
+        // Create a request. Example code
+        /*ListOrdersRequest request = new ListOrdersRequest();
         String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
         String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
         
-        /*XMLGregorianCalendar createdAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
+        XMLGregorianCalendar createdAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
         request.setCreatedAfter(createdAfter);
         
         XMLGregorianCalendar createdBefore = MwsUtl.getDTF().newXMLGregorianCalendar();
-        request.setCreatedBefore(createdBefore);*/
+        request.setCreatedBefore(createdBefore);
         
-        //XMLGregorianCalendar lastUpdatedAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
         XMLGregorianCalendar tmStamp3 = new XMLGregorianCalendarImpl();
         tmStamp3.setYear(2013);
         tmStamp3.setMonth(Calendar.AUGUST);
@@ -94,19 +97,20 @@ public class ListOrdersSample {
         tmStamp3.setMinute(59); 
         tmStamp3.setSecond(30);
         request.setLastUpdatedAfter(tmStamp3);
-        //request.setLastUpdatedAfter(lastUpdatedAfter);
+        XMLGregorianCalendar lastUpdatedAfter = MwsUtl.getDTF().newXMLGregorianCalendar();
+        request.setLastUpdatedAfter(lastUpdatedAfter);
         
-        /*XMLGregorianCalendar lastUpdatedBefore = MwsUtl.getDTF().newXMLGregorianCalendar();
-        request.setLastUpdatedBefore(lastUpdatedBefore);*/
+        XMLGregorianCalendar lastUpdatedBefore = MwsUtl.getDTF().newXMLGregorianCalendar();
+        request.setLastUpdatedBefore(lastUpdatedBefore);
         
         List<String> orderStatus = new ArrayList<String>();
-        //orderStatus.add("Unshipped");
-        //orderStatus.add("PendingAvailability");
+        orderStatus.add("Unshipped");
+        orderStatus.add("PendingAvailability");
         request.setOrderStatus(orderStatus);
         List<String> marketplaceId = new ArrayList<String>();
         marketplaceId.add("A21TJRUUN4KGV");
         request.setMarketplaceId(marketplaceId);
-        /*List<String> fulfillmentChannel = new ArrayList<String>();
+        List<String> fulfillmentChannel = new ArrayList<String>();
         fulfillmentChannel.add("MFN");
         request.setFulfillmentChannel(fulfillmentChannel);
         List<String> paymentMethod = new ArrayList<String>();
@@ -115,15 +119,15 @@ public class ListOrdersSample {
         String buyerEmail = "harikrishnan.r@justintegrateit.com";
         request.setBuyerEmail(buyerEmail);
         String sellerOrderId = "902-3159896-1390916";
-        request.setSellerOrderId(sellerOrderId);*/
+        request.setSellerOrderId(sellerOrderId);
         Integer maxResultsPerPage = 1;
         request.setMaxResultsPerPage(maxResultsPerPage);
         List<String> tfmShipmentStatus = new ArrayList<String>();
-        request.setTFMShipmentStatus(tfmShipmentStatus);
+        request.setTFMShipmentStatus(tfmShipmentStatus);*/
 
         // Make the call.
-        ListOrdersSample.invokeListOrders(client, request);
-
+        listOrdersResponse = ListOrdersSample.invokeListOrders(client, request);
+        return listOrdersResponse;
     }
 
 }

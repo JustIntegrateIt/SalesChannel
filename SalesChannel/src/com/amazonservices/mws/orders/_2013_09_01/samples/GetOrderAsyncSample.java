@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -39,8 +36,7 @@ public class GetOrderAsyncSample {
             MarketplaceWebServiceOrdersAsync client, 
             List<GetOrderRequest> requestList) {
         // Call the service async.
-        List<Future<GetOrderResponse>> futureList = 
-            new ArrayList<Future<GetOrderResponse>>();
+        List<Future<GetOrderResponse>> futureList = new ArrayList<Future<GetOrderResponse>>();
         for (GetOrderRequest request : requestList) {
             Future<GetOrderResponse> future = 
                 client.getOrderAsync(request);
@@ -88,25 +84,34 @@ public class GetOrderAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
-
+    public List<GetOrderResponse> getOrderAsync(String sellerId, String mwsAuthToken
+    		, List<String> amazonOrderId) {
+    	List<GetOrderResponse> orderResponseList = null;
         // Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetOrderRequest> requestList = new ArrayList<GetOrderRequest>();
         GetOrderRequest request = new GetOrderRequest();
-        String sellerId = "example";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "example";
         request.setMWSAuthToken(mwsAuthToken);
-        List<String> amazonOrderId = new ArrayList<String>();
         request.setAmazonOrderId(amazonOrderId);
         requestList.add(request);
 
         // Make the calls.
-        GetOrderAsyncSample.invokeGetOrder(client, requestList);
-
+        List<Object> orderResponseObj = GetOrderAsyncSample.invokeGetOrder(client, requestList);
+        if(orderResponseObj != null && orderResponseObj.size() > 0) {
+        	orderResponseList = new ArrayList<GetOrderResponse>();
+            for(Object obj : orderResponseObj) {
+            	if(obj instanceof GetOrderResponse) {
+            		GetOrderResponse orderResponse = (GetOrderResponse) obj;
+            		if(orderResponse != null) {
+            			orderResponseList.add(orderResponse);
+            		}
+            	}
+            }
+        }
+        return orderResponseList;
     }
 
 }

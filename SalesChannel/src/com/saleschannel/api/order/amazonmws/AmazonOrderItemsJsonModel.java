@@ -1,4 +1,4 @@
-package com.saleschannel.api.order;
+package com.saleschannel.api.order.amazonmws;
 
 import java.util.Date;
 import java.util.List;

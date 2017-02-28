@@ -2,6 +2,12 @@ package com.saleschannel.api.order;
 
 import java.util.List;
 
+import com.saleschannel.api.order.amazonmws.AmazonOrderInvoiceDataJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderItemsJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderPaymentExeDetailJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderShippingAddressJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
+
 public interface OrdersDao {
 	
 	public boolean insertOrder(Object order);

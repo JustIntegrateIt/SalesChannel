@@ -1,4 +1,4 @@
-package com.saleschannel.api.Exception;
+package com.saleschannel.api.exception;
 
 public class SalesChannelException extends Exception {
 

@@ -11,6 +11,11 @@ import com.amazonservices.mws.orders._2013_09_01.model.ListOrderItemsResponse;
 import com.amazonservices.mws.orders._2013_09_01.model.Order;
 import com.amazonservices.mws.orders._2013_09_01.model.OrderItem;
 import com.amazonservices.mws.orders._2013_09_01.model.PaymentExecutionDetailItem;
+import com.saleschannel.api.order.amazonmws.AmazonOrderInvoiceDataJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderItemsJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderPaymentExeDetailJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderShippingAddressJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
 
 public class OrdersServiceImpl implements OrdersService {
 

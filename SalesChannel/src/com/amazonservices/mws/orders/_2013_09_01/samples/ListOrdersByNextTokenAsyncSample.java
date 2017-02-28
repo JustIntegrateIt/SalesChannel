@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -88,25 +85,33 @@ public class ListOrdersByNextTokenAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<ListOrdersByNextTokenResponse> listOrdersByNextTokenAsync(String sellerId, String mwsAuthToken, String nextToken) {
 
-        // Get a client connection.
+    	List<ListOrdersByNextTokenResponse> listOrdersByNextTokenResponseList = null;
+        
+    	// Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<ListOrdersByNextTokenRequest> requestList = new ArrayList<ListOrdersByNextTokenRequest>();
         ListOrdersByNextTokenRequest request = new ListOrdersByNextTokenRequest();
-        String sellerId = "example";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "example";
         request.setMWSAuthToken(mwsAuthToken);
-        String nextToken = "example";
         request.setNextToken(nextToken);
         requestList.add(request);
 
         // Make the calls.
-        ListOrdersByNextTokenAsyncSample.invokeListOrdersByNextToken(client, requestList);
-
+        List<Object> listOrdersByNextTokenResponseObj = ListOrdersByNextTokenAsyncSample.invokeListOrdersByNextToken(client, requestList);
+        if(listOrdersByNextTokenResponseObj != null && listOrdersByNextTokenResponseObj.size() > 0) {
+        	listOrdersByNextTokenResponseList = new ArrayList<ListOrdersByNextTokenResponse>();
+        	for(Object obj : listOrdersByNextTokenResponseObj) {
+        		ListOrdersByNextTokenResponse listOrdersByNextTokenResponse = (ListOrdersByNextTokenResponse) obj;
+        		if(listOrdersByNextTokenResponse != null) {
+        			listOrdersByNextTokenResponseList.add(listOrdersByNextTokenResponse);
+        		}
+        	}
+        }
+        return listOrdersByNextTokenResponseList;
     }
 
 }

@@ -9,6 +9,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import com.saleschannel.api.constants.SalesChannelConstants;
+import com.saleschannel.api.order.amazonmws.AmazonOrderInvoiceDataJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderItemsJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderPaymentExeDetailJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrderShippingAddressJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
 
 public class OrdersDaoImpl implements OrdersDao {
 
@@ -50,7 +55,7 @@ private static final Logger LOGGERS = Logger.getLogger(OrdersDaoImpl.class);
 		AmazonOrdersJsonModel order = null;
 		try{
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.AmazonOrdersJsonModel")
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel")
 					.and(variableName).is(variableValue));
 			order = this.mongoOps.findOne(query, AmazonOrdersJsonModel.class, SalesChannelConstants.SC_ORDER);
 		} catch(Exception e) {
@@ -90,7 +95,7 @@ private static final Logger LOGGERS = Logger.getLogger(OrdersDaoImpl.class);
 		AmazonOrderShippingAddressJsonModel address = null;
 		try{
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.AmazonOrderShippingAddressJsonModel")
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.amazonmws.AmazonOrderShippingAddressJsonModel")
 					.and(variableName).is(variableValue));
 			address = this.mongoOps.findOne(query, AmazonOrderShippingAddressJsonModel.class, SalesChannelConstants.SC_ORDER_SHIPPING_ADDRESS);
 		} catch(Exception e) {
@@ -128,7 +133,7 @@ private static final Logger LOGGERS = Logger.getLogger(OrdersDaoImpl.class);
 		List<AmazonOrderPaymentExeDetailJsonModel> paymentExeDetailList = null;
 		try{
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.AmazonOrderPaymentExeDetailJsonModel")
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.amazonmws.AmazonOrderPaymentExeDetailJsonModel")
 					.and(variableName).is(variableValue));
 			paymentExeDetailList = this.mongoOps.find(query, AmazonOrderPaymentExeDetailJsonModel.class, SalesChannelConstants.SC_AMAZON_ORDER_PAYMENT_EXECUTION_DETAILS);
 		} catch(Exception e) {
@@ -168,7 +173,7 @@ private static final Logger LOGGERS = Logger.getLogger(OrdersDaoImpl.class);
 		AmazonOrderInvoiceDataJsonModel amazonOrderInvoiceData = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.AmazonOrderInvoiceDataJsonModel")
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.amazonmws.AmazonOrderInvoiceDataJsonModel")
 					.and(variableName).is(variableValue));
 			amazonOrderInvoiceData = this.mongoOps.findOne(query, AmazonOrderInvoiceDataJsonModel.class, SalesChannelConstants.SC_AMAZON_ORDER_INVOICE_DATA);
 		} catch(Exception e) {
@@ -206,7 +211,7 @@ private static final Logger LOGGERS = Logger.getLogger(OrdersDaoImpl.class);
 		List<AmazonOrderItemsJsonModel> amazonOrderItemsList = null;
 		try {
 			Query query = new Query();
-			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.AmazonOrderItemsJsonModel")
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.order.amazonmws.AmazonOrderItemsJsonModel")
 					.and(variableName).is(variableValue));
 			amazonOrderItemsList = this.mongoOps.find(query, AmazonOrderItemsJsonModel.class, SalesChannelConstants.SC_AMAZON_ORDER_ITEMS);
 		} catch(Exception e) {

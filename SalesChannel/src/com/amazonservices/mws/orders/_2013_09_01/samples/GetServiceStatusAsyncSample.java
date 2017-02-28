@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -88,23 +85,33 @@ public class GetServiceStatusAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetServiceStatusResponse> getServiceStatusAsync(String sellerId, String mwsAuthToken) {
 
+    	List<GetServiceStatusResponse> serviceStatusResponseList = null;
         // Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetServiceStatusRequest> requestList = new ArrayList<GetServiceStatusRequest>();
         GetServiceStatusRequest request = new GetServiceStatusRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
         requestList.add(request);
 
         // Make the calls.
-        GetServiceStatusAsyncSample.invokeGetServiceStatus(client, requestList);
-
+        List<Object> serviceStatusResponseObj = GetServiceStatusAsyncSample.invokeGetServiceStatus(client, requestList);
+        if(serviceStatusResponseObj != null && serviceStatusResponseObj.size() > 0) {
+        	serviceStatusResponseList = new ArrayList<GetServiceStatusResponse>();
+            for(Object obj : serviceStatusResponseObj) {
+            	if(obj instanceof GetServiceStatusResponse) {
+            		GetServiceStatusResponse serviceStatusResponse = (GetServiceStatusResponse) obj;
+            		if(serviceStatusResponse != null) {
+            			serviceStatusResponseList.add(serviceStatusResponse);
+            		}
+            	}
+            }
+        }
+        return serviceStatusResponseList;
     }
 
 }

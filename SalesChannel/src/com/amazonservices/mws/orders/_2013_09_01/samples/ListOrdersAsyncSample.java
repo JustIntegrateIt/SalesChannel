@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -88,13 +85,15 @@ public class ListOrdersAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<ListOrdersResponse> listOrdersAsync(List<ListOrdersRequest> requestList) {
 
+    	List<ListOrdersResponse> listOrdersResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
-        // Create a request list.
-        List<ListOrdersRequest> requestList = new ArrayList<ListOrdersRequest>();
+        // Create a request list. Example code
+        /*List<ListOrdersRequest> requestList = new ArrayList<ListOrdersRequest>();
         ListOrdersRequest request = new ListOrdersRequest();
         String sellerId = "example";
         request.setSellerId(sellerId);
@@ -124,11 +123,22 @@ public class ListOrdersAsyncSample {
         request.setMaxResultsPerPage(maxResultsPerPage);
         List<String> tfmShipmentStatus = new ArrayList<String>();
         request.setTFMShipmentStatus(tfmShipmentStatus);
-        requestList.add(request);
+        requestList.add(request);*/
 
         // Make the calls.
-        ListOrdersAsyncSample.invokeListOrders(client, requestList);
-
+        List<Object> listOrdersResponseObj = ListOrdersAsyncSample.invokeListOrders(client, requestList);
+        if(listOrdersResponseObj != null && listOrdersResponseObj.size() > 0) {
+        	listOrdersResponseList = new ArrayList<ListOrdersResponse>();
+        	for(Object obj : listOrdersResponseObj) {
+        		if(obj instanceof ListOrdersResponse) {
+        			ListOrdersResponse listOrdersResponse = (ListOrdersResponse) obj;
+        			if(listOrdersResponse != null) {
+        				listOrdersResponseList.add(listOrdersResponse);
+        			}
+        		}
+        	}
+        }
+        return listOrdersResponseList;
     }
 
 }

@@ -15,6 +15,7 @@ import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 
 import com.saleschannel.api.SalesChannelServerResource;
+import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
 import com.saleschannel.api.product.ProductController;
 import com.saleschannel.api.product.ProductJsonModel;
 import com.saleschannel.api.product.ProductJsonObject;

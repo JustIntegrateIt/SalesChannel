@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.amazonservices.mws.orders._2013_09_01.model.GetOrderResponse;
 import com.amazonservices.mws.orders._2013_09_01.model.ListOrderItemsResponse;
+import com.saleschannel.api.order.amazonmws.AmazonOrderItemsJsonModel;
+import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
 
 public interface OrdersService {
 

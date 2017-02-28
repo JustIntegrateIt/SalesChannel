@@ -17,10 +17,7 @@ package com.amazonservices.mws.orders._2013_09_01.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.orders._2013_09_01.*;
 import com.amazonservices.mws.orders._2013_09_01.model.*;
 
@@ -88,25 +85,36 @@ public class ListOrderItemsByNextTokenAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<ListOrderItemsByNextTokenResponse> listOrderItemsByNextTokenAsync(String sellerId, String mwsAuthToken
+    		, String nextToken) {
 
+    	List<ListOrderItemsByNextTokenResponse> orderItemsList = null; 
         // Get a client connection.
         MarketplaceWebServiceOrdersAsyncClient client = MarketplaceWebServiceOrdersSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<ListOrderItemsByNextTokenRequest> requestList = new ArrayList<ListOrderItemsByNextTokenRequest>();
         ListOrderItemsByNextTokenRequest request = new ListOrderItemsByNextTokenRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String nextToken = "2YgYW55IGNhcm5hbCBwbGVhc3VyZS4%3D";
+        nextToken = "2YgYW55IGNhcm5hbCBwbGVhc3VyZS4%3D";
         request.setNextToken(nextToken);
         requestList.add(request);
 
         // Make the calls.
-        ListOrderItemsByNextTokenAsyncSample.invokeListOrderItemsByNextToken(client, requestList);
-
+        List<Object> orderItemsObj = ListOrderItemsByNextTokenAsyncSample.invokeListOrderItemsByNextToken(client, requestList);
+        if(orderItemsObj != null && orderItemsObj.size() > 0) {
+        	orderItemsList = new ArrayList<ListOrderItemsByNextTokenResponse>();
+            for(Object obj : orderItemsObj) {
+            	if(obj instanceof ListOrderItemsByNextTokenResponse) {
+            		ListOrderItemsByNextTokenResponse orderItems = (ListOrderItemsByNextTokenResponse) obj;
+            		if(orderItems != null) {
+            			orderItemsList.add(orderItems);
+            		}
+            	}
+            }
+        }
+        return orderItemsList;
     }
 
 }
