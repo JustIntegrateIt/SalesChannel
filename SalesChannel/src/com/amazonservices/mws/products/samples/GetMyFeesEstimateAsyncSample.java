@@ -18,11 +18,8 @@ package com.amazonservices.mws.products.samples;
 import java.util.*;
 import java.util.concurrent.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -90,28 +87,31 @@ public class GetMyFeesEstimateAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetMyFeesEstimateResponse> getMyFeesEstimateAsync(String sellerId
+    		, String mwsAuthToken, FeesEstimateRequestList feesEstimateRequestList
+    		, FeesEstimateRequest fer, PriceToEstimateFees pte, MoneyType mt, Points points
+    		, List<FeesEstimateRequest> feesEstimateRequest) {
 
+    	List<GetMyFeesEstimateResponse> getMyFeesEstimateResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetMyFeesEstimateRequest> requestList = new ArrayList<GetMyFeesEstimateRequest>();
         GetMyFeesEstimateRequest request = new GetMyFeesEstimateRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        FeesEstimateRequestList feesEstimateRequestList = new FeesEstimateRequestList();
-        FeesEstimateRequest fer = new FeesEstimateRequest();
+        feesEstimateRequestList = new FeesEstimateRequestList();
+        fer = new FeesEstimateRequest();
         fer.setIdentifier("request1");
         fer.setIdType("ASIN");
         fer.setIdValue("B01N6WRGP5");
         fer.setIsAmazonFulfilled(true);
         fer.setMarketplaceId("A21TJRUUN4KGV");
-        PriceToEstimateFees pte = new PriceToEstimateFees();
-        MoneyType mt = new MoneyType();
-        Points points = new Points();
+        pte = new PriceToEstimateFees();
+        mt = new MoneyType();
+        points = new Points();
         mt.setCurrencyCode("USD");
         mt.setAmount(new BigDecimal(200));
         pte.setListingPrice(mt);
@@ -119,15 +119,26 @@ public class GetMyFeesEstimateAsyncSample {
         pte.setPoints(points);
         pte.setShipping(mt);
         fer.setPriceToEstimateFees(pte);
-        List<FeesEstimateRequest> feesEstimateRequest = new ArrayList<FeesEstimateRequest>();
+        feesEstimateRequest = new ArrayList<FeesEstimateRequest>();
         feesEstimateRequest.add(fer);
         feesEstimateRequestList.setFeesEstimateRequest(feesEstimateRequest);
         request.setFeesEstimateRequestList(feesEstimateRequestList);
         requestList.add(request);
 
         // Make the calls.
-        GetMyFeesEstimateAsyncSample.invokeGetMyFeesEstimate(client, requestList);
-
+        List<Object> getMyFeesEstimateResponseObj = GetMyFeesEstimateAsyncSample.invokeGetMyFeesEstimate(client, requestList);
+        if(getMyFeesEstimateResponseObj != null && getMyFeesEstimateResponseObj.size() > 0) {
+        	getMyFeesEstimateResponseList = new ArrayList<GetMyFeesEstimateResponse>();
+        	for(Object obj : getMyFeesEstimateResponseList) {
+        		if(obj instanceof GetMyFeesEstimateResponse) {
+        			GetMyFeesEstimateResponse getMyFeesEstimateResponse = (GetMyFeesEstimateResponse) obj;
+        			if(getMyFeesEstimateResponse != null) {
+        				getMyFeesEstimateResponseList.add(getMyFeesEstimateResponse);
+        			}
+        		}
+        	}
+        }
+        return getMyFeesEstimateResponseList;
     }
 
 }

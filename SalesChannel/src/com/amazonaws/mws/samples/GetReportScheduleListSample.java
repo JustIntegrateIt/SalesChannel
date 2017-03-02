@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class GetReportScheduleListSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportScheduleListResponse getReportScheduleList(String merchantId, String sellerDevAuthToken) {
+    	GetReportScheduleListResponse getReportScheduleListResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +109,17 @@ public class GetReportScheduleListSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportScheduleListRequest request = new GetReportScheduleListRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportScheduleList(service, request);
-
+        getReportScheduleListResponse = invokeGetReportScheduleList(service, request);
+        return getReportScheduleListResponse;
     }
 
 
@@ -134,10 +131,11 @@ public class GetReportScheduleListSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportScheduleList(MarketplaceWebService service, GetReportScheduleListRequest request) {
-        try {
+    public static GetReportScheduleListResponse invokeGetReportScheduleList(MarketplaceWebService service, GetReportScheduleListRequest request) {
+    	GetReportScheduleListResponse response = null;
+    	try {
 
-            GetReportScheduleListResponse response = service.getReportScheduleList(request);
+            response = service.getReportScheduleList(request);
 
 
             System.out.println ("GetReportScheduleList Action Response");
@@ -212,6 +210,7 @@ public class GetReportScheduleListSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

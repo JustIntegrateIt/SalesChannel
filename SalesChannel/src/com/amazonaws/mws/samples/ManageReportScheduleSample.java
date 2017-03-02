@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class ManageReportScheduleSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public ManageReportScheduleResponse manageReportSchedule(String merchantId, String sellerDevAuthToken) {
+    	ManageReportScheduleResponse manageReportScheduleResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +109,17 @@ public class ManageReportScheduleSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         ManageReportScheduleRequest request = new ManageReportScheduleRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeManageReportSchedule(service, request);
-
+        manageReportScheduleResponse = invokeManageReportSchedule(service, request);
+        return manageReportScheduleResponse;
     }
 
 
@@ -135,10 +132,11 @@ public class ManageReportScheduleSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeManageReportSchedule(MarketplaceWebService service, ManageReportScheduleRequest request) {
-        try {
+    public static ManageReportScheduleResponse invokeManageReportSchedule(MarketplaceWebService service, ManageReportScheduleRequest request) {
+    	ManageReportScheduleResponse response = null;
+    	try {
 
-            ManageReportScheduleResponse response = service.manageReportSchedule(request);
+            response = service.manageReportSchedule(request);
 
 
             System.out.println ("ManageReportSchedule Action Response");
@@ -207,6 +205,7 @@ public class ManageReportScheduleSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

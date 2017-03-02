@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class GetReportRequestListSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportRequestListResponse getReportRequestList(String merchantId, String sellerDevAuthToken) {
+    	GetReportRequestListResponse getReportRequestListResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +109,17 @@ public class GetReportRequestListSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportRequestListRequest request = new GetReportRequestListRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportRequestList(service, request);
-
+        getReportRequestListResponse = invokeGetReportRequestList(service, request);
+        return getReportRequestListResponse;
     }
 
 
@@ -134,10 +131,11 @@ public class GetReportRequestListSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportRequestList(MarketplaceWebService service, GetReportRequestListRequest request) {
-        try {
+    public static GetReportRequestListResponse invokeGetReportRequestList(MarketplaceWebService service, GetReportRequestListRequest request) {
+    	GetReportRequestListResponse response = null;
+    	try {
 
-            GetReportRequestListResponse response = service.getReportRequestList(request);
+            response = service.getReportRequestList(request);
 
 
             System.out.println ("GetReportRequestList Action Response");
@@ -236,6 +234,7 @@ public class GetReportRequestListSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

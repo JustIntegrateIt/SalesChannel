@@ -43,7 +43,8 @@ public class GetFeedSubmissionCountSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
+    public GetFeedSubmissionCountResponse getFeedSubmissionCount(String merchantId, String sellerDevAuthToken) {
+    	GetFeedSubmissionCountResponse getFeedSubmissionCountResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -115,17 +116,17 @@ public class GetFeedSubmissionCountSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = SalesChannelConstants.merchantIdSellerId;
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = SalesChannelConstants.merchantIdSellerId;
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetFeedSubmissionCountRequest request = new GetFeedSubmissionCountRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        invokeGetFeedSubmissionCount(service, request);
-
+        getFeedSubmissionCountResponse = invokeGetFeedSubmissionCount(service, request);
+        return getFeedSubmissionCountResponse;
     }
 
 
@@ -137,10 +138,11 @@ public class GetFeedSubmissionCountSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetFeedSubmissionCount(MarketplaceWebService service, GetFeedSubmissionCountRequest request) {
-        try {
+    public static GetFeedSubmissionCountResponse invokeGetFeedSubmissionCount(MarketplaceWebService service, GetFeedSubmissionCountRequest request) {
+    	GetFeedSubmissionCountResponse response = null;
+    	try {
 
-            GetFeedSubmissionCountResponse response = service.getFeedSubmissionCount(request);
+            response = service.getFeedSubmissionCount(request);
 
 
             System.out.println ("GetFeedSubmissionCount Action Response");
@@ -186,6 +188,7 @@ public class GetFeedSubmissionCountSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

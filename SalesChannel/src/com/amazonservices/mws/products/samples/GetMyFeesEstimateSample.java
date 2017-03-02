@@ -17,11 +17,8 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -70,28 +67,31 @@ public class GetMyFeesEstimateSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetMyFeesEstimateResponse getMyFeesEstimate(String sellerId
+    		, String mwsAuthToken, FeesEstimateRequestList feesEstimateRequestList
+    		, FeesEstimateRequest fer, PriceToEstimateFees pte, MoneyType mt, Points points
+    		, List<FeesEstimateRequest> feesEstimateRequest) {
 
+    	GetMyFeesEstimateResponse getMyFeesEstimateResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetMyFeesEstimateRequest request = new GetMyFeesEstimateRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        FeesEstimateRequestList feesEstimateRequestList = new FeesEstimateRequestList();
-        FeesEstimateRequest fer = new FeesEstimateRequest();
+        feesEstimateRequestList = new FeesEstimateRequestList();
+        fer = new FeesEstimateRequest();
         fer.setIdentifier("request1");
         fer.setIdType("ASIN");
         fer.setIdValue("B01N6WRGP5");
         fer.setIsAmazonFulfilled(true);
         fer.setMarketplaceId("A21TJRUUN4KGV");
-        PriceToEstimateFees pte = new PriceToEstimateFees();
-        MoneyType mt = new MoneyType();
-        Points points = new Points();
+        pte = new PriceToEstimateFees();
+        mt = new MoneyType();
+        points = new Points();
         mt.setCurrencyCode("USD");
         mt.setAmount(new BigDecimal(200));
         pte.setListingPrice(mt);
@@ -99,14 +99,14 @@ public class GetMyFeesEstimateSample {
         pte.setPoints(points);
         pte.setShipping(mt);
         fer.setPriceToEstimateFees(pte);
-        List<FeesEstimateRequest> feesEstimateRequest = new ArrayList<FeesEstimateRequest>();
+        feesEstimateRequest = new ArrayList<FeesEstimateRequest>();
         feesEstimateRequest.add(fer);
         feesEstimateRequestList.setFeesEstimateRequest(feesEstimateRequest);
         request.setFeesEstimateRequestList(feesEstimateRequestList);
 
         // Make the call.
-        GetMyFeesEstimateSample.invokeGetMyFeesEstimate(client, request);
-
+        getMyFeesEstimateResponse = GetMyFeesEstimateSample.invokeGetMyFeesEstimate(client, request);
+        return getMyFeesEstimateResponse;
     }
 
 }

@@ -70,29 +70,29 @@ public class GetCompetitivePricingForSKUSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetCompetitivePricingForSKUResponse getCompetitivePricingForSKU(String sellerId, String mwsAuthToken, String marketplaceId, SellerSKUListType sellerSKUList
+    		, List<String> sellerSKU) {
 
+    	GetCompetitivePricingForSKUResponse getCompetitivePricingForSKUResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetCompetitivePricingForSKURequest request = new GetCompetitivePricingForSKURequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        SellerSKUListType sellerSKUList = new SellerSKUListType();
-        List<String> sellerSKU = new ArrayList<String>();
+        sellerSKUList = new SellerSKUListType();
+        sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);
         request.setSellerSKUList(sellerSKUList);
 
         // Make the call.
-        GetCompetitivePricingForSKUSample.invokeGetCompetitivePricingForSKU(client, request);
-
+        getCompetitivePricingForSKUResponse = GetCompetitivePricingForSKUSample.invokeGetCompetitivePricingForSKU(client, request);
+        return getCompetitivePricingForSKUResponse;
     }
 
 }

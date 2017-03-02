@@ -39,8 +39,9 @@ public class GetReportListAsyncSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
+    public List<GetReportListResponse> getReportListAsync(String merchantId, String sellerDevAuthToken) {
 
+    	List<GetReportListResponse> getReportListResponseList = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -106,25 +107,25 @@ public class GetReportListAsyncSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportListRequest requestOne = new GetReportListRequest();
         requestOne.setMerchant( merchantId );
-        //requestOne.setMWSAuthToken(sellerDevAuthToken);
+        requestOne.setMWSAuthToken(sellerDevAuthToken);
         // @TODO: set request parameters here
 
         GetReportListRequest requestTwo = new GetReportListRequest();
         requestTwo.setMerchant( merchantId );
-        //requestTwo.setMWSAuthToken(sellerDevAuthToken);
+        requestTwo.setMWSAuthToken(sellerDevAuthToken);
         // @TODO: set second request parameters here
 
         List<GetReportListRequest> requests = new ArrayList<GetReportListRequest>();
         requests.add(requestOne);
         requests.add(requestTwo);
 
-        // invokeGetReportList(service, requests);
-
+        getReportListResponseList = invokeGetReportList(service, requests);
+        return getReportListResponseList;
     }
 
 
@@ -137,37 +138,43 @@ public class GetReportListAsyncSample {
      * @param service instance of MarketplaceWebService service
      * @param requests list of requests to process
      */
-    public static void invokeGetReportList(MarketplaceWebService service, List<GetReportListRequest> requests) {
-        List<Future<GetReportListResponse>> responses = new ArrayList<Future<GetReportListResponse>>();
+    public static List<GetReportListResponse> invokeGetReportList(MarketplaceWebService service, List<GetReportListRequest> requests) {
+    	List<GetReportListResponse> getReportListResponseList = null;
+    	List<Future<GetReportListResponse>> responses = new ArrayList<Future<GetReportListResponse>>();
         for (GetReportListRequest request : requests) {
             responses.add(service.getReportListAsync(request));
         }
-        for (Future<GetReportListResponse> future : responses) {
-            while (!future.isDone()) {
-                Thread.yield();
-            }
-            try {
-                GetReportListResponse response = future.get();
-                // Original request corresponding to this response, if needed:
-                GetReportListRequest originalRequest = requests.get(responses.indexOf(future));
-                System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
-                System.out.println(response.getResponseHeaderMetadata());
-                System.out.println();
-            } catch (Exception e) {
-                if (e.getCause() instanceof MarketplaceWebServiceException) {
-                    MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
-                    System.out.println("Caught Exception: " + exception.getMessage());
-                    System.out.println("Response Status Code: " + exception.getStatusCode());
-                    System.out.println("Error Code: " + exception.getErrorCode());
-                    System.out.println("Error Type: " + exception.getErrorType());
-                    System.out.println("Request ID: " + exception.getRequestId());
-                    System.out.print("XML: " + exception.getXML());
-                    System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
-                } else {
-                    e.printStackTrace();
+        if(responses != null && responses.size() > 0) {
+        	getReportListResponseList = new ArrayList<GetReportListResponse>();
+        	for (Future<GetReportListResponse> future : responses) {
+                while (!future.isDone()) {
+                    Thread.yield();
+                }
+                try {
+                    GetReportListResponse response = future.get();
+                    // Original request corresponding to this response, if needed:
+                    //GetReportListRequest originalRequest = requests.get(responses.indexOf(future));
+                    System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
+                    System.out.println(response.getResponseHeaderMetadata());
+                    System.out.println();
+                    getReportListResponseList.add(response);
+                } catch (Exception e) {
+                    if (e.getCause() instanceof MarketplaceWebServiceException) {
+                        MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
+                        System.out.println("Caught Exception: " + exception.getMessage());
+                        System.out.println("Response Status Code: " + exception.getStatusCode());
+                        System.out.println("Error Code: " + exception.getErrorCode());
+                        System.out.println("Error Type: " + exception.getErrorType());
+                        System.out.println("Request ID: " + exception.getRequestId());
+                        System.out.print("XML: " + exception.getXML());
+                        System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+        return getReportListResponseList;
     }
 
 }

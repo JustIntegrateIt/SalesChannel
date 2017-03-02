@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class GetReportScheduleCountSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportScheduleCountResponse getReportScheduleCount(String merchantId, String sellerDevAuthToken) {
+    	GetReportScheduleCountResponse getReportScheduleCountResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +109,17 @@ public class GetReportScheduleCountSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportScheduleCountRequest request = new GetReportScheduleCountRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportScheduleCount(service, request);
-
+        getReportScheduleCountResponse = invokeGetReportScheduleCount(service, request);
+        return getReportScheduleCountResponse;
     }
 
 
@@ -134,10 +131,11 @@ public class GetReportScheduleCountSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportScheduleCount(MarketplaceWebService service, GetReportScheduleCountRequest request) {
-        try {
+    public static GetReportScheduleCountResponse invokeGetReportScheduleCount(MarketplaceWebService service, GetReportScheduleCountRequest request) {
+    	GetReportScheduleCountResponse response = null;
+    	try {
 
-            GetReportScheduleCountResponse response = service.getReportScheduleCount(request);
+            response = service.getReportScheduleCount(request);
 
 
             System.out.println ("GetReportScheduleCount Action Response");
@@ -183,6 +181,7 @@ public class GetReportScheduleCountSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+        return response;
     }
 
 }

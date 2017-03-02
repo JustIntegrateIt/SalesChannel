@@ -16,10 +16,7 @@
 package com.amazonservices.mws.products.samples;
 
 import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -68,33 +65,33 @@ public class GetLowestOfferListingsForSKUSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKU(String sellerId, String mwsAuthToken
+    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU, String itemCondition, Boolean excludeMe) {
 
+    	GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKUResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetLowestOfferListingsForSKURequest request = new GetLowestOfferListingsForSKURequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        SellerSKUListType sellerSKUList = new SellerSKUListType();
+        sellerSKUList = new SellerSKUListType();
         request.setSellerSKUList(sellerSKUList);
-        List<String> sellerSKU = new ArrayList<String>();
+        sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);
-        String itemCondition = "New";
+        itemCondition = "New";
         request.setItemCondition(itemCondition);
-        Boolean excludeMe = Boolean.valueOf(true);
+        excludeMe = Boolean.valueOf(true);
         request.setExcludeMe(excludeMe);
 
         // Make the call.
-        GetLowestOfferListingsForSKUSample.invokeGetLowestOfferListingsForSKU(client, request);
-
+        getLowestOfferListingsForSKUResponse = GetLowestOfferListingsForSKUSample.invokeGetLowestOfferListingsForSKU(client, request);
+        return getLowestOfferListingsForSKUResponse;
     }
 
 }

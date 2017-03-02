@@ -17,10 +17,7 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -88,29 +85,40 @@ public class GetLowestPricedOffersForASINAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetLowestPricedOffersForASINResponse> getLowestPricedOffersForASINAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String asin, String itemCondition) {
 
+    	List<GetLowestPricedOffersForASINResponse> getLowestPricedOffersForASINList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetLowestPricedOffersForASINRequest> requestList = new ArrayList<GetLowestPricedOffersForASINRequest>();
         GetLowestPricedOffersForASINRequest request = new GetLowestPricedOffersForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String asin = "B01N6WRGP5";
+        asin = "B01N6WRGP5";
         request.setASIN(asin);
-        String itemCondition = "New";
+        itemCondition = "New";
         request.setItemCondition(itemCondition);
         requestList.add(request);
 
         // Make the calls.
-        GetLowestPricedOffersForASINAsyncSample.invokeGetLowestPricedOffersForASIN(client, requestList);
-
+        List<Object> getLowestPricedOffersForASINObj = GetLowestPricedOffersForASINAsyncSample.invokeGetLowestPricedOffersForASIN(client, requestList);
+        if(getLowestPricedOffersForASINObj != null && getLowestPricedOffersForASINObj.size() > 0) {
+        	getLowestPricedOffersForASINList = new ArrayList<GetLowestPricedOffersForASINResponse>();
+        	for(Object obj : getLowestPricedOffersForASINObj) {
+        		if(obj instanceof GetLowestPricedOffersForASINResponse) {
+        			GetLowestPricedOffersForASINResponse getLowestPricedOffersForASINResponse = (GetLowestPricedOffersForASINResponse) obj;
+        			if(getLowestPricedOffersForASINResponse != null) {
+        				getLowestPricedOffersForASINList.add(getLowestPricedOffersForASINResponse);
+        			}
+        		}
+        	}
+        }
+        return getLowestPricedOffersForASINList;
     }
 
 }

@@ -17,11 +17,6 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -70,29 +65,29 @@ public class GetCompetitivePricingForASINSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetCompetitivePricingForASINResponse getCompetitivePricingForASIN(String sellerId, String mwsAuthToken
+    		, String marketplaceId, ASINListType asinList, List<String> asin) {
 
+    	GetCompetitivePricingForASINResponse getCompetitivePricingForASINResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetCompetitivePricingForASINRequest request = new GetCompetitivePricingForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        ASINListType asinList = new ASINListType();
-        List<String> asin = new ArrayList<String>();
+        asinList = new ASINListType();
+        asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);
         request.setASINList(asinList);
 
         // Make the call.
-        GetCompetitivePricingForASINSample.invokeGetCompetitivePricingForASIN(client, request);
-
+        getCompetitivePricingForASINResponse = GetCompetitivePricingForASINSample.invokeGetCompetitivePricingForASIN(client, request);
+        return getCompetitivePricingForASINResponse;
     }
 
 }

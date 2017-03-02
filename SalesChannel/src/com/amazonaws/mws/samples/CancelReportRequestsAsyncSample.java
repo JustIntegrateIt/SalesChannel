@@ -39,7 +39,7 @@ public class CancelReportRequestsAsyncSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
+    public List<CancelReportRequestsResponse> cancelReportRequestsAsync(String merchantId, String sellerDevAuthToken) {
 
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
@@ -106,18 +106,20 @@ public class CancelReportRequestsAsyncSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
-
+        // Get a client connection.
+    	merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        
+        // Create a request list.
         CancelReportRequestsRequest requestOne = new CancelReportRequestsRequest();
         requestOne.setMerchant( merchantId );
-        //requestOne.setMWSAuthToken(sellerDevAuthToken);
+        requestOne.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
         CancelReportRequestsRequest requestTwo = new CancelReportRequestsRequest();
         requestTwo.setMerchant( merchantId );
-        //requestTwo.setMWSAuthToken(sellerDevAuthToken);
+        requestTwo.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set second request parameters here
 
@@ -125,8 +127,8 @@ public class CancelReportRequestsAsyncSample {
         requests.add(requestOne);
         requests.add(requestTwo);
 
-        // invokeCancelReportRequests(service, requests);
-
+        List<CancelReportRequestsResponse> cancelReportRequestsResponseList = invokeCancelReportRequests(service, requests);
+        return cancelReportRequestsResponseList;
     }
 
 
@@ -139,37 +141,43 @@ public class CancelReportRequestsAsyncSample {
      * @param service instance of MarketplaceWebService service
      * @param requests list of requests to process
      */
-    public static void invokeCancelReportRequests(MarketplaceWebService service, List<CancelReportRequestsRequest> requests) {
-        List<Future<CancelReportRequestsResponse>> responses = new ArrayList<Future<CancelReportRequestsResponse>>();
+    public static List<CancelReportRequestsResponse> invokeCancelReportRequests(MarketplaceWebService service, List<CancelReportRequestsRequest> requests) {
+    	List<CancelReportRequestsResponse> cancelReportRequestsResponseList = null;
+    	List<Future<CancelReportRequestsResponse>> responses = new ArrayList<Future<CancelReportRequestsResponse>>();
         for (CancelReportRequestsRequest request : requests) {
             responses.add(service.cancelReportRequestsAsync(request));
         }
-        for (Future<CancelReportRequestsResponse> future : responses) {
-            while (!future.isDone()) {
-                Thread.yield();
-            }
-            try {
-                CancelReportRequestsResponse response = future.get();
-                // Original request corresponding to this response, if needed:
-                CancelReportRequestsRequest originalRequest = requests.get(responses.indexOf(future));
-                System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
-                System.out.println(response.getResponseHeaderMetadata());
-                System.out.println();
-            } catch (Exception e) {
-                if (e.getCause() instanceof MarketplaceWebServiceException) {
-                    MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
-                    System.out.println("Caught Exception: " + exception.getMessage());
-                    System.out.println("Response Status Code: " + exception.getStatusCode());
-                    System.out.println("Error Code: " + exception.getErrorCode());
-                    System.out.println("Error Type: " + exception.getErrorType());
-                    System.out.println("Request ID: " + exception.getRequestId());
-                    System.out.print("XML: " + exception.getXML());
-                    System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
-                } else {
-                    e.printStackTrace();
+        if(responses != null && responses.size() > 0) {
+        	cancelReportRequestsResponseList = new ArrayList<CancelReportRequestsResponse>();
+        	for (Future<CancelReportRequestsResponse> future : responses) {
+                while (!future.isDone()) {
+                    Thread.yield();
+                }
+                try {
+                    CancelReportRequestsResponse response = future.get();
+                    // Original request corresponding to this response, if needed:
+                    //CancelReportRequestsRequest originalRequest = requests.get(responses.indexOf(future));
+                    System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
+                    System.out.println(response.getResponseHeaderMetadata());
+                    System.out.println();
+                    cancelReportRequestsResponseList.add(response);
+                } catch (Exception e) {
+                    if (e.getCause() instanceof MarketplaceWebServiceException) {
+                        MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
+                        System.out.println("Caught Exception: " + exception.getMessage());
+                        System.out.println("Response Status Code: " + exception.getStatusCode());
+                        System.out.println("Error Code: " + exception.getErrorCode());
+                        System.out.println("Error Type: " + exception.getErrorType());
+                        System.out.println("Request ID: " + exception.getRequestId());
+                        System.out.print("XML: " + exception.getXML());
+                        System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+        return cancelReportRequestsResponseList;
     }
 
 }

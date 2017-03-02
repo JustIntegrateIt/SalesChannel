@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,9 @@ public class UpdateReportAcknowledgementsSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public UpdateReportAcknowledgementsResponse updateReportAcknowledgements(String merchantId
+    		, String sellerDevAuthToken) {
+    	UpdateReportAcknowledgementsResponse updateReportAcknowledgementsResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +110,17 @@ public class UpdateReportAcknowledgementsSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         UpdateReportAcknowledgementsRequest request = new UpdateReportAcknowledgementsRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeUpdateReportAcknowledgements(service, request);
-
+        updateReportAcknowledgementsResponse = invokeUpdateReportAcknowledgements(service, request);
+        return updateReportAcknowledgementsResponse;
     }
 
 
@@ -134,10 +132,11 @@ public class UpdateReportAcknowledgementsSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeUpdateReportAcknowledgements(MarketplaceWebService service, UpdateReportAcknowledgementsRequest request) {
-        try {
+    public static UpdateReportAcknowledgementsResponse invokeUpdateReportAcknowledgements(MarketplaceWebService service, UpdateReportAcknowledgementsRequest request) {
+    	UpdateReportAcknowledgementsResponse response = null;
+    	try {
 
-            UpdateReportAcknowledgementsResponse response = service.updateReportAcknowledgements(request);
+            response = service.updateReportAcknowledgements(request);
 
 
             System.out.println ("UpdateReportAcknowledgements Action Response");
@@ -224,6 +223,7 @@ public class UpdateReportAcknowledgementsSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

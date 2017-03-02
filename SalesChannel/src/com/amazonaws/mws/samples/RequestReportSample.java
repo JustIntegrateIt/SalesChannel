@@ -19,8 +19,9 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -28,7 +29,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
@@ -45,8 +45,9 @@ public class RequestReportSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-        
+    public RequestReportResponse requestReport(String merchantId
+    		, String sellerDevAuthToken, List<String> marketplacesIds) {
+    	RequestReportResponse requestReportResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -118,21 +119,22 @@ public class RequestReportSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = SalesChannelConstants.merchantIdSellerId;
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = SalesChannelConstants.merchantIdSellerId;
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
         // marketplaces from which data should be included in the report; look at the
         // API reference document on the MWS website to see which marketplaces are
         // included if you do not specify the list yourself
-        final IdList marketplaces = new IdList(Arrays.asList(
-        		"Marketplae1",
-        		"Marketplace2"));
+        if(marketplacesIds == null || marketplacesIds.size() == 0) {
+        	marketplacesIds = new ArrayList<String>();
+        }
+        final IdList marketplaces = new IdList(marketplacesIds);
         
         RequestReportRequest request = new RequestReportRequest()
 		        .withMerchant(merchantId)
 		        .withMarketplaceIdList(marketplaces)
 		        .withReportType("Report Type")
 		        .withReportOptions("ShowSalesChannel=true");
-        //request = request.withMWSAuthToken(sellerDevAuthToken);
+        request = request.withMWSAuthToken(sellerDevAuthToken);
         
         // demonstrates how to set the date range
 		DatatypeFactory df = null;
@@ -148,7 +150,8 @@ public class RequestReportSample {
 		
 	    // @TODO: set additional request parameters here
 		
-		invokeRequestReport(service, request);
+		requestReportResponse = invokeRequestReport(service, request);
+		return requestReportResponse;
     }
 
 
@@ -160,10 +163,11 @@ public class RequestReportSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeRequestReport(MarketplaceWebService service, RequestReportRequest request) {
-        try {
+    public static RequestReportResponse invokeRequestReport(MarketplaceWebService service, RequestReportRequest request) {
+    	RequestReportResponse response = null;
+    	try {
             
-            RequestReportResponse response = service.requestReport(request);
+            response = service.requestReport(request);
 
             
             System.out.println ("RequestReport Action Response");
@@ -244,6 +248,7 @@ public class RequestReportSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
                                                 
 }

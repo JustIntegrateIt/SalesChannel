@@ -17,10 +17,7 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -88,29 +85,40 @@ public class ListMatchingProductsAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<ListMatchingProductsResponse> listMatchingProductsAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String query, String queryContextId) {
 
+    	List<ListMatchingProductsResponse> listMatchingProductsResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<ListMatchingProductsRequest> requestList = new ArrayList<ListMatchingProductsRequest>();
         ListMatchingProductsRequest request = new ListMatchingProductsRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String query = "books";
+        query = "books";
         request.setQuery(query);
-        //String queryContextId = "example";
-        //request.setQueryContextId(queryContextId);
+        queryContextId = "example";
+        request.setQueryContextId(queryContextId);
         requestList.add(request);
 
         // Make the calls.
-        ListMatchingProductsAsyncSample.invokeListMatchingProducts(client, requestList);
-
+        List<Object> listMatchingProductsResponseObj = ListMatchingProductsAsyncSample.invokeListMatchingProducts(client, requestList);
+        if(listMatchingProductsResponseObj != null && listMatchingProductsResponseObj.size() > 0) {
+        	listMatchingProductsResponseList = new ArrayList<ListMatchingProductsResponse>();
+        	for(Object obj : listMatchingProductsResponseObj) {
+        		if(obj instanceof ListMatchingProductsResponse) {
+        			ListMatchingProductsResponse listMatchingProductsResponse = (ListMatchingProductsResponse) obj;
+        			if(listMatchingProductsResponse != null) {
+        				listMatchingProductsResponseList.add(listMatchingProductsResponse);
+        			}
+        		}
+        	}
+        }
+        return listMatchingProductsResponseList;
     }
 
 }

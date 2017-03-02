@@ -15,11 +15,6 @@
  */
 package com.amazonservices.mws.products.samples;
 
-import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -68,26 +63,26 @@ public class GetProductCategoriesForASINSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetProductCategoriesForASINResponse getProductCategoriesForASIN(String sellerId, String mwsAuthToken, String marketplaceId,
+			String asin) {
 
+    	GetProductCategoriesForASINResponse getProductCategoriesForASINResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetProductCategoriesForASINRequest request = new GetProductCategoriesForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String asin = "B01N6WRGP5";
+        asin = "B01N6WRGP5";
         request.setASIN(asin);
 
         // Make the call.
-        GetProductCategoriesForASINSample.invokeGetProductCategoriesForASIN(client, request);
-
+        getProductCategoriesForASINResponse = GetProductCategoriesForASINSample.invokeGetProductCategoriesForASIN(client, request);
+        return getProductCategoriesForASINResponse;
     }
 
 }

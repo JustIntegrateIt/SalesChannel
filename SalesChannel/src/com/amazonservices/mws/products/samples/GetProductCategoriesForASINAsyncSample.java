@@ -17,10 +17,7 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -88,27 +85,38 @@ public class GetProductCategoriesForASINAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetProductCategoriesForASINResponse> getProductCategoriesForASINAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String asin) {
 
+    	List<GetProductCategoriesForASINResponse> getProductCategoriesForASINResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetProductCategoriesForASINRequest> requestList = new ArrayList<GetProductCategoriesForASINRequest>();
         GetProductCategoriesForASINRequest request = new GetProductCategoriesForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String asin = "B01N6WRGP5";
+        asin = "B01N6WRGP5";
         request.setASIN(asin);
         requestList.add(request);
 
         // Make the calls.
-        GetProductCategoriesForASINAsyncSample.invokeGetProductCategoriesForASIN(client, requestList);
-
+        List<Object> getProductCategoriesForASINResponseObj = GetProductCategoriesForASINAsyncSample.invokeGetProductCategoriesForASIN(client, requestList);
+        if(getProductCategoriesForASINResponseObj != null && getProductCategoriesForASINResponseObj.size() > 0) {
+        	getProductCategoriesForASINResponseList = new ArrayList<GetProductCategoriesForASINResponse>();
+        	for(Object obj : getProductCategoriesForASINResponseObj) {
+        		if(obj instanceof GetProductCategoriesForASINResponse) {
+        			GetProductCategoriesForASINResponse getProductCategoriesForASINResponse = (GetProductCategoriesForASINResponse) obj;
+        			if(getProductCategoriesForASINResponse != null) {
+        				getProductCategoriesForASINResponseList.add(getProductCategoriesForASINResponse);
+        			}
+        		}
+        	}
+        }
+        return getProductCategoriesForASINResponseList;
     }
 
 }

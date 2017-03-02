@@ -18,11 +18,6 @@ package com.amazonservices.mws.products.samples;
 import java.util.*;
 import java.util.concurrent.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -90,30 +85,41 @@ public class GetMyPriceForSKUAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetMyPriceForSKUResponse> getMyPriceForSKUAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU) {
 
+    	List<GetMyPriceForSKUResponse> getMyPriceForSKUResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetMyPriceForSKURequest> requestList = new ArrayList<GetMyPriceForSKURequest>();
         GetMyPriceForSKURequest request = new GetMyPriceForSKURequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        SellerSKUListType sellerSKUList = new SellerSKUListType();
-        List<String> sellerSKU = new ArrayList<String>();
+        sellerSKUList = new SellerSKUListType();
+        sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);
         request.setSellerSKUList(sellerSKUList);
         requestList.add(request);
 
         // Make the calls.
-        GetMyPriceForSKUAsyncSample.invokeGetMyPriceForSKU(client, requestList);
-
+        List<Object> getMyPriceForSKUResponseObj = GetMyPriceForSKUAsyncSample.invokeGetMyPriceForSKU(client, requestList);
+        if(getMyPriceForSKUResponseObj != null && getMyPriceForSKUResponseObj.size() > 0) {
+        	getMyPriceForSKUResponseList = new ArrayList<GetMyPriceForSKUResponse>();
+        	for(Object obj : getMyPriceForSKUResponseObj) {
+        		if(obj instanceof GetMyPriceForSKUResponse) {
+        			GetMyPriceForSKUResponse getMyPriceForSKUResponse = (GetMyPriceForSKUResponse) obj;
+        			if(getMyPriceForSKUResponse != null) {
+        				getMyPriceForSKUResponseList.add(getMyPriceForSKUResponse);
+        			}
+        		}
+        	}
+        }
+        return getMyPriceForSKUResponseList;
     }
 
 }

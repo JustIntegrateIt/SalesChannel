@@ -15,11 +15,6 @@
  */
 package com.amazonservices.mws.products.samples;
 
-import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -68,28 +63,28 @@ public class ListMatchingProductsSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public ListMatchingProductsResponse listMatchingProducts(String sellerId, String mwsAuthToken, String marketplaceId,
+			String query, String queryContextId) {
 
+    	ListMatchingProductsResponse listMatchingProductsResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         ListMatchingProductsRequest request = new ListMatchingProductsRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String query = "Books";
+        query = "Books";
         request.setQuery(query);
-        //String queryContextId = "example";
-        //request.setQueryContextId(queryContextId);
+        queryContextId = "example";
+        request.setQueryContextId(queryContextId);
 
         // Make the call.
-        ListMatchingProductsSample.invokeListMatchingProducts(client, request);
-
+        listMatchingProductsResponse = ListMatchingProductsSample.invokeListMatchingProducts(client, request);
+        return listMatchingProductsResponse;
     }
 
 }

@@ -17,10 +17,7 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -88,29 +85,40 @@ public class GetLowestPricedOffersForSKUAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetLowestPricedOffersForSKUResponse> getLowestPricedOffersForSKUAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String sellerSKU, String itemCondition) {
 
+    	List<GetLowestPricedOffersForSKUResponse> getLowestPricedOffersForSKUResponseList = null; 
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetLowestPricedOffersForSKURequest> requestList = new ArrayList<GetLowestPricedOffersForSKURequest>();
         GetLowestPricedOffersForSKURequest request = new GetLowestPricedOffersForSKURequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String sellerSKU = "JIIT00002";
+        sellerSKU = "JIIT00002";
         request.setSellerSKU(sellerSKU);
-        String itemCondition = "New";
+        itemCondition = "New";
         request.setItemCondition(itemCondition);
         requestList.add(request);
 
         // Make the calls.
-        GetLowestPricedOffersForSKUAsyncSample.invokeGetLowestPricedOffersForSKU(client, requestList);
-
+        List<Object> getLowestPricedOffersForSKUResponseObj = GetLowestPricedOffersForSKUAsyncSample.invokeGetLowestPricedOffersForSKU(client, requestList);
+        if(getLowestPricedOffersForSKUResponseObj != null && getLowestPricedOffersForSKUResponseObj.size() > 0) {
+        	getLowestPricedOffersForSKUResponseList = new ArrayList<GetLowestPricedOffersForSKUResponse>();
+        	for(Object obj : getLowestPricedOffersForSKUResponseObj) {
+        		if(obj instanceof GetLowestPricedOffersForSKUResponse) {
+        			GetLowestPricedOffersForSKUResponse getLowestPricedOffersForSKUResponse = (GetLowestPricedOffersForSKUResponse) obj;
+        			if(getLowestPricedOffersForSKUResponse != null) {
+        				getLowestPricedOffersForSKUResponseList.add(getLowestPricedOffersForSKUResponse);
+        			}
+        		}
+        	}
+        }
+        return getLowestPricedOffersForSKUResponseList;
     }
 
 }

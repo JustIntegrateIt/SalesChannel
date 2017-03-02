@@ -17,10 +17,7 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 import java.util.concurrent.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -88,34 +85,44 @@ public class GetLowestOfferListingsForASINAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetLowestOfferListingsForASINResponse> getLowestOfferListingsForASINAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, ASINListType asinList, List<String> asin, String itemCondition, Boolean excludeMe) {
 
+    	List<GetLowestOfferListingsForASINResponse> getLowestOfferListingsForASINResponseList = null;
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetLowestOfferListingsForASINRequest> requestList = new ArrayList<GetLowestOfferListingsForASINRequest>();
         GetLowestOfferListingsForASINRequest request = new GetLowestOfferListingsForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        ASINListType asinList = new ASINListType();
-        List<String> asin = new ArrayList<String>();
+        asinList = new ASINListType();
+        asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);
         request.setASINList(asinList);
-        String itemCondition = "New";
+        itemCondition = "New";
         request.setItemCondition(itemCondition);
-        Boolean excludeMe = Boolean.valueOf(true);
+        excludeMe = Boolean.valueOf(true);
         request.setExcludeMe(excludeMe);
         requestList.add(request);
 
         // Make the calls.
-        GetLowestOfferListingsForASINAsyncSample.invokeGetLowestOfferListingsForASIN(client, requestList);
-
+        List<Object> getLowestOfferListingsForASINResponseObj = GetLowestOfferListingsForASINAsyncSample.invokeGetLowestOfferListingsForASIN(client, requestList);
+        if(getLowestOfferListingsForASINResponseObj != null && getLowestOfferListingsForASINResponseObj.size() > 0) {
+        	getLowestOfferListingsForASINResponseList = new ArrayList<GetLowestOfferListingsForASINResponse>();
+        	for(Object obj : getLowestOfferListingsForASINResponseObj) {
+        		if(obj instanceof GetLowestOfferListingsForASINResponse) {
+        			GetLowestOfferListingsForASINResponse getLowestOfferListingsForASINResponse = (GetLowestOfferListingsForASINResponse) obj;
+        			if(getLowestOfferListingsForASINResponse != null) {
+        				getLowestOfferListingsForASINResponseList.add(getLowestOfferListingsForASINResponse);
+        			}
+        		}
+        	}
+        }
+        return getLowestOfferListingsForASINResponseList;
     }
 
 }

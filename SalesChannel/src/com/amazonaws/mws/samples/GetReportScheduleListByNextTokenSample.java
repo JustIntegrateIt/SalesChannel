@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,9 @@ public class GetReportScheduleListByNextTokenSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportScheduleListByNextTokenResponse getReportScheduleListByNextToken(String merchantId
+    		, String sellerDevAuthToken) {
+    	GetReportScheduleListByNextTokenResponse getReportScheduleListByNextTokenResponse = null; 
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +110,17 @@ public class GetReportScheduleListByNextTokenSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportScheduleListByNextTokenRequest request = new GetReportScheduleListByNextTokenRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportScheduleListByNextToken(service, request);
-
+        getReportScheduleListByNextTokenResponse = invokeGetReportScheduleListByNextToken(service, request);
+        return getReportScheduleListByNextTokenResponse;
     }
 
 
@@ -134,10 +132,11 @@ public class GetReportScheduleListByNextTokenSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportScheduleListByNextToken(MarketplaceWebService service, GetReportScheduleListByNextTokenRequest request) {
-        try {
+    public static GetReportScheduleListByNextTokenResponse invokeGetReportScheduleListByNextToken(MarketplaceWebService service, GetReportScheduleListByNextTokenRequest request) {
+    	GetReportScheduleListByNextTokenResponse response = null;
+    	try {
 
-            GetReportScheduleListByNextTokenResponse response = service.getReportScheduleListByNextToken(request);
+            response = service.getReportScheduleListByNextToken(request);
 
 
             System.out.println ("GetReportScheduleListByNextToken Action Response");
@@ -212,6 +211,7 @@ public class GetReportScheduleListByNextTokenSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

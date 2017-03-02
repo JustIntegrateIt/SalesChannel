@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class GetReportListByNextTokenSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportListByNextTokenResponse getReportListByNextToken(String merchantId, String sellerDevAuthToken) {
+    	GetReportListByNextTokenResponse getReportListByNextTokenresponse = null; 
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -112,17 +109,17 @@ public class GetReportListByNextTokenSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportListByNextTokenRequest request = new GetReportListByNextTokenRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportListByNextToken(service, request);
-
+        getReportListByNextTokenresponse = invokeGetReportListByNextToken(service, request);
+        return getReportListByNextTokenresponse;
     }
 
 
@@ -134,10 +131,11 @@ public class GetReportListByNextTokenSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportListByNextToken(MarketplaceWebService service, GetReportListByNextTokenRequest request) {
-        try {
+    public static GetReportListByNextTokenResponse invokeGetReportListByNextToken(MarketplaceWebService service, GetReportListByNextTokenRequest request) {
+    	GetReportListByNextTokenResponse response = null;
+    	try {
 
-            GetReportListByNextTokenResponse response = service.getReportListByNextToken(request);
+            response = service.getReportListByNextToken(request);
 
 
             System.out.println ("GetReportListByNextToken Action Response");
@@ -230,6 +228,7 @@ public class GetReportListByNextTokenSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

@@ -64,6 +64,7 @@ public class MarketplaceWebServiceProductsSampleConfig {
         if (client==null) {
             MarketplaceWebServiceProductsConfig config = new MarketplaceWebServiceProductsConfig();
             config.setServiceURL(serviceURL);
+            config.setMaxAsyncThreads(35);
             // Set other client connection configurations here.
             client = new MarketplaceWebServiceProductsAsyncClient(accessKey, secretKey, 
                     appName, appVersion, config, null);

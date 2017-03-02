@@ -18,11 +18,6 @@ package com.amazonservices.mws.products.samples;
 import java.util.*;
 import java.util.concurrent.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -90,30 +85,40 @@ public class GetCompetitivePricingForASINAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetCompetitivePricingForASINResponse> getCompetitivePricingForASINAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, ASINListType asinList, List<String> asin) {
 
+    	List<GetCompetitivePricingForASINResponse> competitivePricingForASINResponseList = null;
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetCompetitivePricingForASINRequest> requestList = new ArrayList<GetCompetitivePricingForASINRequest>();
         GetCompetitivePricingForASINRequest request = new GetCompetitivePricingForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        ASINListType asinList = new ASINListType();
-        List<String> asin = new ArrayList<String>();
+        asinList = new ASINListType();
+        asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);
         request.setASINList(asinList);
         requestList.add(request);
 
         // Make the calls.
-        GetCompetitivePricingForASINAsyncSample.invokeGetCompetitivePricingForASIN(client, requestList);
-
+        List<Object> competitivePricingForASINResponseObj = GetCompetitivePricingForASINAsyncSample.invokeGetCompetitivePricingForASIN(client, requestList);
+        if(competitivePricingForASINResponseObj != null && competitivePricingForASINResponseObj.size() > 0) {
+        	competitivePricingForASINResponseList = new ArrayList<GetCompetitivePricingForASINResponse>();
+        	for(Object obj : competitivePricingForASINResponseObj) {
+        		if(obj instanceof GetCompetitivePricingForASINResponse) {
+        			GetCompetitivePricingForASINResponse competitivePricingForASINResponse = (GetCompetitivePricingForASINResponse) obj;
+        			if(competitivePricingForASINResponse != null) {
+        				competitivePricingForASINResponseList.add(competitivePricingForASINResponse);
+        			}
+        		}
+        	}
+        }
+        return competitivePricingForASINResponseList;
     }
 
 }

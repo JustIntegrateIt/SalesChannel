@@ -39,8 +39,9 @@ public class GetFeedSubmissionListByNextTokenAsyncSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public List<GetFeedSubmissionListByNextTokenResponse> getFeedSubmissionListByNextTokenAsync(String merchantId
+    		, String sellerDevAuthToken) {
+    	List<GetFeedSubmissionListByNextTokenResponse> getFeedSubmissionListByNextTokenResponseList = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -108,18 +109,18 @@ public class GetFeedSubmissionListByNextTokenAsyncSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetFeedSubmissionListByNextTokenRequest requestOne = new GetFeedSubmissionListByNextTokenRequest();
         requestOne.setMerchant( merchantId );
-        //requestOne.setMWSAuthToken(sellerDevAuthToken);
+        requestOne.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
         GetFeedSubmissionListByNextTokenRequest requestTwo = new GetFeedSubmissionListByNextTokenRequest();
         requestTwo.setMerchant( merchantId );
-        //requestTwo.setMWSAuthToken(sellerDevAuthToken);
+        requestTwo.setMWSAuthToken(sellerDevAuthToken);
         
         // @TODO: set second request parameters here
 
@@ -127,8 +128,8 @@ public class GetFeedSubmissionListByNextTokenAsyncSample {
         requests.add(requestOne);
         requests.add(requestTwo);
 
-        // invokeGetFeedSubmissionListByNextToken(service, requests);
-
+        getFeedSubmissionListByNextTokenResponseList = invokeGetFeedSubmissionListByNextToken(service, requests);
+        return getFeedSubmissionListByNextTokenResponseList;
     }
 
 
@@ -140,37 +141,43 @@ public class GetFeedSubmissionListByNextTokenAsyncSample {
      * @param service instance of MarketplaceWebService service
      * @param requests list of requests to process
      */
-    public static void invokeGetFeedSubmissionListByNextToken(MarketplaceWebService service, List<GetFeedSubmissionListByNextTokenRequest> requests) {
-        List<Future<GetFeedSubmissionListByNextTokenResponse>> responses = new ArrayList<Future<GetFeedSubmissionListByNextTokenResponse>>();
+    public static List<GetFeedSubmissionListByNextTokenResponse> invokeGetFeedSubmissionListByNextToken(MarketplaceWebService service, List<GetFeedSubmissionListByNextTokenRequest> requests) {
+    	List<GetFeedSubmissionListByNextTokenResponse> getFeedSubmissionListByNextTokenResponseList = null;
+    	List<Future<GetFeedSubmissionListByNextTokenResponse>> responses = new ArrayList<Future<GetFeedSubmissionListByNextTokenResponse>>();
         for (GetFeedSubmissionListByNextTokenRequest request : requests) {
             responses.add(service.getFeedSubmissionListByNextTokenAsync(request));
         }
-        for (Future<GetFeedSubmissionListByNextTokenResponse> future : responses) {
-            while (!future.isDone()) {
-                Thread.yield();
-            }
-            try {
-                GetFeedSubmissionListByNextTokenResponse response = future.get();
-                // Original request corresponding to this response, if needed:
-                GetFeedSubmissionListByNextTokenRequest originalRequest = requests.get(responses.indexOf(future));
-                System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
-                System.out.println(response.getResponseHeaderMetadata());
-                System.out.println();
-            } catch (Exception e) {
-                if (e.getCause() instanceof MarketplaceWebServiceException) {
-                    MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
-                    System.out.println("Caught Exception: " + exception.getMessage());
-                    System.out.println("Response Status Code: " + exception.getStatusCode());
-                    System.out.println("Error Code: " + exception.getErrorCode());
-                    System.out.println("Error Type: " + exception.getErrorType());
-                    System.out.println("Request ID: " + exception.getRequestId());
-                    System.out.print("XML: " + exception.getXML());
-                    System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
-                } else {
-                    e.printStackTrace();
+        if(responses != null && responses.size() > 0) {
+        	getFeedSubmissionListByNextTokenResponseList = new ArrayList<GetFeedSubmissionListByNextTokenResponse>();
+        	for (Future<GetFeedSubmissionListByNextTokenResponse> future : responses) {
+                while (!future.isDone()) {
+                    Thread.yield();
+                }
+                try {
+                    GetFeedSubmissionListByNextTokenResponse response = future.get();
+                    // Original request corresponding to this response, if needed:
+                    //GetFeedSubmissionListByNextTokenRequest originalRequest = requests.get(responses.indexOf(future));
+                    System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
+                    System.out.println(response.getResponseHeaderMetadata());
+                    System.out.println();
+                    getFeedSubmissionListByNextTokenResponseList.add(response);
+                } catch (Exception e) {
+                    if (e.getCause() instanceof MarketplaceWebServiceException) {
+                        MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
+                        System.out.println("Caught Exception: " + exception.getMessage());
+                        System.out.println("Response Status Code: " + exception.getStatusCode());
+                        System.out.println("Error Code: " + exception.getErrorCode());
+                        System.out.println("Error Type: " + exception.getErrorType());
+                        System.out.println("Request ID: " + exception.getRequestId());
+                        System.out.print("XML: " + exception.getXML());
+                        System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+        return getFeedSubmissionListByNextTokenResponseList;
     }
 
 }

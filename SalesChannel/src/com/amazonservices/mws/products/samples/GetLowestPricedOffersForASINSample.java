@@ -15,11 +15,6 @@
  */
 package com.amazonservices.mws.products.samples;
 
-import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -68,28 +63,28 @@ public class GetLowestPricedOffersForASINSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetLowestPricedOffersForASINResponse getLowestPricedOffersForASIN(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String asin, String itemCondition) {
 
+    	GetLowestPricedOffersForASINResponse getLowestPricedOffersForASINResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetLowestPricedOffersForASINRequest request = new GetLowestPricedOffersForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String asin = "B01N6WRGP5";
+        asin = "B01N6WRGP5";
         request.setASIN(asin);
-        String itemCondition = "New";
+        itemCondition = "New";
         request.setItemCondition(itemCondition);
 
         // Make the call.
-        GetLowestPricedOffersForASINSample.invokeGetLowestPricedOffersForASIN(client, request);
-
+        getLowestPricedOffersForASINResponse = GetLowestPricedOffersForASINSample.invokeGetLowestPricedOffersForASIN(client, request);
+        return getLowestPricedOffersForASINResponse;
     }
 
 }

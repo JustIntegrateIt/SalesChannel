@@ -19,11 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -39,8 +36,8 @@ public class GetFeedSubmissionListSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetFeedSubmissionListResponse getFeedSubmissionList(String merchantId, String sellerDevAuthToken) {
+    	GetFeedSubmissionListResponse getFeedSubmissionListResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -115,17 +112,17 @@ public class GetFeedSubmissionListSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetFeedSubmissionListRequest request = new GetFeedSubmissionListRequest();
         request.setMerchant( merchantId );
-       //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetFeedSubmissionList(service, request);
-
+        getFeedSubmissionListResponse = invokeGetFeedSubmissionList(service, request);
+        return getFeedSubmissionListResponse;
     }
 
 
@@ -137,10 +134,11 @@ public class GetFeedSubmissionListSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetFeedSubmissionList(MarketplaceWebService service, GetFeedSubmissionListRequest request) {
-        try {
+    public static GetFeedSubmissionListResponse invokeGetFeedSubmissionList(MarketplaceWebService service, GetFeedSubmissionListRequest request) {
+    	GetFeedSubmissionListResponse response = null;
+    	try {
 
-            GetFeedSubmissionListResponse response = service.getFeedSubmissionList(request);
+            response = service.getFeedSubmissionList(request);
 
 
             System.out.println ("GetFeedSubmissionList Action Response");
@@ -233,6 +231,7 @@ public class GetFeedSubmissionListSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

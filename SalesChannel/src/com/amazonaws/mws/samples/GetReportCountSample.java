@@ -19,12 +19,8 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
-
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
@@ -41,8 +37,8 @@ public class GetReportCountSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public GetReportCountResponse getReportCount(String merchantId, String sellerDevAuthToken) {
+    	GetReportCountResponse getReportCountResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -121,17 +117,17 @@ public class GetReportCountSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = SalesChannelConstants.merchantIdSellerId;
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = SalesChannelConstants.merchantIdSellerId;
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportCountRequest request = new GetReportCountRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
 
         // @TODO: set request parameters here
 
-        // invokeGetReportCount(service, request);
-
+        getReportCountResponse = invokeGetReportCount(service, request);
+        return getReportCountResponse;
     }
 
 
@@ -145,10 +141,11 @@ public class GetReportCountSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReportCount(MarketplaceWebService service, GetReportCountRequest request) {
-        try {
+    public static GetReportCountResponse invokeGetReportCount(MarketplaceWebService service, GetReportCountRequest request) {
+    	GetReportCountResponse response = null;
+    	try {
 
-            GetReportCountResponse response = service.getReportCount(request);
+            response = service.getReportCount(request);
 
 
             System.out.println ("GetReportCount Action Response");
@@ -194,6 +191,7 @@ public class GetReportCountSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

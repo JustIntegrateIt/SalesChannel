@@ -39,8 +39,8 @@ public class GetReportRequestListByNextTokenAsyncSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public List<GetReportRequestListByNextTokenResponse> getReportRequestListByNextTokenAsync(String merchantId, String sellerDevAuthToken) {
+    	List<GetReportRequestListByNextTokenResponse> getReportRequestListByNextTokenResponseList = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -108,25 +108,25 @@ public class GetReportRequestListByNextTokenAsyncSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         GetReportRequestListByNextTokenRequest requestOne = new GetReportRequestListByNextTokenRequest();
         requestOne.setMerchant( merchantId );
-        //requestOne.setMWSAuthToken(sellerDevAuthToken);
+        requestOne.setMWSAuthToken(sellerDevAuthToken);
         // @TODO: set request parameters here
 
         GetReportRequestListByNextTokenRequest requestTwo = new GetReportRequestListByNextTokenRequest();
         requestTwo.setMerchant( merchantId );
-        //requestTwo.setMWSAuthToken(sellerDevAuthToken);
+        requestTwo.setMWSAuthToken(sellerDevAuthToken);
         // @TODO: set second request parameters here
 
         List<GetReportRequestListByNextTokenRequest> requests = new ArrayList<GetReportRequestListByNextTokenRequest>();
         requests.add(requestOne);
         requests.add(requestTwo);
 
-        // invokeGetReportRequestListByNextToken(service, requests);
-
+        getReportRequestListByNextTokenResponseList = invokeGetReportRequestListByNextToken(service, requests);
+        return getReportRequestListByNextTokenResponseList;
     }
 
 
@@ -138,37 +138,43 @@ public class GetReportRequestListByNextTokenAsyncSample {
      * @param service instance of MarketplaceWebService service
      * @param requests list of requests to process
      */
-    public static void invokeGetReportRequestListByNextToken(MarketplaceWebService service, List<GetReportRequestListByNextTokenRequest> requests) {
-        List<Future<GetReportRequestListByNextTokenResponse>> responses = new ArrayList<Future<GetReportRequestListByNextTokenResponse>>();
+    public static List<GetReportRequestListByNextTokenResponse> invokeGetReportRequestListByNextToken(MarketplaceWebService service, List<GetReportRequestListByNextTokenRequest> requests) {
+    	List<GetReportRequestListByNextTokenResponse> getReportRequestListByNextTokenResponseList = null;
+    	List<Future<GetReportRequestListByNextTokenResponse>> responses = new ArrayList<Future<GetReportRequestListByNextTokenResponse>>();
         for (GetReportRequestListByNextTokenRequest request : requests) {
             responses.add(service.getReportRequestListByNextTokenAsync(request));
         }
-        for (Future<GetReportRequestListByNextTokenResponse> future : responses) {
-            while (!future.isDone()) {
-                Thread.yield();
-            }
-            try {
-                GetReportRequestListByNextTokenResponse response = future.get();
-                // Original request corresponding to this response, if needed:
-                GetReportRequestListByNextTokenRequest originalRequest = requests.get(responses.indexOf(future));
-                System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
-                System.out.println(response.getResponseHeaderMetadata());
-                System.out.println();
-            } catch (Exception e) {
-                if (e.getCause() instanceof MarketplaceWebServiceException) {
-                    MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
-                    System.out.println("Caught Exception: " + exception.getMessage());
-                    System.out.println("Response Status Code: " + exception.getStatusCode());
-                    System.out.println("Error Code: " + exception.getErrorCode());
-                    System.out.println("Error Type: " + exception.getErrorType());
-                    System.out.println("Request ID: " + exception.getRequestId());
-                    System.out.print("XML: " + exception.getXML());
-                    System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
-                } else {
-                    e.printStackTrace();
+        if(responses != null && responses.size() > 0) {
+        	getReportRequestListByNextTokenResponseList = new ArrayList<GetReportRequestListByNextTokenResponse>();
+        	for (Future<GetReportRequestListByNextTokenResponse> future : responses) {
+                while (!future.isDone()) {
+                    Thread.yield();
+                }
+                try {
+                    GetReportRequestListByNextTokenResponse response = future.get();
+                    // Original request corresponding to this response, if needed:
+                    //GetReportRequestListByNextTokenRequest originalRequest = requests.get(responses.indexOf(future));
+                    System.out.println("Response request id: " + response.getResponseMetadata().getRequestId());
+                    System.out.println(response.getResponseHeaderMetadata());
+                    System.out.println();
+                    getReportRequestListByNextTokenResponseList.add(response);
+                } catch (Exception e) {
+                    if (e.getCause() instanceof MarketplaceWebServiceException) {
+                        MarketplaceWebServiceException exception = MarketplaceWebServiceException.class.cast(e.getCause());
+                        System.out.println("Caught Exception: " + exception.getMessage());
+                        System.out.println("Response Status Code: " + exception.getStatusCode());
+                        System.out.println("Error Code: " + exception.getErrorCode());
+                        System.out.println("Error Type: " + exception.getErrorType());
+                        System.out.println("Request ID: " + exception.getRequestId());
+                        System.out.print("XML: " + exception.getXML());
+                        System.out.println("ResponseHeaderMetadata: " + exception.getResponseHeaderMetadata());
+                    } else {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+        return getReportRequestListByNextTokenResponseList;
     }
 
 }

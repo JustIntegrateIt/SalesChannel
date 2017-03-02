@@ -18,11 +18,6 @@ package com.amazonservices.mws.products.samples;
 import java.util.*;
 import java.util.concurrent.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -90,30 +85,41 @@ public class GetMyPriceForASINAsyncSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public List<GetMyPriceForASINResponse> getMyPriceForASINAsync(String sellerId, String mwsAuthToken
+    		, String marketplaceId, ASINListType asinList, List<String> asin) {
 
+    	List<GetMyPriceForASINResponse> getMyPriceForASINResponseList = null;
+    	
         // Get a client connection.
         MarketplaceWebServiceProductsAsyncClient client = MarketplaceWebServiceProductsSampleConfig.getAsyncClient();
 
         // Create a request list.
         List<GetMyPriceForASINRequest> requestList = new ArrayList<GetMyPriceForASINRequest>();
         GetMyPriceForASINRequest request = new GetMyPriceForASINRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        ASINListType asinList = new ASINListType();
-        List<String> asin = new ArrayList<String>();
+        asinList = new ASINListType();
+        asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);
         request.setASINList(asinList);
         requestList.add(request);
 
         // Make the calls.
-        GetMyPriceForASINAsyncSample.invokeGetMyPriceForASIN(client, requestList);
-
+        List<Object> getMyPriceForASINResponseObj = GetMyPriceForASINAsyncSample.invokeGetMyPriceForASIN(client, requestList);
+        if(getMyPriceForASINResponseObj != null && getMyPriceForASINResponseObj.size() > 0) {
+        	getMyPriceForASINResponseList = new ArrayList<GetMyPriceForASINResponse>();
+        	for(Object obj : getMyPriceForASINResponseObj) {
+        		if(obj instanceof GetMyPriceForASINResponse) {
+        			GetMyPriceForASINResponse getMyPriceForASINResponse = (GetMyPriceForASINResponse) obj;
+        			if(getMyPriceForASINResponse != null) {
+        				getMyPriceForASINResponseList.add(getMyPriceForASINResponse);
+        			}
+        		}
+        	}
+        }
+        return getMyPriceForASINResponseList;
     }
 
 }

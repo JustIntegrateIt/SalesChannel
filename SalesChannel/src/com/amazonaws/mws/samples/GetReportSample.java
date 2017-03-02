@@ -19,14 +19,11 @@
 
 package com.amazonaws.mws.samples;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
 
 /**
  *
@@ -42,85 +39,90 @@ public class GetReportSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
-        /************************************************************************
-         * Access Key ID and Secret Access Key ID, obtained from:
-         * http://aws.amazon.com
-         ***********************************************************************/
-        final String accessKeyId = "<Your Access Key ID>";
-        final String secretAccessKey = "<Your Secret Access Key>";
-
-        final String appName = "<Your Application or Company Name>";
-        final String appVersion = "<Your Application Version or Build Number or Release Date>";
-
-        MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
-
-        /************************************************************************
-         * Uncomment to set the appropriate MWS endpoint.
-         ************************************************************************/
-        // US
-        // config.setServiceURL("https://mws.amazonservices.com/");
-        // UK
-        // config.setServiceURL("https://mws.amazonservices.co.uk/");
-        // Germany
-        // config.setServiceURL("https://mws.amazonservices.de/");
-        // France
-        // config.setServiceURL("https://mws.amazonservices.fr/");
-        // Italy
-        // config.setServiceURL("https://mws.amazonservices.it/");
-        // Japan
-        // config.setServiceURL("https://mws.amazonservices.jp/");
-        // China
-        // config.setServiceURL("https://mws.amazonservices.com.cn/");
-        // Canada
-        // config.setServiceURL("https://mws.amazonservices.ca/");
-        // India
-        // config.setServiceURL("https://mws.amazonservices.in/");
-
-        /************************************************************************
-         * You can also try advanced configuration options. Available options are:
-         *
-         *  - Signature Version
-         *  - Proxy Host and Proxy Port
-         *  - User Agent String to be sent to Marketplace Web Service
-         *
-         ***********************************************************************/
-
-        /************************************************************************
-         * Instantiate Http Client Implementation of Marketplace Web Service        
-         ***********************************************************************/
-
-        MarketplaceWebService service = new MarketplaceWebServiceClient(
-                accessKeyId, secretAccessKey, appName, appVersion, config);
-
-        /************************************************************************
-         * Setup request parameters and uncomment invoke to try out 
-         * sample for Get Report 
-         ***********************************************************************/
-
-        /************************************************************************
-         * Marketplace and Merchant IDs are required parameters for all 
-         * Marketplace Web Service calls.
-         ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
-
-        GetReportRequest request = new GetReportRequest();
-        request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
-
-        request.setReportId( "<Report ID>" );
-
-        // Note that depending on the type of report being downloaded, a report can reach 
-        // sizes greater than 1GB. For this reason we recommend that you _always_ program to
-        // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
-        // the in-memory size limit and have to re-work your solution.
-        //
-        // OutputStream report = new FileOutputStream( "report.xml" );
-        // request.setReportOutputStream( report );
-
-        // invokeGetReport(service, request);
+    public GetReportResponse getReport(String merchantId, String sellerDevAuthToken) {
+    	GetReportResponse getReportResponse = null;
+    	try {
+	        /************************************************************************
+	         * Access Key ID and Secret Access Key ID, obtained from:
+	         * http://aws.amazon.com
+	         ***********************************************************************/
+	        final String accessKeyId = "<Your Access Key ID>";
+	        final String secretAccessKey = "<Your Secret Access Key>";
+	
+	        final String appName = "<Your Application or Company Name>";
+	        final String appVersion = "<Your Application Version or Build Number or Release Date>";
+	
+	        MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
+	
+	        /************************************************************************
+	         * Uncomment to set the appropriate MWS endpoint.
+	         ************************************************************************/
+	        // US
+	        // config.setServiceURL("https://mws.amazonservices.com/");
+	        // UK
+	        // config.setServiceURL("https://mws.amazonservices.co.uk/");
+	        // Germany
+	        // config.setServiceURL("https://mws.amazonservices.de/");
+	        // France
+	        // config.setServiceURL("https://mws.amazonservices.fr/");
+	        // Italy
+	        // config.setServiceURL("https://mws.amazonservices.it/");
+	        // Japan
+	        // config.setServiceURL("https://mws.amazonservices.jp/");
+	        // China
+	        // config.setServiceURL("https://mws.amazonservices.com.cn/");
+	        // Canada
+	        // config.setServiceURL("https://mws.amazonservices.ca/");
+	        // India
+	        // config.setServiceURL("https://mws.amazonservices.in/");
+	
+	        /************************************************************************
+	         * You can also try advanced configuration options. Available options are:
+	         *
+	         *  - Signature Version
+	         *  - Proxy Host and Proxy Port
+	         *  - User Agent String to be sent to Marketplace Web Service
+	         *
+	         ***********************************************************************/
+	
+	        /************************************************************************
+	         * Instantiate Http Client Implementation of Marketplace Web Service        
+	         ***********************************************************************/
+	
+	        MarketplaceWebService service = new MarketplaceWebServiceClient(
+	                accessKeyId, secretAccessKey, appName, appVersion, config);
+	
+	        /************************************************************************
+	         * Setup request parameters and uncomment invoke to try out 
+	         * sample for Get Report 
+	         ***********************************************************************/
+	
+	        /************************************************************************
+	         * Marketplace and Merchant IDs are required parameters for all 
+	         * Marketplace Web Service calls.
+	         ***********************************************************************/
+	        merchantId = "<Your Merchant ID>";
+	        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+	
+	        GetReportRequest request = new GetReportRequest();
+	        request.setMerchant( merchantId );
+	        request.setMWSAuthToken(sellerDevAuthToken);
+	
+	        request.setReportId( "<Report ID>" );
+	
+	        // Note that depending on the type of report being downloaded, a report can reach 
+	        // sizes greater than 1GB. For this reason we recommend that you _always_ program to
+	        // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
+	        // the in-memory size limit and have to re-work your solution.
+	        //
+	        OutputStream report = new FileOutputStream( "report.xml" );
+	        request.setReportOutputStream( report );
+	
+	        getReportResponse = invokeGetReport(service, request);
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return getReportResponse; 
 
     }
 
@@ -135,10 +137,11 @@ public class GetReportSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeGetReport(MarketplaceWebService service, GetReportRequest request) {
-        try {
+    public static GetReportResponse invokeGetReport(MarketplaceWebService service, GetReportRequest request) {
+    	GetReportResponse response = null;
+    	try {
 
-            GetReportResponse response = service.getReport(request);
+            response = service.getReport(request);
 
 
             System.out.println ("GetReport Action Response");
@@ -186,6 +189,7 @@ public class GetReportSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+        return response;
     }
 
 }

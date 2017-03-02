@@ -43,8 +43,9 @@ public class CancelFeedSubmissionsSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
-
+    public CancelFeedSubmissionsResponse cancelFeedSubmissions(String merchantId
+    		, String sellerDevAuthToken) {
+    	CancelFeedSubmissionsResponse cancelFeedSubmissionsResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
@@ -128,17 +129,17 @@ public class CancelFeedSubmissionsSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         CancelFeedSubmissionsRequest request = new CancelFeedSubmissionsRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
         
         // @TODO: set request parameters here
 
-        // invokeCancelFeedSubmissions(service, request);
-
+        cancelFeedSubmissionsResponse = invokeCancelFeedSubmissions(service, request);
+        return cancelFeedSubmissionsResponse;
     }
 
 
@@ -151,10 +152,11 @@ public class CancelFeedSubmissionsSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeCancelFeedSubmissions(MarketplaceWebService service, CancelFeedSubmissionsRequest request) {
-        try {
+    public static CancelFeedSubmissionsResponse invokeCancelFeedSubmissions(MarketplaceWebService service, CancelFeedSubmissionsRequest request) {
+    	CancelFeedSubmissionsResponse response = null;
+    	try {
 
-            CancelFeedSubmissionsResponse response = service.cancelFeedSubmissions(request);
+            response = service.cancelFeedSubmissions(request);
 
 
             System.out.println ("CancelFeedSubmissions Action Response");
@@ -242,6 +244,7 @@ public class CancelFeedSubmissionsSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+    	return response;
     }
 
 }

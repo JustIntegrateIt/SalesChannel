@@ -17,11 +17,6 @@ package com.amazonservices.mws.products.samples;
 
 import java.util.*;
 
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import java.math.BigDecimal;
-
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -70,31 +65,31 @@ public class GetMatchingProductForIdSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetMatchingProductForIdResponse getMatchingProductForId(String sellerId, String mwsAuthToken
+    		, String marketplaceId, String idType, IdListType idList, List<String> id) {
 
+    	GetMatchingProductForIdResponse getMatchingProductForIdResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetMatchingProductForIdRequest request = new GetMatchingProductForIdRequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        String idType = "ISBN";
+        idType = "ISBN";
         request.setIdType(idType);
-        IdListType idList = new IdListType();
-        List<String> id = new ArrayList<String>();
+        idList = new IdListType();
+        id = new ArrayList<String>();
         id.add("9781933988665");
         idList.setId(id);
         request.setIdList(idList);
 
         // Make the call.
-        GetMatchingProductForIdSample.invokeGetMatchingProductForId(client, request);
-
+        getMatchingProductForIdResponse = GetMatchingProductForIdSample.invokeGetMatchingProductForId(client, request);
+        return getMatchingProductForIdResponse;
     }
 
 }

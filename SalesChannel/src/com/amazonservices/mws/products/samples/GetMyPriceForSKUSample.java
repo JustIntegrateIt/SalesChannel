@@ -16,10 +16,7 @@
 package com.amazonservices.mws.products.samples;
 
 import java.util.*;
-import javax.xml.datatype.XMLGregorianCalendar;
-import java.math.BigDecimal;
 
-import com.amazonservices.mws.client.*;
 import com.amazonservices.mws.products.*;
 import com.amazonservices.mws.products.model.*;
 
@@ -68,29 +65,29 @@ public class GetMyPriceForSKUSample {
     /**
      *  Command line entry point.
      */
-    public static void main(String[] args) {
+    public GetMyPriceForSKUResponse getMyPriceForSKU(String sellerId, String mwsAuthToken
+    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU) {
 
+    	GetMyPriceForSKUResponse getMyPriceForSKUResponse = null;
+    	
         // Get a client connection.
         // Make sure you've set the variables in MarketplaceWebServiceProductsSampleConfig.
         MarketplaceWebServiceProductsClient client = MarketplaceWebServiceProductsSampleConfig.getClient();
 
         // Create a request.
         GetMyPriceForSKURequest request = new GetMyPriceForSKURequest();
-        String sellerId = "A44435JW4FD32";
         request.setSellerId(sellerId);
-        String mwsAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
         request.setMWSAuthToken(mwsAuthToken);
-        String marketplaceId = "A21TJRUUN4KGV";
         request.setMarketplaceId(marketplaceId);
-        SellerSKUListType sellerSKUList = new SellerSKUListType();
-        List<String> sellerSKU = new ArrayList<String>();
+        sellerSKUList = new SellerSKUListType();
+        sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);
         request.setSellerSKUList(sellerSKUList);
 
         // Make the call.
-        GetMyPriceForSKUSample.invokeGetMyPriceForSKU(client, request);
-
+        getMyPriceForSKUResponse = GetMyPriceForSKUSample.invokeGetMyPriceForSKU(client, request);
+        return getMyPriceForSKUResponse;
     }
 
 }

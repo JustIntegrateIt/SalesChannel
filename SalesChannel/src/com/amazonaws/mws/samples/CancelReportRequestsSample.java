@@ -43,7 +43,7 @@ public class CancelReportRequestsSample {
      *
      * @param args unused
      */
-    public static void main(String... args) {
+    public CancelReportRequestsResponse cancelReportRequests(String merchantId, String sellerDevAuthToken) {
 
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
@@ -117,17 +117,17 @@ public class CancelReportRequestsSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        final String merchantId = "<Your Merchant ID>";
-        final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = "<Your Merchant ID>";
+        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
 
         CancelReportRequestsRequest request = new CancelReportRequestsRequest();
         request.setMerchant( merchantId );
-        //request.setMWSAuthToken(sellerDevAuthToken);
+        request.setMWSAuthToken(sellerDevAuthToken);
         
         // @TODO: set request parameters here
 
-        // invokeCancelReportRequests(service, request);
-
+        CancelReportRequestsResponse response = invokeCancelReportRequests(service, request);
+        return response;
     }
 
 
@@ -140,11 +140,11 @@ public class CancelReportRequestsSample {
      * @param service instance of MarketplaceWebService service
      * @param request Action to invoke
      */
-    public static void invokeCancelReportRequests(MarketplaceWebService service, CancelReportRequestsRequest request) {
-        try {
+    public CancelReportRequestsResponse invokeCancelReportRequests(MarketplaceWebService service, CancelReportRequestsRequest request) {
+    	CancelReportRequestsResponse response = null;
+    	try {
 
-            CancelReportRequestsResponse response = service.cancelReportRequests(request);
-
+            response = service.cancelReportRequests(request);
 
             System.out.println ("CancelReportRequests Action Response");
             System.out.println ("=============================================================================");
@@ -230,6 +230,7 @@ public class CancelReportRequestsSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+        return response;
     }
 
 }

@@ -17,23 +17,13 @@
 
 package com.amazonaws.mws.samples;
 
-import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.util.Arrays;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
-import com.amazonaws.mws.mock.MarketplaceWebServiceMock;
-import com.saleschannel.api.base.SalesChannelBaseDao;
 import com.saleschannel.api.constants.SalesChannelConstants;
-import com.saleschannel.api.encryption.SalesChannelEncryptionDecryption;
 import com.saleschannel.api.utility.SalesChannelUtility;
 
 /**
@@ -54,110 +44,111 @@ public class SubmitFeedSample {
     /**
      * @param args
      */
-    public static void main(String... args) {
+    public SubmitFeedResponse submitFeed(String merchantId, String sellerDevAuthToken, List<String> marketplacesIds
+    		, String feedType, String feedContentPath) {
+    	SubmitFeedResponse submitFeedResponse = null;
+    	try {
+    		/************************************************************************
+             * Access Key ID and Secret Access Key ID, obtained from:
+             * http://aws.amazon.com
+             ***********************************************************************/
+            final String accessKeyId = SalesChannelConstants.accessKeyId;
+            final String secretAccessKey = SalesChannelConstants.secretAccessKey;
 
-        /************************************************************************
-         * Access Key ID and Secret Access Key ID, obtained from:
-         * http://aws.amazon.com
-         ***********************************************************************/
-        final String accessKeyId = SalesChannelConstants.accessKeyId;
-        final String secretAccessKey = SalesChannelConstants.secretAccessKey;
+            final String appName = SalesChannelConstants.appName;
+            final String appVersion = SalesChannelConstants.appVersion;
 
-        final String appName = SalesChannelConstants.appName;
-        final String appVersion = SalesChannelConstants.appVersion;
+            MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
 
-        MarketplaceWebServiceConfig config = new MarketplaceWebServiceConfig();
+            /************************************************************************
+             * Uncomment to set the appropriate MWS endpoint.
+             ************************************************************************/
+            // US
+            // config.setServiceURL("https://mws.amazonservices.com/");
+            // UK
+            // config.setServiceURL("https://mws.amazonservices.co.uk/");
+            // Germany
+            // config.setServiceURL("https://mws.amazonservices.de/");
+            // France
+            // config.setServiceURL("https://mws.amazonservices.fr/");
+            // Italy
+            // config.setServiceURL("https://mws.amazonservices.it/");
+            // Japan
+            // config.setServiceURL("https://mws.amazonservices.jp/");
+            // China
+            // config.setServiceURL("https://mws.amazonservices.com.cn/");
+            // Canada
+            // config.setServiceURL("https://mws.amazonservices.ca/");
+            // India
+            config.setServiceURL("https://mws.amazonservices.in/");
 
-        /************************************************************************
-         * Uncomment to set the appropriate MWS endpoint.
-         ************************************************************************/
-        // US
-        // config.setServiceURL("https://mws.amazonservices.com/");
-        // UK
-        // config.setServiceURL("https://mws.amazonservices.co.uk/");
-        // Germany
-        // config.setServiceURL("https://mws.amazonservices.de/");
-        // France
-        // config.setServiceURL("https://mws.amazonservices.fr/");
-        // Italy
-        // config.setServiceURL("https://mws.amazonservices.it/");
-        // Japan
-        // config.setServiceURL("https://mws.amazonservices.jp/");
-        // China
-        // config.setServiceURL("https://mws.amazonservices.com.cn/");
-        // Canada
-        // config.setServiceURL("https://mws.amazonservices.ca/");
-        // India
-        config.setServiceURL("https://mws.amazonservices.in/");
+            /************************************************************************
+             * You can also try advanced configuration options. Available options are:
+             *
+             *  - Signature Version
+             *  - Proxy Host and Proxy Port
+             *  - User Agent String to be sent to Marketplace Web Service
+             *
+             ***********************************************************************/
 
-        /************************************************************************
-         * You can also try advanced configuration options. Available options are:
-         *
-         *  - Signature Version
-         *  - Proxy Host and Proxy Port
-         *  - User Agent String to be sent to Marketplace Web Service
-         *
-         ***********************************************************************/
+            /************************************************************************
+             * Instantiate Http Client Implementation of Marketplace Web Service        
+             ***********************************************************************/
 
-        /************************************************************************
-         * Instantiate Http Client Implementation of Marketplace Web Service        
-         ***********************************************************************/
-
-        MarketplaceWebService service = new MarketplaceWebServiceClient(
-                accessKeyId, secretAccessKey, appName, appVersion, config);
+            MarketplaceWebService service = new MarketplaceWebServiceClient(
+                    accessKeyId, secretAccessKey, appName, appVersion, config);
 
 
-        /************************************************************************
-         * Setup request parameters and uncomment invoke to try out sample for
-         * Submit Feed
-         ***********************************************************************/
+            /************************************************************************
+             * Setup request parameters and uncomment invoke to try out sample for
+             * Submit Feed
+             ***********************************************************************/
 
-        /************************************************************************
-         * Marketplace and Merchant IDs are required parameters for all
-         * Marketplace Web Service calls.
-         ***********************************************************************/
-        final String merchantId = SalesChannelConstants.merchantIdSellerId;
-        //final String sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
-        // marketplaces to which this feed will be submitted; look at the
-        // API reference document on the MWS website to see which marketplaces are
-        // included if you do not specify the list yourself
-        final IdList marketplaces = new IdList(Arrays.asList(SalesChannelConstants.marketPlaceId));
+            /************************************************************************
+             * Marketplace and Merchant IDs are required parameters for all
+             * Marketplace Web Service calls.
+             ***********************************************************************/
+            merchantId = SalesChannelConstants.merchantIdSellerId;
+            sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+            // marketplaces to which this feed will be submitted; look at the
+            // API reference document on the MWS website to see which marketplaces are
+            // included if you do not specify the list yourself
+            if(marketplacesIds == null || marketplacesIds.size() == 0) {
+            	marketplacesIds = new ArrayList<String>();
+            }
+            final IdList marketplaces = new IdList(marketplacesIds);
 
-        SubmitFeedRequest request = new SubmitFeedRequest();
-        request.setMerchant(merchantId);
-        //request.setMWSAuthToken(sellerDevAuthToken);
-        request.setMarketplaceIdList(marketplaces);
-        try {
-        	request.setContentMD5(SalesChannelUtility.computeContentMD5Value("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
-        	request.setFeedContent(new FileInputStream("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
+            SubmitFeedRequest request = new SubmitFeedRequest();
+            request.setMerchant(merchantId);
+            request.setMWSAuthToken(sellerDevAuthToken);
+            request.setMarketplaceIdList(marketplaces);
+           	request.setContentMD5(SalesChannelUtility.computeContentMD5Value("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
+           	request.setFeedContent(new FileInputStream("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
+            request.setFeedType("_POST_PRODUCT_DATA_");
+
+            // MWS exclusively offers a streaming interface for uploading your
+            // feeds. This is because
+            // feed sizes can grow to the 1GB+ range - and as your business grows
+            // you could otherwise
+            // silently reach the feed size where your in-memory solution will no
+            // longer work, leaving you
+            // puzzled as to why a solution that worked for a long time suddenly
+            // stopped working though
+            // you made no changes. For the same reason, we strongly encourage you
+            // to generate your feeds to
+            // local disk then upload them directly from disk to MWS via Java -
+            // without buffering them in Java
+            // memory in their entirety.
+            // Note: MarketplaceWebServiceClient will not retry a submit feed request
+            // because there is no way to reset the InputStream from our client. 
+            // To enable retry, recreate the InputStream and resubmit the feed
+            // with the new InputStream. 
+            //
+            submitFeedResponse = invokeSubmitFeed(service, request);
         } catch(Exception e) {
         	e.printStackTrace();
         }
-        request.setFeedType("_POST_PRODUCT_DATA_");
-
-        // MWS exclusively offers a streaming interface for uploading your
-        // feeds. This is because
-        // feed sizes can grow to the 1GB+ range - and as your business grows
-        // you could otherwise
-        // silently reach the feed size where your in-memory solution will no
-        // longer work, leaving you
-        // puzzled as to why a solution that worked for a long time suddenly
-        // stopped working though
-        // you made no changes. For the same reason, we strongly encourage you
-        // to generate your feeds to
-        // local disk then upload them directly from disk to MWS via Java -
-        // without buffering them in Java
-        // memory in their entirety.
-        // Note: MarketplaceWebServiceClient will not retry a submit feed request
-        // because there is no way to reset the InputStream from our client. 
-        // To enable retry, recreate the InputStream and resubmit the feed
-        // with the new InputStream. 
-        //
-        // request.setFeedContent( new FileInputStream("my-feed.xml" /*or
-        // "my-flat-file.txt" if you use flat files*/);
-
-        invokeSubmitFeed(service, request);
-
+        return submitFeedResponse;
     }
 
     /**
@@ -172,11 +163,11 @@ public class SubmitFeedSample {
      * @param request
      *            Action to invoke
      */
-    public static void invokeSubmitFeed(MarketplaceWebService service,
-            SubmitFeedRequest request) {
+    public static SubmitFeedResponse invokeSubmitFeed(MarketplaceWebService service, SubmitFeedRequest request) {
+    	SubmitFeedResponse response = null;
         try {
 
-            SubmitFeedResponse response = service.submitFeed(request);
+            response = service.submitFeed(request);
 
             System.out.println("SubmitFeed Action Response");
             System.out
@@ -272,6 +263,7 @@ public class SubmitFeedSample {
             System.out.print("XML: " + ex.getXML());
             System.out.println("ResponseHeaderMetadata: " + ex.getResponseHeaderMetadata());
         }
+        return response;
     }
 
 }
