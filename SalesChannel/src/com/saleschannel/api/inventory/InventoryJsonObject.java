@@ -1,5 +1,7 @@
 package com.saleschannel.api.inventory;
 
+import java.util.List;
+
 import com.saleschannel.api.base.SalesChannelBaseJsonObject;
 
 public class InventoryJsonObject extends SalesChannelBaseJsonObject {
@@ -9,6 +11,9 @@ public class InventoryJsonObject extends SalesChannelBaseJsonObject {
 	
 	//SC Inventory Code
 	private String inventoryCode;
+	
+	//SC Shelf List
+	private List<ShelfJsonObject> shelfList;
 	
 	public String getId() {
 		return id;
@@ -24,5 +29,13 @@ public class InventoryJsonObject extends SalesChannelBaseJsonObject {
 
 	public void setInventoryCode(String inventoryCode) {
 		this.inventoryCode = inventoryCode;
+	}
+
+	public List<ShelfJsonObject> getShelfList() {
+		return shelfList;
+	}
+
+	public void setShelfList(List<ShelfJsonObject> shelfList) {
+		this.shelfList = shelfList;
 	}
 }

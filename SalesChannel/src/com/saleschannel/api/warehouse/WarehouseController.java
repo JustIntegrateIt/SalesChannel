@@ -18,6 +18,13 @@ import org.restlet.representation.Representation;
 
 import com.saleschannel.api.SalesChannelServerResource;
 import com.saleschannel.api.constants.SalesChannelConstants;
+import com.saleschannel.api.inventory.BinJsonModel;
+import com.saleschannel.api.inventory.BinJsonObject;
+import com.saleschannel.api.inventory.InventoryJsonModel;
+import com.saleschannel.api.inventory.InventoryJsonObject;
+import com.saleschannel.api.inventory.InventoryServiceImpl;
+import com.saleschannel.api.inventory.ShelfJsonModel;
+import com.saleschannel.api.inventory.ShelfJsonObject;
 import com.saleschannel.api.utility.SalesChannelUtility;
 
 public class WarehouseController extends SalesChannelServerResource<WarehouseJsonObject>{
@@ -25,6 +32,8 @@ public class WarehouseController extends SalesChannelServerResource<WarehouseJso
 	private static final Logger LOGGERS = Logger.getLogger(WarehouseController.class);
 	
 	private WarehouseServiceImpl warehouseService;
+	
+	private InventoryServiceImpl inventoryService;
 	
 	private String warehouseId = null;
 	
@@ -187,6 +196,80 @@ public class WarehouseController extends SalesChannelServerResource<WarehouseJso
 				jsonObject2.put("60017", "Country is empty.@#country#@");
 				return jsonObject2;
 			}
+			//Inventory validation
+			if(obj.getInventoryList() != null && !obj.getInventoryList().isEmpty() && 
+					obj.getInventoryList().size() > 0) {
+				for(InventoryJsonObject inventory : obj.getInventoryList()) {
+					//id validation
+					if(inventory.getId() != null && !inventory.getId().isEmpty()) {
+						InventoryJsonObject inventoryCheck = inventoryService.getInventoryById(inventory.getId());
+						if(inventoryCheck != null) {
+							//inventoryCode validation
+							InventoryJsonModel inventoryModel = inventoryService.checkInventoryByCode(inventory.getInventoryCode());
+							if(inventoryModel != null && !inventoryModel.getId().equals(inventory.getId())
+									&& inventoryModel.getWarehouseId().equals(obj.getId())) {
+								jsonObject2.put("60022", "Inventory Code already exist.@#inventoryCode#@");
+								return jsonObject2;
+							}
+							
+						} else {
+							jsonObject2.put("60021", "Invalid InventoryId passed while update.@#id#@");
+							return jsonObject2;
+						}
+					} else {
+						//inventoryCode validation
+						InventoryJsonModel inventoryModel = inventoryService.checkInventoryByCode(inventory.getInventoryCode());
+						if(inventoryModel != null) {
+							jsonObject2.put("60023", "Inventory Code already exist.@#inventoryCode#@");
+							return jsonObject2;
+						}
+					}
+					//shelf Validation
+					for(ShelfJsonObject shelf : inventory.getShelfList()) {
+						if(shelf.getId() != null) {
+							ShelfJsonObject shelfCheck = inventoryService.getShelfById(shelf.getId());
+							if(shelfCheck != null) {
+								ShelfJsonModel shelfModel = inventoryService.checkShelfByCode(shelf.getShelfCode());
+								if(shelfModel != null && !shelfModel.getId().equals(shelf.getId())) {
+									jsonObject2.put("60026", "Shelf Code already exist.@#shelfCode#@");
+									return jsonObject2;	
+								}	
+							} else {
+								jsonObject2.put("60025", "Shelf Id is not valid.@#id#@");
+								return jsonObject2;
+							}
+						} else {
+							ShelfJsonModel shelfCheck = inventoryService.checkShelfByCode(shelf.getShelfCode());
+							if(shelfCheck != null) {
+								jsonObject2.put("60024", "Shelf Code already exist.@#shelfCode#@");
+								return jsonObject2;	
+							}
+						}
+						//bin Validation
+						for(BinJsonObject bin : shelf.getBinList()) {
+							if(bin.getId() != null) {
+								ShelfJsonObject shelfCheck = inventoryService.getShelfById(shelf.getId());
+								if(shelfCheck != null) {
+									BinJsonModel binModel = inventoryService.checkBinByCode(bin.getBinCode());
+									if(binModel != null && !binModel.getId().equals(bin.getId())) {
+										jsonObject2.put("60028", "Bin Code already exist.@#binCode#@");
+										return jsonObject2;	
+									}	
+								} else {
+									jsonObject2.put("60027", "Bin Id is not valid.@#id#@");
+									return jsonObject2;
+								}
+							} else {
+								BinJsonModel binCheck = inventoryService.checkBinByCode(bin.getBinCode());
+								if(binCheck != null) {
+									jsonObject2.put("60026", "Bin Code already exist.@#binCode#@");
+									return jsonObject2;	
+								}
+							}
+						}
+					}
+				}
+			}
 			if (method.equals(SalesChannelConstants.PUT)) {
 				//id validation
 				if(obj.getId() != null && !obj.getId().isEmpty()) {
@@ -197,6 +280,12 @@ public class WarehouseController extends SalesChannelServerResource<WarehouseJso
 					}
 				} else {
 					jsonObject2.put("60018", "Warehouse Id is empty.@#id#@");
+					return jsonObject2;
+				}
+				//warehouseName validation
+				WarehouseJsonModel warehouseJsonModel = warehouseService.checkWarehouseExist(obj.getWarehouseName());
+				if(warehouseJsonModel != null && !warehouseJsonModel.getId().equals(obj.getId())) {
+					jsonObject2.put("60020", "WarehouseName is already exist.@#warehouseName#@");
 					return jsonObject2;
 				}
 			}
@@ -248,6 +337,14 @@ public class WarehouseController extends SalesChannelServerResource<WarehouseJso
 
 	public void setWarehouseService(WarehouseServiceImpl warehouseService) {
 		this.warehouseService = warehouseService;
+	}
+
+	public InventoryServiceImpl getInventoryService() {
+		return inventoryService;
+	}
+
+	public void setInventoryService(InventoryServiceImpl inventoryService) {
+		this.inventoryService = inventoryService;
 	}
 
 }

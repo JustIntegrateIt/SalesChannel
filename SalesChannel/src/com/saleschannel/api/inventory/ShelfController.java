@@ -205,6 +205,28 @@ public class ShelfController extends SalesChannelServerResource<ShelfJsonObject>
 				jsonObject2.put("60211", "ShelfCode is empty.@#shelfCode#@");
 				return jsonObject2;
 			}
+			//bin Validation
+			for(BinJsonObject bin : obj.getBinList()) {
+				if(bin.getId() != null) {
+					ShelfJsonObject shelfCheck = inventoryService.getShelfById(bin.getId());
+					if(shelfCheck != null) {
+						BinJsonModel binModel = inventoryService.checkBinByCode(bin.getBinCode());
+						if(binModel != null && !binModel.getId().equals(bin.getId())) {
+							jsonObject2.put("60021", "Bin Code already exist.@#binCode#@");
+							return jsonObject2;	
+						}	
+					} else {
+						jsonObject2.put("60020", "Bin Id is not valid.@#id#@");
+						return jsonObject2;
+					}
+				} else {
+					BinJsonModel binCheck = inventoryService.checkBinByCode(bin.getBinCode());
+					if(binCheck != null) {
+						jsonObject2.put("60019", "Bin Code already exist.@#binCode#@");
+						return jsonObject2;	
+					}
+				}
+			}
 			//Shelf Position validation
 			if(obj.getPosition() != null) {
 				if(obj.getPosition().getRowPositionX() == null || obj.getPosition().getRowPositionX().isEmpty()

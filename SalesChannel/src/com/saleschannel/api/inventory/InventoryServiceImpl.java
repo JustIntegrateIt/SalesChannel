@@ -67,6 +67,12 @@ public class InventoryServiceImpl implements InventoryService {
 				inventoryJsonModel.setWarehouseId(warehouseId);
 				inventoryId = inventoryDao.createInventory(inventoryJsonModel);
 			}
+			if(inventoryId != null && inventoryJsonObject.getShelfList() != null 
+					&& inventoryJsonObject.getShelfList().size() > 0) {
+				for(ShelfJsonObject shelfJsonObject : inventoryJsonObject.getShelfList()) {
+					createShelf(shelfJsonObject, inventoryId);
+				}
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error occured while create Inventory");
 			e.printStackTrace();
@@ -81,6 +87,12 @@ public class InventoryServiceImpl implements InventoryService {
 			if(inventoryJsonModel != null) {
 				inventoryJsonModel.setWarehouseId(warehouseId);
 				status = inventoryDao.updateInventory(inventoryJsonModel);
+			}
+			if(status && inventoryJsonObject.getShelfList() != null 
+					&& inventoryJsonObject.getShelfList().size() > 0) {
+				for(ShelfJsonObject shelfJsonObject : inventoryJsonObject.getShelfList()) {
+					updateShelf(shelfJsonObject, inventoryJsonModel.getId());
+				}
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error occured while update Inventory");
@@ -237,6 +249,12 @@ public class InventoryServiceImpl implements InventoryService {
 				shelfJsonModel.setInventoryId(inventoryId);
 				shelfId = inventoryDao.createShelf(shelfJsonModel);
 			}
+			if(shelfId != null && shelfJsonObject.getBinList() != null 
+					&& shelfJsonObject.getBinList().size() > 0) {
+				for(BinJsonObject binJsonObject : shelfJsonObject.getBinList()) {
+					createBin(binJsonObject, shelfId);
+				}
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error occured while create shelf");
 			e.printStackTrace();
@@ -251,6 +269,12 @@ public class InventoryServiceImpl implements InventoryService {
 			if(shelfJsonModel != null) {
 				shelfJsonModel.setInventoryId(inventoryId);
 				status = inventoryDao.updateShelf(shelfJsonModel);
+			}
+			if(status && shelfJsonObject.getBinList() != null 
+					&& shelfJsonObject.getBinList().size() > 0) {
+				for(BinJsonObject binJsonObject : shelfJsonObject.getBinList()) {
+					updateBin(binJsonObject, shelfJsonModel.getId());
+				}
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error occured while update shelf");

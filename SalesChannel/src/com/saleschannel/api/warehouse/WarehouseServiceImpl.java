@@ -5,12 +5,17 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.saleschannel.api.inventory.InventoryJsonObject;
+import com.saleschannel.api.inventory.InventoryServiceImpl;
+
 public class WarehouseServiceImpl implements WarehouseService {
 
 	private static final Logger LOGGERS = Logger.getLogger(WarehouseServiceImpl.class);
 	
 	private WarehouseDaoImpl warehouseDao;
 
+	private InventoryServiceImpl inventoryService;
+	
 	public WarehouseDaoImpl getWarehouseDao() {
 		return warehouseDao;
 	}
@@ -69,6 +74,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 			if(warehouseJsonModel != null) {
 				warehouseId = warehouseDao.createWarehouse(warehouseJsonModel);
 			}
+			if(warehouseId != null && warehouseJsonObject.getInventoryList() != null 
+					&& warehouseJsonObject.getInventoryList().size() > 0) {
+				for(InventoryJsonObject inventoryJsonObject : warehouseJsonObject.getInventoryList()) {
+					inventoryService.createInventory(inventoryJsonObject, warehouseId);
+				}
+			}
 		} catch(Exception e) {
 			LOGGERS.error("error occure while createWarehouse");
 			e.printStackTrace();
@@ -82,6 +93,12 @@ public class WarehouseServiceImpl implements WarehouseService {
 			WarehouseJsonModel warehouseJsonModel = convertWarehouseJsonObjectToModel(warehouseJsonObject);
 			if(warehouseJsonModel != null) {
 				status = warehouseDao.updateWarehouse(warehouseJsonModel);
+			}
+			if(status && warehouseJsonObject.getInventoryList() != null 
+					&& warehouseJsonObject.getInventoryList().size() > 0) {
+				for(InventoryJsonObject inventoryJsonObject : warehouseJsonObject.getInventoryList()) {
+					inventoryService.updateInventory(inventoryJsonObject, warehouseJsonObject.getId());
+				}
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error occure while updateWarehouse");
@@ -152,5 +169,13 @@ public class WarehouseServiceImpl implements WarehouseService {
 			e.printStackTrace();
 		}
 		return status;
+	}
+
+	public InventoryServiceImpl getInventoryService() {
+		return inventoryService;
+	}
+
+	public void setInventoryService(InventoryServiceImpl inventoryService) {
+		this.inventoryService = inventoryService;
 	}
 }

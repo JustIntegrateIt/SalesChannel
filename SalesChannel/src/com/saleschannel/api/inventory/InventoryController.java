@@ -194,6 +194,50 @@ public class InventoryController extends SalesChannelServerResource<InventoryJso
 				jsonObject2.put("60111", "InventoryCode is empty.@#inventoryCode#@");
 				return jsonObject2;
 			}
+			//shelf Validation
+			for(ShelfJsonObject shelf : obj.getShelfList()) {
+				if(shelf.getId() != null) {
+					ShelfJsonObject shelfCheck = inventoryService.getShelfById(shelf.getId());
+					if(shelfCheck != null) {
+						ShelfJsonModel shelfModel = inventoryService.checkShelfByCode(shelf.getShelfCode());
+						if(shelfModel != null && !shelfModel.getId().equals(shelf.getId())) {
+							jsonObject2.put("60017", "Shelf Code already exist.@#shelfCode#@");
+							return jsonObject2;	
+						}	
+					} else {
+						jsonObject2.put("60016", "Shelf Id is not valid.@#id#@");
+						return jsonObject2;
+					}
+				} else {
+					ShelfJsonModel shelfCheck = inventoryService.checkShelfByCode(shelf.getShelfCode());
+					if(shelfCheck != null) {
+						jsonObject2.put("60015", "Shelf Code already exist.@#shelfCode#@");
+						return jsonObject2;	
+					}
+				}
+				//bin Validation
+				for(BinJsonObject bin : shelf.getBinList()) {
+					if(bin.getId() != null) {
+						ShelfJsonObject shelfCheck = inventoryService.getShelfById(shelf.getId());
+						if(shelfCheck != null) {
+							BinJsonModel binModel = inventoryService.checkBinByCode(bin.getBinCode());
+							if(binModel != null && !binModel.getId().equals(bin.getId())) {
+								jsonObject2.put("60020", "Bin Code already exist.@#binCode#@");
+								return jsonObject2;	
+							}	
+						} else {
+							jsonObject2.put("60019", "Bin Id is not valid.@#id#@");
+							return jsonObject2;
+						}
+					} else {
+						BinJsonModel binCheck = inventoryService.checkBinByCode(bin.getBinCode());
+						if(binCheck != null) {
+							jsonObject2.put("60018", "Bin Code already exist.@#binCode#@");
+							return jsonObject2;	
+						}
+					}
+				}
+			}
 			//Inventory Id validation
 			if(method.equals(SalesChannelConstants.PUT)) {
 				if(obj.getId() != null && !obj.getId().isEmpty()) {

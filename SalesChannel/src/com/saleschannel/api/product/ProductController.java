@@ -263,7 +263,7 @@ public class ProductController extends SalesChannelServerResource<ProductsJsonOb
 							} else if(productType.equals(ProductTypes.Configurable)) {
 								//productAttributes validation
 								if(obj.getProductAttributes() != null && !obj.getProductAttributes().isEmpty()) {
-									/*for(ProductAttributeSetModel productAttributeSetModel : obj.getProductAttributes()) {
+									for(ProductAttributeSetModel productAttributeSetModel : obj.getProductAttributes()) {
 										//binContent validation
 										if(productAttributeSetModel.getProductAttributeSet() != null && productAttributeSetModel.getProductAttributeSet().size() > 0 
 												&& productAttributeSetModel.getBinContent() != null) {
@@ -289,7 +289,7 @@ public class ProductController extends SalesChannelServerResource<ProductsJsonOb
 												return jsonObject2;
 											}
 										}
-									}*/
+									}
 								} else {
 									jsonObject2.put("30018", "Product Attributes is empty.@#productAttributes#@");
 									return jsonObject2;

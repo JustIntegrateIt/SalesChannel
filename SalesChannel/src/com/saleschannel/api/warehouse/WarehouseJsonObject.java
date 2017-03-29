@@ -1,6 +1,9 @@
 package com.saleschannel.api.warehouse;
 
+import java.util.List;
+
 import com.saleschannel.api.base.SalesChannelBaseJsonObject;
+import com.saleschannel.api.inventory.InventoryJsonObject;
 
 public class WarehouseJsonObject extends SalesChannelBaseJsonObject {
 
@@ -27,6 +30,8 @@ public class WarehouseJsonObject extends SalesChannelBaseJsonObject {
 	
 	//SC Warehouse Country
 	private String country;
+	
+	private List<InventoryJsonObject> inventoryList;
 
 	public String getId() {
 		return id;
@@ -90,5 +95,13 @@ public class WarehouseJsonObject extends SalesChannelBaseJsonObject {
 
 	public void setWarehouseName(String warehouseName) {
 		this.warehouseName = warehouseName;
+	}
+
+	public List<InventoryJsonObject> getInventoryList() {
+		return inventoryList;
+	}
+
+	public void setInventoryList(List<InventoryJsonObject> inventoryList) {
+		this.inventoryList = inventoryList;
 	}
 }

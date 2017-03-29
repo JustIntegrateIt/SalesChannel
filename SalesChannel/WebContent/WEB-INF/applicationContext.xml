@@ -136,10 +136,12 @@
 	<!-- warehouse bean Creation and API Starts -->
 	<bean name="/warehouse" class="com.saleschannel.api.warehouse.WarehouseController" scope="prototype">
 		<property name="customerService" ref="customerService" />
+		<property name="inventoryService" ref="inventoryService" />
 		<property name="warehouseService" ref="warehouseService" />
     </bean>
 	
 	<bean id="warehouseService" class="com.saleschannel.api.warehouse.WarehouseServiceImpl">
+		<property name="inventoryService" ref="inventoryService" />
 		<property name="warehouseDao" ref="warehouseDao" />
 	</bean>
 	
