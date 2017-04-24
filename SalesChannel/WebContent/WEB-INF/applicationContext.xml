@@ -83,6 +83,16 @@
 		<property name="customerService" ref="customerService" />
     </bean>
 	
+	<bean name="/categoryColumn" class="com.saleschannel.api.productcategory.ProductCategoryColumnController" scope="prototype">
+		<property name="categoryService" ref="categoryService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+    
+    <bean name="/columnValidValues" class="com.saleschannel.api.productcategory.CategoryColumnValidValuesController" scope="prototype">
+		<property name="categoryService" ref="categoryService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+    
 	<bean id="categoryService" class="com.saleschannel.api.productcategory.ProductCategoryServiceImpl">
 		<property name="categoryDao" ref="categoryDao" />
 	</bean>
@@ -197,6 +207,16 @@
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
 	<!-- Orders bean Creation and API Ends -->
+	
+	<!-- FlatFile bean Creation and API Starts -->
+	<bean id="flatFileService" class="com.saleschannel.api.flatfile.FlatFileServiceImpl">
+		<property name="flatFileDao" ref="flatFileDao" />
+	</bean>
+	
+	<bean id="flatFileDao" class="com.saleschannel.api.flatfile.FlatFileDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- FlatFile bean Creation and API Ends -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

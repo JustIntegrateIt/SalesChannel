@@ -16,6 +16,9 @@ public class ProductCategoryJsonObject extends SalesChannelBaseJsonObject {
 	//SC Product Parent Category Name
 	private String parentCategoryName;
 
+	//SC Market Place Id
+	private String marketPlaceId;
+	
 	public String getId() {
 		return id;
 	}
@@ -46,6 +49,14 @@ public class ProductCategoryJsonObject extends SalesChannelBaseJsonObject {
 
 	public void setParentCategoryName(String parentCategoryName) {
 		this.parentCategoryName = parentCategoryName;
+	}
+
+	public String getMarketPlaceId() {
+		return marketPlaceId;
+	}
+
+	public void setMarketPlaceId(String marketPlaceId) {
+		this.marketPlaceId = marketPlaceId;
 	}
 	
 }

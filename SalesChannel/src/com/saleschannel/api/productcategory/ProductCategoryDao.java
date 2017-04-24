@@ -21,4 +21,12 @@ public interface ProductCategoryDao {
 	public boolean deleteProductCategoryByNameAndCustomerId(String customerId, String categoryName);
 	
 	public ProductCategoryJsonModel isProductCategoryExist(ProductCategoryJsonModel productCategoryJsonModel);
+	
+	public List<ProductCategoryColumnParametersJsonModel> getProductCategoryColumnParametersByCategoryId(String productCategoryId);
+	
+	public void insertProductCategoryColumnParameter(ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel);
+	
+	public void insertCategoryColumnValidValues(CategoryColumnValidValuesJsonModel categoryColumnValidValuesJsonModel);
+	
+	public List<CategoryColumnValidValuesJsonModel> getCategoryColumnValidValuesByColumnName(String columnName);
 }

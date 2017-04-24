@@ -184,4 +184,58 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		}
 		return categoryJsonModel;
 	}
+	
+	public List<ProductCategoryColumnParametersJsonModel> getProductCategoryColumnParametersByCategoryId(String productCategoryId) {
+		List<ProductCategoryColumnParametersJsonModel> productCategoryColumnParametersJsonModelList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.ProductCategoryColumnParametersJsonModel")
+					.and("categoryId").is(productCategoryId));
+			productCategoryColumnParametersJsonModelList = this.mongoOps.find(query, ProductCategoryColumnParametersJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_PARAMETERS);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnParameters By CategoryId from database");
+			e.printStackTrace();
+		}
+		return productCategoryColumnParametersJsonModelList;
+	}
+	
+	public void insertProductCategoryColumnParameter(ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel) {
+		String id = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			id = objectId.toString();
+			productCategoryColumnParametersJsonModel.setId(id);
+			this.mongoOps.insert(productCategoryColumnParametersJsonModel, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_PARAMETERS);
+		} catch(Exception e) {
+			LOGGERS.error("error while insert product category column parameter in database");
+			e.printStackTrace();
+		}
+	}
+	
+	public void insertCategoryColumnValidValues(CategoryColumnValidValuesJsonModel categoryColumnValidValuesJsonModel) {
+		String id = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			id = objectId.toString();
+			categoryColumnValidValuesJsonModel.setId(id);
+			this.mongoOps.insert(categoryColumnValidValuesJsonModel, SalesChannelConstants.SC_CATEGORY_COLUMN_VALID_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while insert product category column valid values in database");
+			e.printStackTrace();
+		}
+	}
+	
+	public List<CategoryColumnValidValuesJsonModel> getCategoryColumnValidValuesByColumnName(String columnName) {
+		List<CategoryColumnValidValuesJsonModel> categoryColumnValidValuesJsonModelList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.CategoryColumnValidValuesJsonModel")
+					.and("columnName").is(columnName));
+			categoryColumnValidValuesJsonModelList = this.mongoOps.find(query, CategoryColumnValidValuesJsonModel.class, SalesChannelConstants.SC_CATEGORY_COLUMN_VALID_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get CategoryColumnValidValues By ColumnName from database");
+			e.printStackTrace();
+		}
+		return categoryColumnValidValuesJsonModelList;
+	}
 }

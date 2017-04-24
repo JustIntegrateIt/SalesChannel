@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -15,6 +16,8 @@ import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,8 +25,17 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 
 import com.saleschannel.api.constants.SalesChannelConstants;
+import com.saleschannel.api.flatfile.ColumnsJsonModel;
+import com.saleschannel.api.flatfile.FlatFileJsonModel;
+import com.saleschannel.api.flatfile.MergeCellsRowJsonModel;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -372,5 +384,159 @@ public final class SalesChannelUtility {
 	    	e.printStackTrace();
 	    }
 	    return md5Content;
+	}
+	
+	/**
+	 * Method used to create Amazon Flat File.
+	 *
+	 * @param flatFileJsonModel
+	 * @return String filePath
+	 */
+	@SuppressWarnings("resource")
+	public static String prepareFlatFile(FlatFileJsonModel flatFileJsonModel) {
+		String filePath = null;
+		if (flatFileJsonModel != null) {
+			try {
+				Workbook wb = new XSSFWorkbook();
+				Sheet sheet = wb.createSheet(flatFileJsonModel.getType());
+				if(flatFileJsonModel.getMergeCells() != null && flatFileJsonModel.getMergeCells().size() > 0) {
+					for(int i = 0; flatFileJsonModel.getMergeCells().size() > i; i++) {
+						Map<String, List<MergeCellsRowJsonModel>> obj = flatFileJsonModel.getMergeCells().get(i);
+						for(String key : obj.keySet()) {
+							List<MergeCellsRowJsonModel> mergeCellsRowJsonModelList = obj.get(key);
+							if(mergeCellsRowJsonModelList != null && mergeCellsRowJsonModelList.size() > 0) {
+								int fromColumn = 0;
+								int toColumn = 0;
+								if(key.equals("row1")) {
+									for(MergeCellsRowJsonModel mergeCellsRowJsonModel : mergeCellsRowJsonModelList) {
+										if(mergeCellsRowJsonModel.getFrom() != null && mergeCellsRowJsonModel.getFrom().length() > 1) {
+											fromColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(1));
+										} else {
+											fromColumn = getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0));
+										}
+										if(mergeCellsRowJsonModel.getTo() != null && mergeCellsRowJsonModel.getTo().length() > 1) {
+											toColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(1));
+										} else {
+											toColumn = getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0));
+										}
+										sheet.addMergedRegion(new CellRangeAddress(0, 0, fromColumn, toColumn));
+									}
+								}
+								if(key.equals("row2")) {
+									for(MergeCellsRowJsonModel mergeCellsRowJsonModel : mergeCellsRowJsonModelList) {
+										if(mergeCellsRowJsonModel.getFrom() != null && mergeCellsRowJsonModel.getFrom().length() > 1) {
+											fromColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(1));
+										} else {
+											fromColumn = getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0));
+										}
+										if(mergeCellsRowJsonModel.getTo() != null && mergeCellsRowJsonModel.getTo().length() > 1) {
+											toColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(1));
+										} else {
+											toColumn = getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0));
+										}
+										sheet.addMergedRegion(new CellRangeAddress(1, 1, fromColumn, toColumn));
+									}
+								}
+								if(key.equals("row3")) {
+									for(MergeCellsRowJsonModel mergeCellsRowJsonModel : mergeCellsRowJsonModelList) {
+										if(mergeCellsRowJsonModel.getFrom() != null && mergeCellsRowJsonModel.getFrom().length() > 1) {
+											fromColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(1));
+										} else {
+											fromColumn = getCharacterValue(mergeCellsRowJsonModel.getFrom().charAt(0));
+										}
+										if(mergeCellsRowJsonModel.getTo() != null && mergeCellsRowJsonModel.getTo().length() > 1) {
+											toColumn = (26 * (getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0)) + 1)) + getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(1));
+										} else {
+											toColumn = getCharacterValue(mergeCellsRowJsonModel.getTo().charAt(0));
+										}
+										sheet.addMergedRegion(new CellRangeAddress(2, 2, fromColumn, toColumn));
+									}
+								}
+							}
+						}
+					}
+				}
+
+				// row numbering starts from 0
+				int r = 0; //row
+				do {
+					Row row = sheet.createRow(r);
+					int c = 0; //cell
+					for(int i = 0; flatFileJsonModel.getColumns().size() > i; i++) {
+						Map<String, ColumnsJsonModel> obj = flatFileJsonModel.getColumns().get(i);
+						for(String key : obj.keySet()) {
+							ColumnsJsonModel columnsJsonModel = obj.get(key);
+							Cell cell = row.createCell(c);
+							if(r == 0)
+								cell.setCellValue(columnsJsonModel.getRow1());
+							if(r == 1)
+								cell.setCellValue(columnsJsonModel.getRow2());
+							if(r == 2)
+								cell.setCellValue(columnsJsonModel.getRow3());
+						}
+						c++;
+					}
+					r++;
+				} while(r < 3);
+				
+				String excelFileName = "autofile.xlsx"; //flatFileJsonModel.getType()+".xlsx";
+
+				FileOutputStream fos = new FileOutputStream(SalesChannelConstants.FLATFILE_SOURCE_PATH+"/"+excelFileName);
+				wb.write(fos);
+				fos.flush();
+				fos.close();
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
+		}
+		return filePath;
+	}
+	
+	/**
+	 * Method used to get ascending value for alphabets starts a=0.
+	 *
+	 * @param character
+	 * @return integer character value
+	 */
+	public static int getCharacterValue(char character) {
+		int value = 0;
+		try {
+			for(char alphabet = 'A'; alphabet <= 'Z';alphabet++) {
+			    if(alphabet == character) {
+			    	break;
+			    }
+			    value++;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
+	
+	/**
+	 * Method used to get brows nodes.
+	 *
+	 * @param List<String> browseNodeList
+	 * @return String browseNodes
+	 */
+	public static String getBrowseNodes(List<String> browseNodeList) {
+		String browseNodes = "";
+		try {
+			if(browseNodeList != null && browseNodeList.size() > 0) {
+				int size = browseNodeList.size();
+				int i = 0; 
+				for(String browseNode : browseNodeList) {
+					if(browseNode != null && !browseNode.isEmpty() && size > i) {
+						browseNodes = browseNodes + browseNode + ",";
+					} else if(browseNode != null && !browseNode.isEmpty()) {
+						browseNodes = browseNodes + browseNode;
+					}
+					i++;
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return browseNodes;
 	}
 }

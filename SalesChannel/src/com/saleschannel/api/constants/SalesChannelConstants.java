@@ -44,6 +44,8 @@ public class SalesChannelConstants {
 	public static final String SC_PRODUCT_ACCESSORIES = "sc_product_accessories";
 	public static final String SC_PRODUCT_IMAGE = "sc_product_image";
 	public static final String SC_PRODUCT_CATEGORY = "sc_product_category";
+	public static final String SC_PRODUCT_CATEGORY_COLUMN_PARAMETERS = "sc_product_category_column_parameters";
+	public static final String SC_CATEGORY_COLUMN_VALID_VALUES = "sc_category_column_valid_values";
 	public static final String SC_PRODUCT_CATEGORY_MAPPING = "sc_product_category_mapping";
 	public static final String SC_WAREHOUSE = "sc_warehouse";
 	public static final String SC_INVENTORY = "sc_inventory";
@@ -56,6 +58,7 @@ public class SalesChannelConstants {
 	public static final String SC_AMAZON_ORDER_INVOICE_DATA = "sc_amazon_order_invoice_data";
 	public static final String SC_AMAZON_ORDER_PAYMENT_EXECUTION_DETAILS = "sc_amazon_order_payment_execution_detail";
 	public static final String SC_ORDER_SHIPPING_ADDRESS = "sc_order_shipping_address"; 
+	public static final String SC_AMAZON_FLAT_FILES = "sc_amazon_flat_files";
 	
 	/** AMZ MWS creadentials names. */
 	public static final String accessKeyId = "AKIAIC2MSCXCVWE3BLJQ";  
@@ -64,4 +67,8 @@ public class SalesChannelConstants {
 	public static final String appVersion = "0.1";
 	public static final String marketPlaceId = "A21TJRUUN4KGV";
 	public static final String merchantIdSellerId = "A44435JW4FD32";
+	
+	public static final String FLATFILE_SOURCE_PATH = "/home/system6/Documents/SC-AmazonMWS/FlatFiles";
+	public static final String FILE_CONSUMER_ELECTRONIC = "/ConsumerElectronicTemplate.xlsx";
+	public static final String FILE_AUTO_ACCESSORY = "/AutoAccessoryTemplate.xlsx";
 }

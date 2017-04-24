@@ -109,22 +109,24 @@ public class SubmitFeedSample {
              * Marketplace Web Service calls.
              ***********************************************************************/
             merchantId = SalesChannelConstants.merchantIdSellerId;
-            sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+            sellerDevAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
             // marketplaces to which this feed will be submitted; look at the
             // API reference document on the MWS website to see which marketplaces are
             // included if you do not specify the list yourself
             if(marketplacesIds == null || marketplacesIds.size() == 0) {
             	marketplacesIds = new ArrayList<String>();
             }
+            marketplacesIds.add("A21TJRUUN4KGV");
             final IdList marketplaces = new IdList(marketplacesIds);
 
             SubmitFeedRequest request = new SubmitFeedRequest();
             request.setMerchant(merchantId);
             request.setMWSAuthToken(sellerDevAuthToken);
             request.setMarketplaceIdList(marketplaces);
-           	request.setContentMD5(SalesChannelUtility.computeContentMD5Value("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
-           	request.setFeedContent(new FileInputStream("/home/system6/Documents/SC-AmazonMWS/JIIT00002.txt"));
-            request.setFeedType("_POST_PRODUCT_DATA_");
+           	request.setContentMD5(SalesChannelUtility.computeContentMD5Value(feedContentPath));
+           	request.setFeedContent(new FileInputStream(feedContentPath));
+            request.setFeedType("_POST_FLAT_FILE_LISTINGS_DATA_");
+            request.setContentType(ContentType.textXML);
 
             // MWS exclusively offers a streaming interface for uploading your
             // feeds. This is because
