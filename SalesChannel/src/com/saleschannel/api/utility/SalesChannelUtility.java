@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -35,6 +37,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -490,6 +493,69 @@ public final class SalesChannelUtility {
 			}
 		}
 		return filePath;
+	}
+	
+	/**
+	 * Method used to prepare xlsx Amazon Flat File.
+	 *
+	 * @param File inputFile, File outputFile
+	 */
+	@SuppressWarnings("resource")
+	public static void xls(File inputFile, File outputFile) {
+		//For storing data into CSV files
+		StringBuffer data = new StringBuffer();
+	    try {
+	    	FileOutputStream fos = new FileOutputStream(outputFile);
+
+	    	//Get the workbook object for XLSX file
+	    	XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(inputFile));
+	    	//Get first sheet from the workbook
+	    	XSSFSheet xlsxSheet = workbook.getSheetAt(0);
+	    	Cell cell = null;
+	    	Row row = null;
+
+	    	//Iterate through each rows from first sheet
+	    	Iterator<Row> rowIterator = xlsxSheet.iterator();
+	    	while (rowIterator.hasNext()) {
+	    		row = rowIterator.next();
+	    		//For each row, iterate through each columns
+	            Iterator<Cell> cellIterator = row.cellIterator();
+	            while (cellIterator.hasNext()) {
+	            	cell = cellIterator.next();
+	            	switch (cell.getCellType()) {
+	            	
+	            	case Cell.CELL_TYPE_BOOLEAN:
+	            		data.append(cell.getBooleanCellValue() + "\t");
+	            		break;
+	                            
+	            	case Cell.CELL_TYPE_NUMERIC:
+	            		data.append(cell.getNumericCellValue() + "\t");
+	            		break;
+	                            
+	            	case Cell.CELL_TYPE_STRING:
+	            		data.append(cell.getStringCellValue() + "\t");
+	            		break;
+
+	            	case Cell.CELL_TYPE_BLANK:
+	            		data.append("" + "\t");
+	            		break;
+	                    
+	            	default:
+	            		data.append(cell + "\t");
+	            	}
+	            }
+	            data.append('\n'); 
+	    	}
+	    	
+	    	fos.write(data.toString().getBytes());
+	    	fos.close();
+	    }
+	    catch (FileNotFoundException e) {
+	    	e.printStackTrace();
+	    }
+	    catch (IOException e) {
+	    	e.printStackTrace();
+	    }
 	}
 	
 	/**

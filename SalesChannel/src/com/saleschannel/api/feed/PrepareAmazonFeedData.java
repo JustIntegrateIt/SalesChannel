@@ -32,7 +32,7 @@ public class PrepareAmazonFeedData {
 			SalesChannelUtility.prepareFlatFile(flatFile);*/
             
 			XSSFSheet xlsxSheet = null;
-            FileInputStream sourceFile = new FileInputStream(new File(SalesChannelConstants.FLATFILE_SOURCE_PATH+"/AutoAccessoryTemplateTest.xlsx"));
+            FileInputStream sourceFile = new FileInputStream(new File(SalesChannelConstants.FLATFILE_SOURCE_PATH+"/autofile.xlsx"));
         	XSSFWorkbook xlsxWorkBook = new XSSFWorkbook(sourceFile);
         	if(xlsxWorkBook != null) {
         		xlsxSheet = xlsxWorkBook.getSheetAt(0);
@@ -48,75 +48,75 @@ public class PrepareAmazonFeedData {
         				cell = columnRow.getCell(i);
             			if(cell != null && cell.toString().equals("item_sku")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("19APR2017TYRE2");
+            				newCell.setCellValue("19APR2017TYRE3"); //19APR2017TYRE2
             			}
             			else if(cell != null && cell.toString().equals("external_product_id")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("B005AWD9B0"); //generate a proper value
+            				newCell.setCellValue("B005AWD9B0"); //generate a proper value B005AWD9B0
             			}
             			else if(cell != null && cell.toString().equals("external_product_id_type")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("ASIN"); //UPC (12 digits), EAN (13 digits), or ISBN (10 digits, sometimes ending with an X) numbers
+            				newCell.setCellValue("ASIN"); // ASIN UPC (12 digits), EAN (13 digits), or ISBN (10 digits, sometimes ending with an X) numbers
             			}
             			else if(cell != null && cell.toString().equals("item_name")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("Bike Tyre Test");
+            				newCell.setCellValue("Bike Tyre Test"); //Bike Tyre Test
             			}
             			else if(cell != null && cell.toString().equals("brand_name")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("JustIntegrateIt");
+            				newCell.setCellValue("JustIntegrateIt"); //JustIntegrateIt
             			}
             			else if(cell != null && cell.toString().equals("manufacturer")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("justintegrateit.com");
+            				newCell.setCellValue("justintegrateit.com"); //justintegrateit.com
             			}
             			else if(cell != null && cell.toString().equals("feed_product_type")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("Tyres");
+            				newCell.setCellValue("Tyres"); //Tyres
             			}
             			else if(cell != null && cell.toString().equals("main_image_url")) {
             				Cell newCell =newRow.createCell(i);
             				newCell.setCellValue("http://www.team-bhp.com/forum/attachments/motorbikes/1534864d1469704209t-motorcycle-tyres-compared-mrf2wheelertyresnylogripsdl3527644781bd380.jpg");
-            			}
+            			}//http://www.team-bhp.com/forum/attachments/motorbikes/1534864d1469704209t-motorcycle-tyres-compared-mrf2wheelertyresnylogripsdl3527644781bd380.jpg
             			else if(cell != null && cell.toString().equals("part_number")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("BikeTyre016");
+            				newCell.setCellValue("BikeTyre016"); //BikeTyre016
             			}
             			else if(cell != null && cell.toString().equals("condition_type")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("New");
+            				newCell.setCellValue("New"); //New
             			}
             			else if(cell != null && cell.toString().equals("standard_price")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("1980");
+            				newCell.setCellValue("2980"); //1980
             			}
             			else if(cell != null && cell.toString().equals("quantity")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("120");
+            				newCell.setCellValue("22"); //122
             			}
             			else if(cell != null && cell.toString().equals("recommended_browse_nodes")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("5257496031");
+            				newCell.setCellValue("5257496031"); //5257496031
             			}
             			else if(cell != null && cell.toString().equals("section_width")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("185 millimeters");
+            				newCell.setCellValue("185 millimeters"); //185 millimeters
             			}
             			else if(cell != null && cell.toString().equals("rim_size")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("7");
+            				newCell.setCellValue("7"); //7
             			}
             			else if(cell != null && cell.toString().equals("rim_size_unit_of_measure")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("IN");
+            				newCell.setCellValue("IN"); //IN
             			}
             			else if(cell != null && cell.toString().equals("included_components")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("One Front Tyre New");
+            				newCell.setCellValue("One Front Tyre New"); //One Front Tyre New
             			}
             			else if(cell != null && cell.toString().equals("tire_aspect_ratio")) {
             				Cell newCell =newRow.createCell(i);
-            				newCell.setCellValue("8");
+            				newCell.setCellValue("8"); //8
             			}
             			else {
             				newRow.createCell(i);
@@ -128,13 +128,13 @@ public class PrepareAmazonFeedData {
             sourceFile.close();
             FileOutputStream outFile2 =new FileOutputStream(new File("/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile.xlsx"));
             File inputFile = new File("/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile.xlsx");
-            File outputFile = new File("/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile.txt");
+            File outputFile = new File("/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile1.txt");
             xlsxWorkBook.write(outFile2);
             outFile2.close();
             xls(inputFile, outputFile);
             SubmitFeedSample feedSample = new SubmitFeedSample();
             submitFeedResponse = feedSample.submitFeed(null, null, null, null, 
-            		"/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile.txt");
+            		"/home/system6/Documents/SC-AmazonMWS/FlatFiles/autofile1.txt");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

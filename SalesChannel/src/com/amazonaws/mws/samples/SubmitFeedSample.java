@@ -126,7 +126,7 @@ public class SubmitFeedSample {
            	request.setContentMD5(SalesChannelUtility.computeContentMD5Value(feedContentPath));
            	request.setFeedContent(new FileInputStream(feedContentPath));
             request.setFeedType("_POST_FLAT_FILE_LISTINGS_DATA_");
-            request.setContentType(ContentType.textXML);
+            request.setContentType(ContentType.TextXML);
 
             // MWS exclusively offers a streaming interface for uploading your
             // feeds. This is because

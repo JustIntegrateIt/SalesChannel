@@ -12,7 +12,7 @@ public enum ContentType {
 	 * Currently this is the only content type supported by MWS.
 	 */
 	OctetStream("application/octet-stream"),
-	textXML("text/tab-separated-values; charset=iso-8859-1");
+	TextXML("text/tab-separated-values; charset=iso-8859-1");
 	
 	private String value;
 	private Collection<ContentTypeParameter> parameters = new HashSet<ContentTypeParameter>();

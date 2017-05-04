@@ -75,5 +75,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/MWSOrders_2013-09-01_v2015-09-24.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/MWSProducts_2011-10-01_v2016-06-01.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-3.9.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/poi-ooxml-3.9.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
