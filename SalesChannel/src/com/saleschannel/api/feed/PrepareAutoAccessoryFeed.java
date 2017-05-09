@@ -52,7 +52,7 @@ public class PrepareAutoAccessoryFeed {
 			        		+ SalesChannelConstants.XLSX;
 					SalesChannelUtility.prepareFlatFile(flatFile, filePath);
 					XSSFSheet xlsxSheet = null;
-					FileInputStream sourceFile = new FileInputStream(new File(SalesChannelConstants.FLATFILE_SOURCE_PATH));
+					FileInputStream sourceFile = new FileInputStream(new File(filePath));
 		        	XSSFWorkbook xlsxWorkBook = new XSSFWorkbook(sourceFile);
 		        	if(xlsxWorkBook != null) {
 		        		xlsxSheet = xlsxWorkBook.getSheetAt(0);
@@ -137,7 +137,8 @@ public class PrepareAutoAccessoryFeed {
 		                						}
 		                					}
 		                				}
-		                			}else if(cell != null && cell.toString().equals("part_number")) {
+		                			}
+		                			else if(cell != null && cell.toString().equals("part_number")) {
 		                				Cell newCell =newRow.createCell(i);
 		                				if(columnValueJsonObjectList != null && columnValueJsonObjectList.size() > 0) {
 		                					for(ProductCategoryColumnValueJsonObject columnValue : columnValueJsonObjectList) {
@@ -160,7 +161,8 @@ public class PrepareAutoAccessoryFeed {
 		                						}
 		                					}
 		                				}
-		                			}else if(cell != null && cell.toString().equals("condition_type")) {
+		                			}
+		                			else if(cell != null && cell.toString().equals("condition_type")) {
 		                				Cell newCell =newRow.createCell(i);
 		                				if(columnValueJsonObjectList != null && columnValueJsonObjectList.size() > 0) {
 		                					for(ProductCategoryColumnValueJsonObject columnValue : columnValueJsonObjectList) {
@@ -183,7 +185,8 @@ public class PrepareAutoAccessoryFeed {
 		                						}
 		                					}
 		                				}
-		                			}else if(cell != null && cell.toString().equals("included_components")) {
+		                			}
+		                			else if(cell != null && cell.toString().equals("included_components")) {
 		                				Cell newCell =newRow.createCell(i);
 		                				if(columnValueJsonObjectList != null && columnValueJsonObjectList.size() > 0) {
 		                					for(ProductCategoryColumnValueJsonObject columnValue : columnValueJsonObjectList) {
@@ -207,7 +210,6 @@ public class PrepareAutoAccessoryFeed {
 		                					}
 		                				}
 		                			}
-		                			
 		                			else if(cell != null && cell.toString().equals("rim_size")) {
 		                				Cell newCell =newRow.createCell(i);
 		                				if(columnValueJsonObjectList != null && columnValueJsonObjectList.size() > 0) {
