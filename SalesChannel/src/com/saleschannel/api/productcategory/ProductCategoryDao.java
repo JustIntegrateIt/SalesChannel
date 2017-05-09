@@ -24,9 +24,15 @@ public interface ProductCategoryDao {
 	
 	public List<ProductCategoryColumnParametersJsonModel> getProductCategoryColumnParametersByCategoryId(String productCategoryId);
 	
+	public ProductCategoryColumnParametersJsonModel getProductCategoryColumnParameterById(String productCategoryColumnParameterId);
+	
+	public ProductCategoryColumnParametersJsonModel getProductCategoryColumnParameterByColumnNameAndCategoryId(String categoryId, String columnName);
+	
 	public void insertProductCategoryColumnParameter(ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel);
 	
 	public void insertCategoryColumnValidValues(CategoryColumnValidValuesJsonModel categoryColumnValidValuesJsonModel);
 	
 	public List<CategoryColumnValidValuesJsonModel> getCategoryColumnValidValuesByColumnName(String columnName);
+	
+	public List<ProductCategoryColumnValueJsonModel> getProductCategoryColumnValuesByProductId(String productId);
 }

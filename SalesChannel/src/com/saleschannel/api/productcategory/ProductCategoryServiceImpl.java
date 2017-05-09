@@ -401,4 +401,46 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return categoryColumnValidValuesJsonObjectList;
 	}
 
+	
+	public ProductCategoryColumnValueJsonObject convertProductCategoryColumnValuesJsonModelToObject(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel) {
+		ProductCategoryColumnValueJsonObject productCategoryColumnValueJsonObject = null;
+		try {
+			if(productCategoryColumnValueJsonModel != null) {
+				productCategoryColumnValueJsonObject = new ProductCategoryColumnValueJsonObject();
+				if(productCategoryColumnValueJsonModel.getCategoryColumnParameterId() != null 
+						&& productCategoryColumnValueJsonModel.equals("")) {
+					ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel = categoryDao.
+							getProductCategoryColumnParameterById(productCategoryColumnValueJsonObject.getCategoryColumnParameterId());
+					if(productCategoryColumnParametersJsonModel != null) {
+						productCategoryColumnValueJsonObject.setCategoryColumnParameterName(productCategoryColumnParametersJsonModel.getColumnName());
+					}
+				}
+				productCategoryColumnValueJsonObject.setCategoryColumnParameterId(productCategoryColumnValueJsonModel.getCategoryColumnParameterId());
+				productCategoryColumnValueJsonObject.setId(productCategoryColumnValueJsonModel.getId());
+				productCategoryColumnValueJsonObject.setProductId(productCategoryColumnValueJsonModel.getProductId());
+				productCategoryColumnValueJsonObject.setValue(productCategoryColumnValueJsonModel.getValue());
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return productCategoryColumnValueJsonObject;
+	}
+	
+	public List<ProductCategoryColumnValueJsonObject> getProductCategoryColumnValuesByProductId(String productId) {
+		List<ProductCategoryColumnValueJsonObject> productCategoryColumnValueJsonObjectList = null;
+		try {
+			List<ProductCategoryColumnValueJsonModel> productCategoryColumnValueJsonModelList = categoryDao.getProductCategoryColumnValuesByProductId(productId);
+			if(productCategoryColumnValueJsonModelList != null && productCategoryColumnValueJsonModelList.size() > 0) {
+				productCategoryColumnValueJsonObjectList = new ArrayList<ProductCategoryColumnValueJsonObject>();
+				for(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel : productCategoryColumnValueJsonModelList) {
+					ProductCategoryColumnValueJsonObject productCategoryColumnValueJsonObject = convertProductCategoryColumnValuesJsonModelToObject(productCategoryColumnValueJsonModel);
+					productCategoryColumnValueJsonObjectList.add(productCategoryColumnValueJsonObject);
+				}
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while check get ProductCategoryColumnValues By ProductId");
+			e.printStackTrace();
+		}
+		return productCategoryColumnValueJsonObjectList;
+	}
 }

@@ -199,6 +199,34 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		return productCategoryColumnParametersJsonModelList;
 	}
 	
+	public ProductCategoryColumnParametersJsonModel getProductCategoryColumnParameterById(String productCategoryColumnParameterId) {
+		ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.ProductCategoryColumnParametersJsonModel")
+					.and("_id").is(productCategoryColumnParameterId));
+			productCategoryColumnParametersJsonModel = this.mongoOps.findOne(query, ProductCategoryColumnParametersJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_PARAMETERS);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnParameter By Id from database");
+			e.printStackTrace();
+		}
+		return productCategoryColumnParametersJsonModel;
+	}
+	
+	public ProductCategoryColumnParametersJsonModel getProductCategoryColumnParameterByColumnNameAndCategoryId(String categoryId, String columnName) {
+		ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.ProductCategoryColumnParametersJsonModel")
+					.and("categoryId").is(categoryId).and("columnName").is(columnName));
+			productCategoryColumnParametersJsonModel = this.mongoOps.findOne(query, ProductCategoryColumnParametersJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_PARAMETERS);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnParameter By columnName from database");
+			e.printStackTrace();
+		}
+		return productCategoryColumnParametersJsonModel;
+	}
+	
 	public void insertProductCategoryColumnParameter(ProductCategoryColumnParametersJsonModel productCategoryColumnParametersJsonModel) {
 		String id = null;
 		try {
@@ -237,5 +265,19 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			e.printStackTrace();
 		}
 		return categoryColumnValidValuesJsonModelList;
+	}
+	
+	public List<ProductCategoryColumnValueJsonModel> getProductCategoryColumnValuesByProductId(String productId) {
+		List<ProductCategoryColumnValueJsonModel> productCategoryColumnValueJsonModelList = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.ProductCategoryColumnValueJsonModel")
+					.and("productId").is(productId));
+			productCategoryColumnValueJsonModelList = this.mongoOps.find(query, ProductCategoryColumnValueJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnValues By ProductId from database");
+			e.printStackTrace();
+		}
+		return productCategoryColumnValueJsonModelList;
 	}
 }

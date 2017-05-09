@@ -396,8 +396,7 @@ public final class SalesChannelUtility {
 	 * @return String filePath
 	 */
 	@SuppressWarnings("resource")
-	public static String prepareFlatFile(FlatFileJsonModel flatFileJsonModel) {
-		String filePath = null;
+	public static String prepareFlatFile(FlatFileJsonModel flatFileJsonModel, String filePath) {
 		if (flatFileJsonModel != null) {
 			try {
 				Workbook wb = new XSSFWorkbook();
@@ -481,10 +480,8 @@ public final class SalesChannelUtility {
 					}
 					r++;
 				} while(r < 3);
-				
-				String excelFileName = "autofile.xlsx"; //flatFileJsonModel.getType()+".xlsx";
 
-				FileOutputStream fos = new FileOutputStream(SalesChannelConstants.FLATFILE_SOURCE_PATH+"/"+excelFileName);
+				FileOutputStream fos = new FileOutputStream(filePath);
 				wb.write(fos);
 				fos.flush();
 				fos.close();
