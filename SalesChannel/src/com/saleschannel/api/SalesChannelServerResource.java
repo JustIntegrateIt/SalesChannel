@@ -15,11 +15,7 @@ import com.saleschannel.api.constants.SalesChannelConstants;
 import com.saleschannel.api.customer.CustomerJsonModel;
 import com.saleschannel.api.customer.CustomerServiceImpl;
 import com.saleschannel.api.encryption.SalesChannelEncryptionDecryption;
-import com.saleschannel.api.flatfile.FlatFileJsonModel;
-import com.saleschannel.api.flatfile.FlatFileServiceImpl;
-import com.saleschannel.api.utility.SalesChannelBeanLocator;
 import com.saleschannel.api.utility.SalesChannelPropertyLoader;
-import com.saleschannel.api.utility.SalesChannelUtility;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
@@ -63,9 +59,6 @@ public abstract class SalesChannelServerResource<T extends SalesChannelBaseJsonO
 		form = getRequest().getResourceRef().getQueryAsForm();
 		long startTime = System.currentTimeMillis();
 		String requestString = getRequest().toString();
-		FlatFileServiceImpl flatfileservice = (FlatFileServiceImpl) SalesChannelBeanLocator.getInstance().findBean("flatFileService");
-		FlatFileJsonModel flatFile = flatfileservice.getFlatFile("58f4a46184ae95fd59c399e5");
-		SalesChannelUtility.prepareFlatFile(flatFile);
 		try {
 			final Method method = getMethod();
 			String screenPath = getResourcePath();

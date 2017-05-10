@@ -93,8 +93,14 @@
 		<property name="customerService" ref="customerService" />
     </bean>
     
+    <bean name="/columnsValue" class="com.saleschannel.api.productcategory.CategoryColumnsValueController" scope="prototype">
+		<property name="categoryService" ref="categoryService" />
+		<property name="customerService" ref="customerService" />
+    </bean>
+    
 	<bean id="categoryService" class="com.saleschannel.api.productcategory.ProductCategoryServiceImpl">
 		<property name="categoryDao" ref="categoryDao" />
+		<property name="productDao" ref="productDao" />
 	</bean>
 	
 	<bean id="categoryDao" class="com.saleschannel.api.productcategory.ProductCategoryDaoImpl">

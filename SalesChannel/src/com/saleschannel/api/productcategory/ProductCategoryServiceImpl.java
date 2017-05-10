@@ -6,11 +6,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.saleschannel.api.product.ProductDaoImpl;
+import com.saleschannel.api.product.ProductJsonModel;
+
 public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 	private static final Logger LOGGERS = Logger.getLogger(ProductCategoryServiceImpl.class);
 	
 	private ProductCategoryDaoImpl categoryDao;
+	
+	private ProductDaoImpl productDao;
 
 	public ProductCategoryDaoImpl getCategoryDao() {
 		return categoryDao;
@@ -18,6 +23,14 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 	public void setCategoryDao(ProductCategoryDaoImpl categoryDao) {
 		this.categoryDao = categoryDao;
+	}
+	
+	public ProductDaoImpl getProductDao() {
+		return productDao;
+	}
+
+	public void setProductDao(ProductDaoImpl productDao) {
+		this.productDao = productDao;
 	}
 
 	public ProductCategoryJsonObject convertProductCategoryJsonModelToObject(ProductCategoryJsonModel productCategoryJsonModel) {
@@ -175,6 +188,27 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return productCategoryJsonObjectList ;
 	}
 
+	public ProductCategoryJsonObject getProductCategoryByProductId(String productId) {
+		ProductCategoryJsonObject productCategoryJsonObject = null;
+		try {
+			ProductJsonModel productJsonModel = productDao.getProductById(productId);
+			if(productJsonModel != null && productJsonModel.getProductCategory() != null && !productJsonModel.getProductCategory().isEmpty()) {
+				ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryByNameAndCustomerId("0", productJsonModel.getProductCategory());
+				if(productCategoryJsonModel != null) {
+					if(productCategoryJsonModel.getParentId() != null && !productCategoryJsonModel.getParentId().isEmpty()) {
+						productCategoryJsonModel = categoryDao.getProductCategoryByNameAndCustomerId("0", productCategoryJsonModel.getParentId());
+					}
+					productCategoryJsonObject = new ProductCategoryJsonObject();
+					productCategoryJsonObject = convertProductCategoryJsonModelToObject(productCategoryJsonModel);		
+				}
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while get product category by productId");
+			e.printStackTrace();
+		}
+		return productCategoryJsonObject;
+	}
+	
 	public boolean deleteProductCategoryById(String productCategoryId, String customerId) {
 		boolean status = false;
 		try {
@@ -426,6 +460,22 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return productCategoryColumnValueJsonObject;
 	}
 	
+	public ProductCategoryColumnValueJsonModel convertProductCategoryColumnValuesJsonObjectToModel(ProductCategoryColumnValueJsonObject productCategoryColumnValueJsonObject) {
+		ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel = null;
+		try {
+			if(productCategoryColumnValueJsonObject != null) {
+				productCategoryColumnValueJsonModel = new ProductCategoryColumnValueJsonModel();
+				productCategoryColumnValueJsonModel.setCategoryColumnParameterId(productCategoryColumnValueJsonObject.getCategoryColumnParameterId());
+				productCategoryColumnValueJsonModel.setId(productCategoryColumnValueJsonObject.getId());
+				productCategoryColumnValueJsonModel.setProductId(productCategoryColumnValueJsonObject.getProductId());
+				productCategoryColumnValueJsonModel.setValue(productCategoryColumnValueJsonObject.getValue());
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return productCategoryColumnValueJsonModel;
+	}
+	
 	public List<ProductCategoryColumnValueJsonObject> getProductCategoryColumnValuesByProductId(String productId) {
 		List<ProductCategoryColumnValueJsonObject> productCategoryColumnValueJsonObjectList = null;
 		try {
@@ -443,4 +493,42 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		}
 		return productCategoryColumnValueJsonObjectList;
 	}
+	
+	public ProductCategoryColumnValueJsonObject getProductCategoryColumnValueById(String id) {
+		ProductCategoryColumnValueJsonObject columnValueJsonObject = null;
+		try {
+			ProductCategoryColumnValueJsonModel categoryColumnValueJsonModel = categoryDao.getProductCategoryColumnValueById(id);
+			if(categoryColumnValueJsonModel != null) {
+				columnValueJsonObject = convertProductCategoryColumnValuesJsonModelToObject(categoryColumnValueJsonModel);
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while check get ProductCategoryColumnValue By id");
+			e.printStackTrace();
+		}
+		return columnValueJsonObject;
+	}
+	
+	public void insertUpdateProductCategoryColumnValues(CategoryColumnsValueJsonObject categoryColumnsValueJsonObject) {
+		try {
+			if(categoryColumnsValueJsonObject != null && categoryColumnsValueJsonObject.getCategoryColumnsValue() != null 
+					&& categoryColumnsValueJsonObject.getCategoryColumnsValue().size() > 0) {
+				for(ProductCategoryColumnValueJsonObject categoryColumnValueJsonObject : categoryColumnsValueJsonObject.getCategoryColumnsValue()) {
+					if(categoryColumnValueJsonObject != null) {
+						ProductCategoryColumnValueJsonModel categoryColumnValueJsonModel = convertProductCategoryColumnValuesJsonObjectToModel(categoryColumnValueJsonObject);
+						if(categoryColumnValueJsonModel != null) {
+							if(categoryColumnValueJsonModel.getId() != null && !categoryColumnValueJsonModel.getId().isEmpty()) {
+								categoryDao.insertCategoryColumnValue(categoryColumnValueJsonModel);
+							} else {
+								categoryDao.updateCategoryColumnValue(categoryColumnValueJsonModel);
+							}
+						}
+					}
+				}
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while insert ProductCategoryColumnValues");
+			e.printStackTrace();
+		}
+	}
+
 }

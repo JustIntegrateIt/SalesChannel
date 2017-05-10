@@ -18,6 +18,10 @@ public interface ProductCategoryService {
 	
 	public List<ProductCategoryJsonObject> getProductCategoryByCustomerId(String customerId);
 	
+	public List<ProductCategoryJsonObject> getProductCategoryByMarketPlaceId(String marketPlaceId);
+	
+	public ProductCategoryJsonObject getProductCategoryByProductId(String productId);
+	
 	public boolean deleteProductCategoryById(String productCategoryId, String customerId);
 	
 	public boolean deleteProductCategoryByNameAndCustomerId(String customerId, String categoryName);
@@ -45,4 +49,12 @@ public interface ProductCategoryService {
 	public List<CategoryColumnValidValuesJsonObject> getCategoryColumnValidValuesByColumnName(String columnName);
 	
 	public List<ProductCategoryColumnValueJsonObject> getProductCategoryColumnValuesByProductId(String productId);
+	
+	public ProductCategoryColumnValueJsonObject getProductCategoryColumnValueById(String id);
+	
+	public ProductCategoryColumnValueJsonModel convertProductCategoryColumnValuesJsonObjectToModel(ProductCategoryColumnValueJsonObject productCategoryColumnValueJsonObject);
+	
+	public ProductCategoryColumnValueJsonObject convertProductCategoryColumnValuesJsonModelToObject(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel);
+	
+	public void insertUpdateProductCategoryColumnValues(CategoryColumnsValueJsonObject categoryColumnsValueJsonObject);
 }

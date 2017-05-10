@@ -267,6 +267,28 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		return categoryColumnValidValuesJsonModelList;
 	}
 	
+	public void insertCategoryColumnValue(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel) {
+		String id = null;
+		try {
+			ObjectId objectId = new ObjectId();
+			id = objectId.toString();
+			productCategoryColumnValueJsonModel.setId(id);
+			this.mongoOps.insert(productCategoryColumnValueJsonModel, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while insert product category column values in database");
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateCategoryColumnValue(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel) {
+		try {
+			this.mongoOps.save(productCategoryColumnValueJsonModel, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while update product category column values in database");
+			e.printStackTrace();
+		}
+	}
+	
 	public List<ProductCategoryColumnValueJsonModel> getProductCategoryColumnValuesByProductId(String productId) {
 		List<ProductCategoryColumnValueJsonModel> productCategoryColumnValueJsonModelList = null;
 		try {
@@ -279,5 +301,19 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			e.printStackTrace();
 		}
 		return productCategoryColumnValueJsonModelList;
+	}
+	
+	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueById(String id) {
+		ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.ProductCategoryColumnValueJsonModel")
+					.and("_id").is(id));
+			productCategoryColumnValueJsonModel = this.mongoOps.findOne(query, ProductCategoryColumnValueJsonModel.class, SalesChannelConstants.SC_PRODUCT_CATEGORY_COLUMN_VALUES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnValue By id from database");
+			e.printStackTrace();
+		}
+		return productCategoryColumnValueJsonModel;
 	}
 }

@@ -15,15 +15,20 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.saleschannel.api.constants.CategoryColumnFieldType;
 import com.saleschannel.api.constants.SalesChannelConstants;
 import com.saleschannel.api.flatfile.FlatFileJsonModel;
 import com.saleschannel.api.flatfile.FlatFileServiceImpl;
 import com.saleschannel.api.product.ProductFulfilledStatusJsonObject;
 import com.saleschannel.api.product.ProductJsonObject;
+import com.saleschannel.api.productcategory.CategoryColumnsValueErrorJsonObject;
+import com.saleschannel.api.productcategory.CategoryColumnsValueJsonObject;
 import com.saleschannel.api.productcategory.ProductCategoryColumnParametersJsonModel;
+import com.saleschannel.api.productcategory.ProductCategoryColumnParametersJsonObject;
 import com.saleschannel.api.productcategory.ProductCategoryColumnValueJsonObject;
 import com.saleschannel.api.productcategory.ProductCategoryDaoImpl;
 import com.saleschannel.api.productcategory.ProductCategoryJsonModel;
+import com.saleschannel.api.productcategory.ProductCategoryJsonObject;
 import com.saleschannel.api.productcategory.ProductCategoryServiceImpl;
 import com.saleschannel.api.utility.SalesChannelBeanLocator;
 import com.saleschannel.api.utility.SalesChannelUtility;
@@ -486,28 +491,30 @@ public class PrepareAutoAccessoryFeed {
 								break;
 							}
 						}
-					if(productJsonObject.getSkuId() == null || productJsonObject.getSkuId().isEmpty()) { //item_sku
+					if(productJsonObject.getSkuId() != null && !productJsonObject.getSkuId().isEmpty()) { //item_sku
 						isExist = true;
 					}
-					if(productJsonObject.getProductName() == null || productJsonObject.getProductName().isEmpty()) { //item_name
+					if(productJsonObject.getProductName() != null && !productJsonObject.getProductName().isEmpty()) { //item_name
 						isExist = true;
 					}
-					if(productJsonObject.getImage() == null || productJsonObject.getImage().isEmpty()) { //main_image_url
+					if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()) { //main_image_url
 						isExist = true;
 					}
-					if(productJsonObject.getCost() == null || productJsonObject.getCost().equals("")) { //standard_price
+					if(productJsonObject.getCost() != null && !productJsonObject.getCost().equals("")) { //standard_price
 						isExist = true;
 					}
-					if(productJsonObject.getQuantity() == null || productJsonObject.getQuantity().equals("")) { //quantity
+					if(productJsonObject.getQuantity() != null && !productJsonObject.getQuantity().equals("")) { //quantity
 						isExist = true;
 					}
 					
 					/*adding unfulfilled products to list*/
-					if(!isExist) {
+					if(isExist) {
 						fulfilledProducts.add(productJsonObject);
+					} else {
+						unfulfilledProducts.add(productJsonObject);
 					}
 				} else {
-					fulfilledProducts.add(productJsonObject);
+					unfulfilledProducts.add(productJsonObject);
 				}
 			}
 			if(unfulfilledProducts != null && unfulfilledProducts.size() > 0)
@@ -519,5 +526,128 @@ public class PrepareAutoAccessoryFeed {
             e.printStackTrace();
         }
 		return productFulfilledStatus;
+    }
+	
+	/*method to validate whether all the required fields are present for a product*/
+	public List<CategoryColumnsValueErrorJsonObject> validateAutoAccessoryFeedValues(CategoryColumnsValueJsonObject categoryColumnsValueJsonObject) {
+		List<CategoryColumnsValueErrorJsonObject> categoryColumnsValueErrors = new ArrayList<CategoryColumnsValueErrorJsonObject>();
+		CategoryColumnsValueErrorJsonObject categoryColumnsValueError = null;
+		try {
+			if(categoryColumnsValueJsonObject != null && categoryColumnsValueJsonObject.getCategoryColumnsValue() != null 
+					&& categoryColumnsValueJsonObject.getCategoryColumnsValue().size() > 0) {
+				ProductCategoryServiceImpl categoryService = (ProductCategoryServiceImpl) SalesChannelBeanLocator.getInstance().findBean("categoryService");
+				ProductCategoryJsonObject productCategoryJsonObject = categoryService.getProductCategoryByProductId(categoryColumnsValueJsonObject.getCategoryColumnsValue().get(0).getProductId());
+				if(productCategoryJsonObject != null) {
+					List<ProductCategoryColumnParametersJsonObject> productCategoryColumnParametersList = categoryService.
+							getProductCategoryColumnParametersByCategoryId(productCategoryJsonObject.getId());
+					if(productCategoryColumnParametersList != null && productCategoryColumnParametersList.size() > 0) {
+						for(ProductCategoryColumnValueJsonObject columnValue : categoryColumnsValueJsonObject.getCategoryColumnsValue()) {
+							boolean isExist = false;
+							for(ProductCategoryColumnParametersJsonObject columnParameter : productCategoryColumnParametersList) {
+								if(columnParameter != null && columnParameter.getId() != null && !columnParameter.getId().isEmpty()	&& columnValue != null 
+										&& columnValue.getCategoryColumnParameterId() != null && !columnValue.getCategoryColumnParameterId().isEmpty() 
+										&& columnValue.getCategoryColumnParameterId().equals(columnParameter.getId())) {
+									isExist = true;
+									if(columnParameter.getFieldType() != null && !columnParameter.getFieldType().isEmpty()) {
+										if(columnParameter.getFieldType().equals(CategoryColumnFieldType.string)) {
+											if(columnValue.getValue().length() > columnParameter.getMaxLength()) {
+												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+												categoryColumnsValueError.setError("Value should not be > "+columnParameter.getMaxLength());
+												categoryColumnsValueErrors.add(categoryColumnsValueError);
+											} else if(!SalesChannelUtility.isValidString(columnValue.getValue())) {
+												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+												categoryColumnsValueError.setError("Value should not contains numbers or special characters");
+												categoryColumnsValueErrors.add(categoryColumnsValueError);
+											}
+										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.alphanumeric)) {
+											if(columnValue.getValue().length() > columnParameter.getMaxLength()) {
+												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+												categoryColumnsValueError.setError("Value should not be > "+columnParameter.getMaxLength());
+												categoryColumnsValueErrors.add(categoryColumnsValueError);
+											} else if(!SalesChannelUtility.isValidString(columnValue.getValue())) {
+												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+												categoryColumnsValueError.setError("Value should not contains special characters");
+												categoryColumnsValueErrors.add(categoryColumnsValueError);
+											}
+										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.number)) {
+											if(columnParameter.isDecimal()) {
+												if(!SalesChannelUtility.isValidDecimal(columnValue.getValue())) {
+													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+													categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+													categoryColumnsValueError.setError("Value should contains special characters");
+													categoryColumnsValueErrors.add(categoryColumnsValueError);
+												} else if(!SalesChannelUtility.isValidNumber(columnValue.getValue())) {
+													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+													categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+													categoryColumnsValueError.setError("Value should be a whole number");
+													categoryColumnsValueErrors.add(categoryColumnsValueError);
+												} else if(columnValue.getValue().contains(".")) {
+													String[] token = columnValue.getValue().split(".");
+													if(token.length > 0 && token[0] != null && !token[0].isEmpty() && token[1] != null && !token[1].isEmpty()) {
+														if(token[0].length() > columnParameter.getBefore()) {
+															categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+															categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+															categoryColumnsValueError.setError("Value should not contains more than "+ columnParameter.getBefore() +" digits");
+															categoryColumnsValueErrors.add(categoryColumnsValueError);
+														} else if(token[1].length() > columnParameter.getAfter()) {
+															categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+															categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+															categoryColumnsValueError.setError("Value should not contains more than "+ columnParameter.getAfter() +" digits");
+															categoryColumnsValueErrors.add(categoryColumnsValueError);
+														}
+													} else {
+														categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+														categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+														categoryColumnsValueError.setError("Value is not valid");
+														categoryColumnsValueErrors.add(categoryColumnsValueError);
+													}
+												} else {
+													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+													categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+													categoryColumnsValueError.setError("Value is not valid");
+													categoryColumnsValueErrors.add(categoryColumnsValueError);
+												}
+											} else {
+												if(!SalesChannelUtility.isValidNumber(columnValue.getValue())) {
+													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+													categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+													categoryColumnsValueError.setError("Value should be a whole number");
+													categoryColumnsValueErrors.add(categoryColumnsValueError);
+												} else if(columnValue.getValue().length() <= 10) {
+													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+													categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+													categoryColumnsValueError.setError("Value should not contains more than 10 digits");
+													categoryColumnsValueErrors.add(categoryColumnsValueError);
+												}
+											}
+										} else {
+											categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+											categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+											categoryColumnsValueError.setError("Invalid Field Type");
+											categoryColumnsValueErrors.add(categoryColumnsValueError);
+										}
+									} else if(columnParameter.getValidValues() != null && columnParameter.getValidValues().size() > 0) {
+										
+									}
+								}
+							}
+							if(!isExist) {
+								categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+								categoryColumnsValueError.setColumnName(columnValue.getCategoryColumnParameterId());
+								categoryColumnsValueError.setError("Invalid Column");
+								categoryColumnsValueErrors.add(categoryColumnsValueError);	
+							}
+						}
+					}
+				}
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		return categoryColumnsValueErrors;
     }
 }

@@ -34,5 +34,11 @@ public interface ProductCategoryDao {
 	
 	public List<CategoryColumnValidValuesJsonModel> getCategoryColumnValidValuesByColumnName(String columnName);
 	
+	public void insertCategoryColumnValue(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel);
+	
+	public void updateCategoryColumnValue(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel);
+	
 	public List<ProductCategoryColumnValueJsonModel> getProductCategoryColumnValuesByProductId(String productId);
+	
+	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueById(String id);
 }

@@ -389,22 +389,24 @@ public class PrepareWatchesFeed {
 								break;
 							}
 						}
-					if(productJsonObject.getSkuId() == null || productJsonObject.getSkuId().isEmpty()) { //item_sku
+					if(productJsonObject.getSkuId() != null && !productJsonObject.getSkuId().isEmpty()) { //item_sku
 						isExist = true;
 					}
-					if(productJsonObject.getProductName() == null || productJsonObject.getProductName().isEmpty()) { //item_name
+					if(productJsonObject.getProductName() != null && !productJsonObject.getProductName().isEmpty()) { //item_name
 						isExist = true;
 					}
-					if(productJsonObject.getImage() == null || productJsonObject.getImage().isEmpty()) { //main_image_url
+					if(productJsonObject.getImage() != null && !productJsonObject.getImage().isEmpty()) { //main_image_url
 						isExist = true;
 					}
 					
 					/*adding unfulfilled products to list*/
-					if(!isExist) {
+					if(isExist) {
 						fulfilledProducts.add(productJsonObject);
+					} else {
+						unfulfilledProducts.add(productJsonObject);
 					}
 				} else {
-					fulfilledProducts.add(productJsonObject);
+					unfulfilledProducts.add(productJsonObject);
 				}
 			}
 			if(unfulfilledProducts != null && unfulfilledProducts.size() > 0)

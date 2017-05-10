@@ -69,8 +69,8 @@ public class CategoryColumnValidValuesController extends SalesChannelServerResou
 		} catch (Exception e) {
 			LOGGERS.error("Error occured while insertOrUpdateDetails Category Column Valid Values.");
 			e.printStackTrace();
-			salesChannelErrorObject.setStatusCode(40101);
-			salesChannelErrorObject.setMessage(getErrorMessage(40101));
+			salesChannelErrorObject.setStatusCode(40201);
+			salesChannelErrorObject.setMessage(getErrorMessage(40201));
 		}
 		return new JsonRepresentation(salesChannelErrorObject);
 	}

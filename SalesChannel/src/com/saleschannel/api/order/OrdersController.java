@@ -2,7 +2,6 @@ package com.saleschannel.api.order;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -16,9 +15,6 @@ import org.restlet.representation.Representation;
 
 import com.saleschannel.api.SalesChannelServerResource;
 import com.saleschannel.api.order.amazonmws.AmazonOrdersJsonModel;
-import com.saleschannel.api.product.ProductController;
-import com.saleschannel.api.product.ProductJsonModel;
-import com.saleschannel.api.product.ProductJsonObject;
 
 public class OrdersController extends SalesChannelServerResource<OrdersJsonObject>{
 

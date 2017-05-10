@@ -602,4 +602,86 @@ public final class SalesChannelUtility {
 		}
 		return browseNodes;
 	}
+	
+	/**
+	 * Method to find a string contains special character.
+	 *
+	 * @param String value
+	 * @return boolean contains
+	 */
+	public static boolean isValidString(String value) {
+		boolean contains = false;
+		try {
+			Pattern pattern = Pattern.compile("[^A-Za-z]");
+			Matcher matcher = pattern.matcher(value);
+			if(matcher.find()) {
+				contains = false;
+			} else {
+				contains = true;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return contains;
+	}
+	
+	/**
+	 * Method to find a alphanumeric contains special character.
+	 *
+	 * @param String value
+	 * @return boolean contains
+	 */
+	public static boolean isValidAlphanumeric(String value) {
+		boolean contains = false;
+		try {
+			Pattern pattern = Pattern.compile("[^A-Za-z0-9]");
+			Matcher matcher = pattern.matcher(value);
+			if(matcher.find()) {
+				contains = false;
+			} else {
+				contains = true;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return contains;
+	}
+	
+	/**
+	 * Method to find a number contains special character.
+	 *
+	 * @param String value
+	 * @return boolean contains
+	 */
+	public static boolean isValidNumber(String value) {
+		boolean contains = false;
+		try {
+			Pattern pattern = Pattern.compile("[^0-9]");
+			Matcher matcher = pattern.matcher(value);
+			if(matcher.find()) {
+				contains = false;
+			} else {
+				contains = true;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return contains;
+	}
+	
+	/**
+	 * Method to find a number contains special character.
+	 *
+	 * @param String value
+	 * @return boolean contains
+	 */
+	public static boolean isValidDecimal(String value) {
+		boolean contains = false;
+		try {
+			contains = value.matches("[0-9.]*");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return contains;
+	}
 }
