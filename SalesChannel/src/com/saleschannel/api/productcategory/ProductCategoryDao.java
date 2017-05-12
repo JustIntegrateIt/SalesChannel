@@ -41,4 +41,6 @@ public interface ProductCategoryDao {
 	public List<ProductCategoryColumnValueJsonModel> getProductCategoryColumnValuesByProductId(String productId);
 	
 	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueById(String id);
+	
+	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueByProductIdAndParamId(String productId, String paramId);
 }

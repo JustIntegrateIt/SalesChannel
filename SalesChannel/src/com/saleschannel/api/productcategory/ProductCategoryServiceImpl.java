@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.saleschannel.api.constants.SalesChannelConstants;
 import com.saleschannel.api.product.ProductDaoImpl;
 import com.saleschannel.api.product.ProductJsonModel;
 
@@ -288,8 +289,16 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 				//check with name if more than one valid value available
 				if(categoryColumnValidValuesJsonModelList != null && categoryColumnValidValuesJsonModelList.size() > 0 && categoryColumnValidValuesJsonModelList.size() > 1) {
 					for(CategoryColumnValidValuesJsonModel categoryColumnValidValuesJsonModel : categoryColumnValidValuesJsonModelList) {
-						if(categoryColumnValidValuesJsonModel.getName().contains(productCategoryColumnParametersJsonModel.getName())) {
+						if(categoryColumnValidValuesJsonModel.getName().equals(productCategoryColumnParametersJsonModel.getName())) {
 							productCategoryColumnParametersJsonObject.setValidValues(categoryColumnValidValuesJsonModel.getValidValues());
+						}
+					}
+					if(productCategoryColumnParametersJsonObject.getValidValues() == null || productCategoryColumnParametersJsonObject.getValidValues().size() == 0) {
+						ProductCategoryJsonModel category = categoryDao.getProductCategoryById(productCategoryColumnParametersJsonObject.getCategoryId(), SalesChannelConstants.CUSTOMER_ID);
+						for(CategoryColumnValidValuesJsonModel categoryColumnValidValuesJsonModel : categoryColumnValidValuesJsonModelList) {
+							if(categoryColumnValidValuesJsonModel.getName().contains(category.getCategoryName())) {
+								productCategoryColumnParametersJsonObject.setValidValues(categoryColumnValidValuesJsonModel.getValidValues());
+							}
 						}
 					}
 				} else if(categoryColumnValidValuesJsonModelList != null && categoryColumnValidValuesJsonModelList.size() > 0) {
@@ -503,6 +512,20 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 			}
 		} catch(Exception e) {
 			LOGGERS.error("error while check get ProductCategoryColumnValue By id");
+			e.printStackTrace();
+		}
+		return columnValueJsonObject;
+	}
+	
+	public ProductCategoryColumnValueJsonObject getProductCategoryColumnValueByProductIdAndParamId(String productId, String paramId) {
+		ProductCategoryColumnValueJsonObject columnValueJsonObject = null;
+		try {
+			ProductCategoryColumnValueJsonModel categoryColumnValueJsonModel = categoryDao.getProductCategoryColumnValueByProductIdAndParamId(productId, paramId);
+			if(categoryColumnValueJsonModel != null) {
+				columnValueJsonObject = convertProductCategoryColumnValuesJsonModelToObject(categoryColumnValueJsonModel);
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while check get ProductCategoryColumnValue By productId & paramId");
 			e.printStackTrace();
 		}
 		return columnValueJsonObject;

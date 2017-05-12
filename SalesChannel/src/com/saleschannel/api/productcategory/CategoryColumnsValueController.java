@@ -16,6 +16,7 @@ import org.restlet.data.Parameter;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.representation.Representation;
 
+import com.google.gson.Gson;
 import com.saleschannel.api.SalesChannelServerResource;
 import com.saleschannel.api.constants.CategoryColumnFieldType;
 import com.saleschannel.api.constants.SalesChannelConstants;
@@ -125,13 +126,20 @@ public class CategoryColumnsValueController extends SalesChannelServerResource<C
 				if(columnValue.getId() != null && !columnValue.getId().isEmpty()) {
 					ProductCategoryColumnValueJsonObject value = categoryService.getProductCategoryColumnValueById(columnValue.getId());
 					if(value == null) {
-						jsonObject2.put(columnValue.getId(), "Invalid Id");
+						jsonObject2.put("40311", "Invalid Id : "+columnValue.getId());
+					}
+				} else {
+					ProductCategoryColumnValueJsonObject value = categoryService.
+							getProductCategoryColumnValueByProductIdAndParamId(columnValue.getProductId(), columnValue.getCategoryColumnParameterId());
+					if(value != null) {
+						jsonObject2.put("40312", "Value already available for this parameter "+columnValue.getCategoryColumnParameterId());
 					}
 				}
 			}
 			List<CategoryColumnsValueErrorJsonObject> columnsValueError = validateColumnParametersValue(obj);
 			if(columnsValueError != null && columnsValueError.size() > 0) {
-				jsonObject2.put("40311", new JSONObject(columnsValueError));
+				Gson gson = new Gson();
+				jsonObject2.put("40313", gson.toJson(columnsValueError));
 			}
 		} 
 		return jsonObject2;
@@ -158,11 +166,11 @@ public class CategoryColumnsValueController extends SalesChannelServerResource<C
 										&& columnValue.getCategoryColumnParameterId().equals(columnParameter.getId())) {
 									isExist = true;
 									if(columnParameter.getFieldType() != null && !columnParameter.getFieldType().isEmpty()) {
-										if(columnParameter.getFieldType().equals(CategoryColumnFieldType.string)) {
+										if(columnParameter.getFieldType().equals(CategoryColumnFieldType.string.toString())) {
 											if(columnValue.getValue().length() > columnParameter.getMaxLength()) {
 												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
 												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
-												categoryColumnsValueError.setError("Value should not be > "+columnParameter.getMaxLength());
+												categoryColumnsValueError.setError("Value should not be more than "+columnParameter.getMaxLength());
 												categoryColumnsValueErrors.add(categoryColumnsValueError);
 											} else if(!SalesChannelUtility.isValidString(columnValue.getValue())) {
 												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
@@ -170,19 +178,19 @@ public class CategoryColumnsValueController extends SalesChannelServerResource<C
 												categoryColumnsValueError.setError("Value should not contains numbers or special characters");
 												categoryColumnsValueErrors.add(categoryColumnsValueError);
 											}
-										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.alphanumeric)) {
+										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.alphanumeric.toString())) {
 											if(columnValue.getValue().length() > columnParameter.getMaxLength()) {
 												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
 												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
-												categoryColumnsValueError.setError("Value should not be > "+columnParameter.getMaxLength());
+												categoryColumnsValueError.setError("Value should not be more than "+columnParameter.getMaxLength());
 												categoryColumnsValueErrors.add(categoryColumnsValueError);
-											} else if(!SalesChannelUtility.isValidString(columnValue.getValue())) {
+											} else if(!SalesChannelUtility.isValidAlphanumeric(columnValue.getValue())) {
 												categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
 												categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
 												categoryColumnsValueError.setError("Value should not contains special characters");
 												categoryColumnsValueErrors.add(categoryColumnsValueError);
 											}
-										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.number)) {
+										} else if(columnParameter.getFieldType().equals(CategoryColumnFieldType.number.toString())) {
 											if(columnParameter.isDecimal()) {
 												if(!SalesChannelUtility.isValidDecimal(columnValue.getValue())) {
 													categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
@@ -240,7 +248,22 @@ public class CategoryColumnsValueController extends SalesChannelServerResource<C
 											categoryColumnsValueErrors.add(categoryColumnsValueError);
 										}
 									} else if(columnParameter.getValidValues() != null && columnParameter.getValidValues().size() > 0) {
-										
+										if(!columnParameter.getValidValues().contains(columnValue.getValue())) {
+											categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+											categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+											categoryColumnsValueError.setError("Value doesn't match with one of valid values");
+											categoryColumnsValueErrors.add(categoryColumnsValueError);
+										}
+									}
+									/*EAN-13 UPC-12 ASIN-10 GCID- GTIN-14 ISBN-10/13*/
+									else if(columnValue.getCategoryColumnParameterName().equals("external_product_id")){
+										if(columnValue.getValue().length() == 10 || columnValue.getValue().length() == 12 || columnValue.getValue().length() == 13 
+												|| columnValue.getValue().length() == 14) {
+											categoryColumnsValueError = new CategoryColumnsValueErrorJsonObject();
+											categoryColumnsValueError.setColumnName(columnParameter.getColumnName());
+											categoryColumnsValueError.setError("External ProductID is not valid for it's Type");
+											categoryColumnsValueErrors.add(categoryColumnsValueError);
+										}
 									}
 								}
 							}

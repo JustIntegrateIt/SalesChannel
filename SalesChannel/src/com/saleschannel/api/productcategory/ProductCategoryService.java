@@ -52,6 +52,8 @@ public interface ProductCategoryService {
 	
 	public ProductCategoryColumnValueJsonObject getProductCategoryColumnValueById(String id);
 	
+	public ProductCategoryColumnValueJsonObject getProductCategoryColumnValueByProductIdAndParamId(String productId, String paramId);
+	
 	public ProductCategoryColumnValueJsonModel convertProductCategoryColumnValuesJsonObjectToModel(ProductCategoryColumnValueJsonObject productCategoryColumnValueJsonObject);
 	
 	public ProductCategoryColumnValueJsonObject convertProductCategoryColumnValuesJsonModelToObject(ProductCategoryColumnValueJsonModel productCategoryColumnValueJsonModel);

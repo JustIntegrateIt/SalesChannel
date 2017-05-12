@@ -111,12 +111,12 @@
 	<!-- category mapping bean Creation and API Starts -->
 	<bean name="/categoryMapping" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingController" scope="prototype">
 		<property name="categoryMappingService" ref="categoryMappingService" />
-		<property name="categoryDao" ref="categoryDao" />
 		<property name="customerService" ref="customerService" />
     </bean>
 	
 	<bean id="categoryMappingService" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingServiceImpl">
 		<property name="categoryMappingDao" ref="categoryMappingDao" />
+		<property name="categoryDao" ref="categoryDao" />
 	</bean>
 	
 	<bean id="categoryMappingDao" class="com.saleschannel.api.productcategorymapping.ProductCategoryMappingDaoImpl">

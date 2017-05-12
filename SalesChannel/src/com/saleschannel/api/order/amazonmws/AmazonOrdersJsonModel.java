@@ -38,8 +38,8 @@ public class AmazonOrdersJsonModel {
 	
 	//OrderChannel
 	private String orderChannel;
-	//ShipServiceLevel
 	
+	//ShipServiceLevel
 	private String shipServiceLevel;	
 	
 	//Order ShippingAddress Id

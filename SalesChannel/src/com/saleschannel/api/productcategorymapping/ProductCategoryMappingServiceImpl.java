@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.saleschannel.api.constants.SalesChannelConstants;
 import com.saleschannel.api.productcategory.ProductCategoryDaoImpl;
 import com.saleschannel.api.productcategory.ProductCategoryJsonModel;
 
@@ -29,7 +30,7 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 				productCategoryMappingJsonObject.setCustomerId(productCategoryMappingJsonModel.getCustomerId());
 				if(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId() != null && !productCategoryMappingJsonModel.getMarketPlaceProductCategoryId().isEmpty()) {
 					ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonModel.getMarketPlaceProductCategoryId()
-							, productCategoryMappingJsonModel.getCustomerId());
+							, SalesChannelConstants.CUSTOMER_ID);
 					if(productCategoryJsonModel != null && productCategoryJsonModel.getCategoryName() != null 
 							&& !productCategoryJsonModel.getCategoryName().isEmpty()) {
 						productCategoryMappingJsonObject.setMarketPlaceCategoryName(productCategoryJsonModel.getCategoryName());				
@@ -63,7 +64,7 @@ public class ProductCategoryMappingServiceImpl implements ProductCategoryMapping
 				productCategoryMappingJsonModel.setCustomerId(productCategoryMappingJsonObject.getCustomerId());
 				if(productCategoryMappingJsonObject.getMarketPlaceCategoryId() != null && !productCategoryMappingJsonObject.getMarketPlaceCategoryId().isEmpty()) {
 					ProductCategoryJsonModel productCategoryJsonModel = categoryDao.getProductCategoryById(productCategoryMappingJsonObject.getMarketPlaceCategoryId()
-							, productCategoryMappingJsonObject.getCustomerId());
+							, SalesChannelConstants.CUSTOMER_ID);
 					if(productCategoryJsonModel != null && productCategoryJsonModel.getMarketPlaceId() != null 
 							&& !productCategoryJsonModel.getMarketPlaceId().isEmpty()) {
 						productCategoryMappingJsonModel.setMarketPlaceId(productCategoryJsonModel.getMarketPlaceId());				

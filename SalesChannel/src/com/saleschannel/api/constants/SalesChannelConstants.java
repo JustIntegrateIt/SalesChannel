@@ -34,6 +34,9 @@ public class SalesChannelConstants {
 	public static final String PNG = "png";
 	public static final String JPEG = "jpeg";
 	
+	/** system customer Id. */
+	public static final String CUSTOMER_ID = "0";
+	
 	/** Collection names. */
 	public static final String SC_CUSTOMER = "sc_customer";
 	public static final String SC_MARKETPLACE = "sc_marketplace";
