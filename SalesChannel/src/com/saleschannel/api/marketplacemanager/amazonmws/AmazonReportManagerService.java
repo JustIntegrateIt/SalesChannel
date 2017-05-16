@@ -28,7 +28,7 @@ public interface AmazonReportManagerService {
 	public List<GetReportResponse> getReportAsync(String merchantId
 			, String sellerDevAuthToken);
 	
-	public GetReportResponse getReport(String merchantId, String sellerDevAuthToken);
+	public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath);
 	
 	public List<GetReportCountResponse> getReportCountAsync(String merchantId
 			, String sellerDevAuthToken);

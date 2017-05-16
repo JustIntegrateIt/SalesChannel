@@ -7,6 +7,6 @@ package com.amazonaws.mws.model;
  * The toString method should be overriden to output the correct value in
  * key/value pair format separated by an equals sign.
  */
-public interface ContentTypeParameter {
+public interface TypeParameter {
 
 }

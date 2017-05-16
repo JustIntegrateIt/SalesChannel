@@ -97,11 +97,11 @@ public class AmazonReportManagerServiceImpl implements AmazonReportManagerServic
 	
 	@Override
 	public GetReportResponse getReport(String merchantId,
-			String sellerDevAuthToken) {
+			String sellerDevAuthToken, String reportPath) {
 		GetReportResponse getReportResponse = null; 
 		try {
 			GetReportSample getReportSample = new GetReportSample();
-			getReportResponse = getReportSample.getReport(merchantId, sellerDevAuthToken);
+			getReportResponse = getReportSample.getReport(merchantId, sellerDevAuthToken, reportPath);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getReport");
 			e.printStackTrace();

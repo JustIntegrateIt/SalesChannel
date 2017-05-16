@@ -39,7 +39,7 @@ public class GetReportSample {
      *
      * @param args unused
      */
-    public GetReportResponse getReport(String merchantId, String sellerDevAuthToken) {
+    public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath) {
     	GetReportResponse getReportResponse = null;
     	try {
 	        /************************************************************************
@@ -115,7 +115,7 @@ public class GetReportSample {
 	        // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
 	        // the in-memory size limit and have to re-work your solution.
 	        //
-	        OutputStream report = new FileOutputStream( "report.xml" );
+	        OutputStream report = new FileOutputStream(reportPath);
 	        request.setReportOutputStream( report );
 	
 	        getReportResponse = invokeGetReport(service, request);

@@ -224,6 +224,12 @@
 	</bean>
 	<!-- FlatFile bean Creation and API Ends -->
 	
+	<!-- FlatFile bean Creation and API Starts -->
+	<bean id="quartzListenerDao" class="com.saleschannel.api.quartz.QuartzListenerDaoImpl">
+		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
+	</bean>
+	<!-- FlatFile bean Creation and API Ends -->
+	
 	<!-- sales channel bean Creation Ends -->
 	
 </beans>

@@ -1,23 +1,19 @@
-package com.amazonaws.mws.model;
+package com.saleschannel.api.constants.amazonmws;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-/*
- * Enumeration of valid content types for a feed submission.
- */
-public enum ContentType {
-	/*
-	 * Feed is sent as a stream of bytes ("application/octet-stream").
-	 * Currently this is the only content type supported by MWS.
-	 */
-	OctetStream("application/octet-stream"),
-	TextXML("text/tab-separated-values; charset=iso-8859-1");
+import com.amazonaws.mws.model.TypeParameter;
+
+public enum SalesTaxReportsType {
+
+	/*Available SalesTax Reports Type*/
+	GET_FLAT_FILE_SALES_TAX_DATA("_GET_FLAT_FILE_SALES_TAX_DATA_");
 	
 	private String value;
 	private Collection<TypeParameter> parameters = new HashSet<TypeParameter>();
 
-	private ContentType(String s) {
+	private SalesTaxReportsType(String s) {
 		this.value = s;
 	}
 	
@@ -38,5 +34,4 @@ public enum ContentType {
 		
 		return sb.toString();
 	}
-
 }

@@ -19,6 +19,9 @@
     <servlet-name>RestletServlet</servlet-name>
     <url-pattern>/sys/*</url-pattern>
   </servlet-mapping>
+  <listener>
+	<listener-class>com.saleschannel.api.quartz.QuartzListener</listener-class>
+  </listener>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>

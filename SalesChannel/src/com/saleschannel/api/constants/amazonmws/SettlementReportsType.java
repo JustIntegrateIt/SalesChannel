@@ -1,23 +1,21 @@
-package com.amazonaws.mws.model;
+package com.saleschannel.api.constants.amazonmws;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-/*
- * Enumeration of valid content types for a feed submission.
- */
-public enum ContentType {
-	/*
-	 * Feed is sent as a stream of bytes ("application/octet-stream").
-	 * Currently this is the only content type supported by MWS.
-	 */
-	OctetStream("application/octet-stream"),
-	TextXML("text/tab-separated-values; charset=iso-8859-1");
+import com.amazonaws.mws.model.TypeParameter;
+
+public enum SettlementReportsType {
+
+	/*Available Settlement Reports Type*/
+	GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE("_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_"),
+	GET_V2_SETTLEMENT_REPORT_DATA_XML("_GET_V2_SETTLEMENT_REPORT_DATA_XML_"),
+	GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2("_GET_V2_SETTLEMENT_REPORT_DATA_FLAT_FILE_V2_");
 	
 	private String value;
 	private Collection<TypeParameter> parameters = new HashSet<TypeParameter>();
 
-	private ContentType(String s) {
+	private SettlementReportsType(String s) {
 		this.value = s;
 	}
 	
@@ -38,5 +36,4 @@ public enum ContentType {
 		
 		return sb.toString();
 	}
-
 }
