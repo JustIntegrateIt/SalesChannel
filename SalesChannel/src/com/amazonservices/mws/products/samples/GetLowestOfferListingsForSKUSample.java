@@ -66,7 +66,7 @@ public class GetLowestOfferListingsForSKUSample {
      *  Command line entry point.
      */
     public GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKU(String sellerId, String mwsAuthToken
-    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU, String itemCondition, Boolean excludeMe) {
+    		, String marketplaceId, List<String> sellerSKU, String itemCondition, Boolean excludeMe) {
 
     	GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKUResponse = null;
     	
@@ -79,7 +79,7 @@ public class GetLowestOfferListingsForSKUSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKUList = new SellerSKUListType();
+        SellerSKUListType sellerSKUList = new SellerSKUListType();
         request.setSellerSKUList(sellerSKUList);
         sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");

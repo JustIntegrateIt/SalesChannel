@@ -42,29 +42,33 @@ public class QuartzListener implements ServletContextListener {
 			String quartzDomain = System.getProperty("QUARTZ_DOMAIN_NAME");
 			if (quartzDomain != null && quartzDomain.equals("local")) {
 				QuartzListenerDaoImpl quartzListenerDao = (QuartzListenerDaoImpl) SalesChannelBeanLocator.getInstance().findBean("quartzListenerDao");
-				List<QuartzListenerJsonModel> quartzJobs = quartzListenerDao.getQuartzJobs();
-				if(quartzJobs.size() > 0) {
-					LOGGERS.debug("Total no. of Jobs to Schedule : "+quartzJobs.size());
-					JobDetail[] job = new JobDetail[quartzJobs.size()];
-					CronTrigger[] trigger = new CronTrigger[quartzJobs.size()];
-					for(int i = 0; i < quartzJobs.size(); i++) {
-						job[i] = new JobDetail();
-						job[i].setName(quartzJobs.get(i).getJobName());
-						job[i].setGroup(quartzJobs.get(i).getJobGroup());
-						job[i].setJobClass(Class.forName(quartzJobs.get(i).getJobClass()));
-						trigger[i] = new CronTrigger();
-						trigger[i].setName(quartzJobs.get(i).getTriggerName());
-						trigger[i].setCronExpression(quartzJobs.get(i).getTriggerCronExpression());
-						trigger[i].setGroup(quartzJobs.get(i).getTriggerGroup());
-						trigger[i].setTimeZone(TimeZone.getTimeZone(quartzJobs.get(i).getTriggerTimeZone()));
-						LOGGERS.debug("Job : "+job[i]+" created");
-						LOGGERS.debug("Job : "+trigger[i]+" created");
-						scheduler.scheduleJob(job[i], trigger[i]);
-						LOGGERS.info("Quartz Job Added");
-						hasJobs = true;
+				if(quartzListenerDao != null) {
+					List<QuartzListenerJsonModel> quartzJobs = quartzListenerDao.getQuartzJobs();
+					if(quartzJobs != null && quartzJobs.size() > 0) {
+						LOGGERS.debug("Total no. of Jobs to Schedule : "+quartzJobs.size());
+						JobDetail[] job = new JobDetail[quartzJobs.size()];
+						CronTrigger[] trigger = new CronTrigger[quartzJobs.size()];
+						for(int i = 0; i < quartzJobs.size(); i++) {
+							job[i] = new JobDetail();
+							job[i].setName(quartzJobs.get(i).getJobName());
+							job[i].setGroup(quartzJobs.get(i).getJobGroup());
+							job[i].setJobClass(Class.forName(quartzJobs.get(i).getJobClass()));
+							trigger[i] = new CronTrigger();
+							trigger[i].setName(quartzJobs.get(i).getTriggerName());
+							trigger[i].setCronExpression(quartzJobs.get(i).getTriggerCronExpression());
+							trigger[i].setGroup(quartzJobs.get(i).getTriggerGroup());
+							trigger[i].setTimeZone(TimeZone.getTimeZone(quartzJobs.get(i).getTriggerTimeZone()));
+							LOGGERS.debug("Job : "+job[i]+" created");
+							LOGGERS.debug("Job : "+trigger[i]+" created");
+							scheduler.scheduleJob(job[i], trigger[i]);
+							LOGGERS.info("Quartz Job Added");
+							hasJobs = true;
+						}
+					} else {
+						LOGGERS.debug("No Jobs to Schedule");
 					}
 				} else {
-					LOGGERS.debug("No Jobs to Schedule");
+					LOGGERS.debug("Error while creating bean for quartzListenerDao");
 				}
 			}else{
 				LOGGERS.info("Quartz Job Not started in "+quartzDomain);

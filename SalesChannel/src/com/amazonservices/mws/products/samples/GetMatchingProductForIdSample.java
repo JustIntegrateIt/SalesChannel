@@ -66,7 +66,7 @@ public class GetMatchingProductForIdSample {
      *  Command line entry point.
      */
     public GetMatchingProductForIdResponse getMatchingProductForId(String sellerId, String mwsAuthToken
-    		, String marketplaceId, String idType, IdListType idList, List<String> id) {
+    		, String marketplaceId, String idType, List<String> id) {
 
     	GetMatchingProductForIdResponse getMatchingProductForIdResponse = null;
     	
@@ -76,14 +76,14 @@ public class GetMatchingProductForIdSample {
 
         // Create a request.
         GetMatchingProductForIdRequest request = new GetMatchingProductForIdRequest();
-        request.setSellerId(sellerId);
-        request.setMWSAuthToken(mwsAuthToken);
-        request.setMarketplaceId(marketplaceId);
-        idType = "ISBN";
+        request.setSellerId("A44435JW4FD32");
+        request.setMWSAuthToken("amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE");
+        request.setMarketplaceId("A21TJRUUN4KGV");
+        idType = "ASIN";
         request.setIdType(idType);
-        idList = new IdListType();
+        IdListType idList = new IdListType();
         id = new ArrayList<String>();
-        id.add("9781933988665");
+        id.add("B013NCSEF4");
         idList.setId(id);
         request.setIdList(idList);
 

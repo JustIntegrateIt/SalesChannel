@@ -18,6 +18,8 @@ public interface MarketPlaceService {
 	
 	public MarketPlaceRegionJsonModel getMarketPlaceRegionById(String id);
 	
+	public MarketPlaceRegionJsonModel getMarketPlaceRegionByRegionId(String regionId);
+	
 	public List<MarketPlaceHeadersJsonObject> getMarketPlaceHeaders(String marketPlaceId, String customerId);
 	
 	public MarketPlaceHeadersJsonModel getMarketPlaceHeaderById(String headerId);

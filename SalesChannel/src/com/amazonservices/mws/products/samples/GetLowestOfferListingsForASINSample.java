@@ -66,7 +66,7 @@ public class GetLowestOfferListingsForASINSample {
      *  Command line entry point.
      */
     public GetLowestOfferListingsForASINResponse getLowestOfferListingsForASIN(String sellerId, String mwsAuthToken
-    		, String marketplaceId, ASINListType asinList, List<String> asin, String itemCondition, Boolean excludeMe) {
+    		, String marketplaceId, List<String> asin, String itemCondition, Boolean excludeMe) {
 
     	GetLowestOfferListingsForASINResponse getLowestOfferListingsForASINResponse = null;
     	
@@ -79,7 +79,7 @@ public class GetLowestOfferListingsForASINSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        asinList = new ASINListType();
+        ASINListType asinList = new ASINListType();
         asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);

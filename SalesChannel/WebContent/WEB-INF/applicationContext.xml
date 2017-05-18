@@ -75,6 +75,21 @@
 	<bean id="productDao" class="com.saleschannel.api.product.ProductDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
+	
+	<!-- AmazonMWS Product Manager bean Creation Starts -->
+	<bean name="/amazonProductSync" class="com.saleschannel.api.product.amazonmws.AmazonProductSyncController" scope="prototype">
+		<property name="amazonProductService" ref="amazonProductService" />
+		<property name="customerService" ref="customerService" />
+		<property name="marketPlaceService" ref="marketPlaceService" />
+    </bean>
+	
+	<bean id="amazonProductService" class="com.saleschannel.api.product.amazonmws.AmazonProductServiceImpl">
+		<property name="productDao" ref="productDao" />
+		<property name="amazonProductManagerService" ref="amazonProductManagerService" />
+		<property name="amazonReportManagerService" ref="amazonReportManagerService" />
+	</bean>
+	<!-- AmazonMWS Product Manager bean Creation Ends -->
+	
 	<!-- product bean Creation and API Ends -->
 	
 	<!-- category bean Creation and API Starts -->
@@ -224,11 +239,27 @@
 	</bean>
 	<!-- FlatFile bean Creation and API Ends -->
 	
-	<!-- FlatFile bean Creation and API Starts -->
+	<!-- Quartz Listener bean Creation Starts -->
 	<bean id="quartzListenerDao" class="com.saleschannel.api.quartz.QuartzListenerDaoImpl">
 		<constructor-arg name="mongoOps" ref="mongoTemplate" />		
 	</bean>
-	<!-- FlatFile bean Creation and API Ends -->
+	<!-- Quartz Listener bean Creation Ends -->
+	
+	<!-- Marketplace Manager Service bean Creation Starts -->
+	<!-- AmazonMWS Service Manager bean Creation Starts -->
+	<bean id="amazonFeedManagerService" class="com.saleschannel.api.marketplacemanager.amazonmws.AmazonFeedManagerServiceImpl">
+	</bean>
+	
+	<bean id="amazonOrderManagerService" class="com.saleschannel.api.marketplacemanager.amazonmws.AmazonOrderManagerServiceImpl">
+	</bean>
+	
+	<bean id="amazonProductManagerService" class="com.saleschannel.api.marketplacemanager.amazonmws.AmazonProductManagerServiceImpl">
+	</bean>
+	
+	<bean id="amazonReportManagerService" class="com.saleschannel.api.marketplacemanager.amazonmws.AmazonReportManagerServiceImpl">
+	</bean>
+	<!-- AmazonMWS Service Manager bean Creation Ends -->
+	<!-- Marketplace Manager Service bean Creation Ends -->
 	
 	<!-- sales channel bean Creation Ends -->
 	

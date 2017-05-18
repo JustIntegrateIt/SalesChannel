@@ -70,7 +70,7 @@ public class GetCompetitivePricingForSKUSample {
     /**
      *  Command line entry point.
      */
-    public GetCompetitivePricingForSKUResponse getCompetitivePricingForSKU(String sellerId, String mwsAuthToken, String marketplaceId, SellerSKUListType sellerSKUList
+    public GetCompetitivePricingForSKUResponse getCompetitivePricingForSKU(String sellerId, String mwsAuthToken, String marketplaceId
     		, List<String> sellerSKU) {
 
     	GetCompetitivePricingForSKUResponse getCompetitivePricingForSKUResponse = null;
@@ -84,7 +84,7 @@ public class GetCompetitivePricingForSKUSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKUList = new SellerSKUListType();
+        SellerSKUListType sellerSKUList = new SellerSKUListType();
         sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);

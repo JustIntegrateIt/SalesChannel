@@ -85,7 +85,7 @@ public class GetCompetitivePricingForSKUAsyncSample {
     /**
      *  Command line entry point.
      */
-    public List<GetCompetitivePricingForSKUResponse> getCompetitivePricingForSKUAsync(String sellerId, String mwsAuthToken, String marketplaceId, SellerSKUListType sellerSKUList
+    public List<GetCompetitivePricingForSKUResponse> getCompetitivePricingForSKUAsync(String sellerId, String mwsAuthToken, String marketplaceId
     		, List<String> sellerSKU) {
     	List<GetCompetitivePricingForSKUResponse>  getCompetitivePricingForSKUResponseList = null;
         // Get a client connection.
@@ -97,7 +97,7 @@ public class GetCompetitivePricingForSKUAsyncSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKUList = new SellerSKUListType();
+        SellerSKUListType sellerSKUList = new SellerSKUListType();
         sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);

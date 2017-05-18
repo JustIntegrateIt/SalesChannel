@@ -86,7 +86,7 @@ public class GetMatchingProductAsyncSample {
      *  Command line entry point.
      */
     public List<GetMatchingProductResponse> getMatchingProductAsync(String sellerId, String mwsAuthToken
-    		, String marketplaceId, ASINListType asinList, List<String> asin) {
+    		, String marketplaceId, List<String> asin) {
 
     	List<GetMatchingProductResponse> getMatchingProductResponseList = null;
     	
@@ -99,7 +99,7 @@ public class GetMatchingProductAsyncSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        asinList = new ASINListType();
+        ASINListType asinList = new ASINListType();
         asin = new ArrayList<String>();
         asin.add("B01N6WRGP5");
         asinList.setASIN(asin);

@@ -53,7 +53,7 @@ public class MarketPlaceDaoImpl implements MarketPlaceDao {
 					.and("marketPlaceId").is(marketPlaceId));
 			marketPlaceRegionJsonModelList = this.mongoOps.find(query, MarketPlaceRegionJsonModel.class, SalesChannelConstants.SC_MARKETPLACE_REGION);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while fetch market places from DB");
+			LOGGERS.error("error occured while fetch market place Regions from DB");
 			e.printStackTrace();
 		}
 		return marketPlaceRegionJsonModelList;
@@ -67,7 +67,21 @@ public class MarketPlaceDaoImpl implements MarketPlaceDao {
 					.and("_id").is(id));
 			marketPlaceRegion = this.mongoOps.findOne(query, MarketPlaceRegionJsonModel.class, SalesChannelConstants.SC_MARKETPLACE_REGION);
 		} catch(Exception e) {
-			LOGGERS.error("error occured while fetch market places from DB");
+			LOGGERS.error("error occured while fetch market places Region By Id from DB");
+			e.printStackTrace();
+		}
+		return marketPlaceRegion;
+	}
+	
+	public MarketPlaceRegionJsonModel getMarketPlaceRegionByRegionId(String regionId) {
+		MarketPlaceRegionJsonModel marketPlaceRegion = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.marketplace.MarketPlaceRegionJsonModel")
+					.and("marketPlaceRegionKey").is(regionId));
+			marketPlaceRegion = this.mongoOps.findOne(query, MarketPlaceRegionJsonModel.class, SalesChannelConstants.SC_MARKETPLACE_REGION);
+		} catch(Exception e) {
+			LOGGERS.error("error occured while fetch market places Region By Region Id from DB");
 			e.printStackTrace();
 		}
 		return marketPlaceRegion;

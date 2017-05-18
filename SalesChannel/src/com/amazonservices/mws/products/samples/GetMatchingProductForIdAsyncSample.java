@@ -86,7 +86,7 @@ public class GetMatchingProductForIdAsyncSample {
      *  Command line entry point.
      */
     public List<GetMatchingProductForIdResponse> getMatchingProductForIdAsync(String sellerId, String mwsAuthToken
-    		, String marketplaceId, String idType, IdListType idList, List<String> id) {
+    		, String marketplaceId, String idType, List<String> id) {
 
     	List<GetMatchingProductForIdResponse> getMatchingProductForIdResponseList = null;
     	
@@ -101,7 +101,7 @@ public class GetMatchingProductForIdAsyncSample {
         request.setMarketplaceId(marketplaceId);
         idType = "ISBN";
         request.setIdType(idType);
-        idList = new IdListType();
+        IdListType idList = new IdListType();
         id = new ArrayList<String>();
         id.add("9781933988665");
         idList.setId(id);

@@ -133,6 +133,17 @@ public class MarketPlaceServiceImpl implements MarketPlaceService {
 		return marketPlaceRegionJsonModel;
 	}
 	
+	public MarketPlaceRegionJsonModel getMarketPlaceRegionByRegionId(String regionId) {
+		MarketPlaceRegionJsonModel marketPlaceRegionJsonModel = null;
+		try {
+			marketPlaceRegionJsonModel = marketPlaceDao.getMarketPlaceRegionByRegionId(regionId);
+		} catch(Exception e) {
+			LOGGERS.error("error while get marketplace region by regionId");
+			e.printStackTrace();
+		}
+		return marketPlaceRegionJsonModel;
+	}
+	
 	public List<MarketPlaceHeadersJsonObject> getMarketPlaceHeaders(String marketPlaceId, String customerId) {
 		List<MarketPlaceHeadersJsonObject> marketPlaceHeadersJsonObjectList = null;
 		try {

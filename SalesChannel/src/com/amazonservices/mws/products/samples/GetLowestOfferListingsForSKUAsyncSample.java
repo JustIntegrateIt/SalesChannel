@@ -86,7 +86,7 @@ public class GetLowestOfferListingsForSKUAsyncSample {
      *  Command line entry point.
      */
     public List<GetLowestOfferListingsForSKUResponse> getLowestOfferListingsForSKUAsync(String sellerId, String mwsAuthToken
-    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU, String itemCondition, Boolean excludeMe) {
+    		, String marketplaceId, List<String> sellerSKU, String itemCondition, Boolean excludeMe) {
 
     	List<GetLowestOfferListingsForSKUResponse> getLowestOfferListingsForSKUResponseList = null;
         // Get a client connection.
@@ -98,7 +98,7 @@ public class GetLowestOfferListingsForSKUAsyncSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKUList = new SellerSKUListType();
+        SellerSKUListType sellerSKUList = new SellerSKUListType();
         sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);

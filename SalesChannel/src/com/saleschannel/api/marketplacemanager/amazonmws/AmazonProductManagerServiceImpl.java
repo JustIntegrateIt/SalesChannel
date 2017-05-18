@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.amazonservices.mws.products.model.ASINListType;
 import com.amazonservices.mws.products.model.FeesEstimateRequest;
 import com.amazonservices.mws.products.model.FeesEstimateRequestList;
 import com.amazonservices.mws.products.model.GetCompetitivePricingForASINResponse;
@@ -21,12 +20,10 @@ import com.amazonservices.mws.products.model.GetMyPriceForSKUResponse;
 import com.amazonservices.mws.products.model.GetProductCategoriesForASINResponse;
 import com.amazonservices.mws.products.model.GetProductCategoriesForSKUResponse;
 import com.amazonservices.mws.products.model.GetServiceStatusResponse;
-import com.amazonservices.mws.products.model.IdListType;
 import com.amazonservices.mws.products.model.ListMatchingProductsResponse;
 import com.amazonservices.mws.products.model.MoneyType;
 import com.amazonservices.mws.products.model.Points;
 import com.amazonservices.mws.products.model.PriceToEstimateFees;
-import com.amazonservices.mws.products.model.SellerSKUListType;
 import com.amazonservices.mws.products.samples.GetCompetitivePricingForASINAsyncSample;
 import com.amazonservices.mws.products.samples.GetCompetitivePricingForASINSample;
 import com.amazonservices.mws.products.samples.GetCompetitivePricingForSKUAsyncSample;
@@ -64,12 +61,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 
 	@Override
 	public List<GetCompetitivePricingForASINResponse> getCompetitivePricingForASINAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin) {
+			String sellerId, String mwsAuthToken, String marketplaceId, List<String> asin) {
 		List<GetCompetitivePricingForASINResponse> getCompetitivePricingForASINResponseList = null;
 		try {
 			GetCompetitivePricingForASINAsyncSample getCompetitivePricingForASINAsyncSample = new GetCompetitivePricingForASINAsyncSample();
-			getCompetitivePricingForASINResponseList = getCompetitivePricingForASINAsyncSample.getCompetitivePricingForASINAsync(sellerId, mwsAuthToken, marketplaceId, asinList, asin);
+			getCompetitivePricingForASINResponseList = getCompetitivePricingForASINAsyncSample.getCompetitivePricingForASINAsync(sellerId, 
+					mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getCompetitivePricingForASINAsync");
 			e.printStackTrace();
@@ -78,13 +75,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetCompetitivePricingForASINResponse getCompetitivePricingForASIN(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin) {
+	public GetCompetitivePricingForASINResponse getCompetitivePricingForASIN(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> asin) {
 		GetCompetitivePricingForASINResponse getCompetitivePricingForASINResponse = null;
 		try {
 			GetCompetitivePricingForASINSample getCompetitivePricingForASINSample = new GetCompetitivePricingForASINSample();
-			getCompetitivePricingForASINResponse = getCompetitivePricingForASINSample.getCompetitivePricingForASIN(sellerId, mwsAuthToken, marketplaceId, asinList, asin);
+			getCompetitivePricingForASINResponse = getCompetitivePricingForASINSample.getCompetitivePricingForASIN(sellerId, 
+					mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getCompetitivePricingForASIN");
 			e.printStackTrace();
@@ -95,12 +92,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	@Override
 	public List<GetCompetitivePricingForSKUResponse> getCompetitivePricingForSKUAsync(
 			String sellerId, String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU) {
+			List<String> sellerSKU) {
 		List<GetCompetitivePricingForSKUResponse> getCompetitivePricingForSKUResponseList = null;
 		try {
 			GetCompetitivePricingForSKUAsyncSample getCompetitivePricingForSKUAsyncSample = new GetCompetitivePricingForSKUAsyncSample();
-			getCompetitivePricingForSKUResponseList = getCompetitivePricingForSKUAsyncSample.getCompetitivePricingForSKUAsync(sellerId, mwsAuthToken, marketplaceId
-					, sellerSKUList, sellerSKU);
+			getCompetitivePricingForSKUResponseList = getCompetitivePricingForSKUAsyncSample.getCompetitivePricingForSKUAsync(sellerId, 
+					mwsAuthToken, marketplaceId, sellerSKU);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getCompetitivePricingForSKUAsync");
 			e.printStackTrace();
@@ -109,14 +106,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetCompetitivePricingForSKUResponse getCompetitivePricingForSKU(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU) {
+	public GetCompetitivePricingForSKUResponse getCompetitivePricingForSKU(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> sellerSKU) {
 		GetCompetitivePricingForSKUResponse getCompetitivePricingForSKUResponse = null;
 		try {
 			GetCompetitivePricingForSKUSample getCompetitivePricingForSKUSample = new GetCompetitivePricingForSKUSample();
-			getCompetitivePricingForSKUResponse = getCompetitivePricingForSKUSample.getCompetitivePricingForSKU(sellerId, mwsAuthToken, marketplaceId
-					, sellerSKUList, sellerSKU);
+			getCompetitivePricingForSKUResponse = getCompetitivePricingForSKUSample.getCompetitivePricingForSKU(sellerId, 
+					mwsAuthToken, marketplaceId, sellerSKU);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getCompetitivePricingForSKU");
 			e.printStackTrace();
@@ -127,13 +123,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	@Override
 	public List<GetLowestOfferListingsForASINResponse> getLowestOfferListingsForASINAsync(
 			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin, String itemCondition,
+			List<String> asin, String itemCondition,
 			Boolean excludeMe) {
 		List<GetLowestOfferListingsForASINResponse> getLowestOfferListingsForASINResponseList = null;
 		try {
 			GetLowestOfferListingsForASINAsyncSample getLowestOfferListingsForASINAsyncSample = new GetLowestOfferListingsForASINAsyncSample();
 			getLowestOfferListingsForASINResponseList = getLowestOfferListingsForASINAsyncSample.getLowestOfferListingsForASINAsync(sellerId, mwsAuthToken
-					, marketplaceId, asinList, asin, itemCondition, excludeMe);
+					, marketplaceId, asin, itemCondition, excludeMe);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getLowestOfferListingsForASINAsync");
 			e.printStackTrace();
@@ -144,13 +140,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	@Override
 	public GetLowestOfferListingsForASINResponse getLowestOfferListingsForASIN(
 			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin, String itemCondition,
+			List<String> asin, String itemCondition,
 			Boolean excludeMe) {
 		GetLowestOfferListingsForASINResponse getLowestOfferListingsForASINResponse = null;
 		try {
 			GetLowestOfferListingsForASINSample getLowestOfferListingsForASINSample = new GetLowestOfferListingsForASINSample();
 			getLowestOfferListingsForASINResponse = getLowestOfferListingsForASINSample.getLowestOfferListingsForASIN(sellerId, mwsAuthToken
-					, marketplaceId, asinList, asin, itemCondition, excludeMe);
+					, marketplaceId, asin, itemCondition, excludeMe);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getLowestOfferListingsForASIN");
 			e.printStackTrace();
@@ -161,13 +157,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	@Override
 	public List<GetLowestOfferListingsForSKUResponse> getLowestOfferListingsForSKUAsync(
 			String sellerId, String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU,
-			String itemCondition, Boolean excludeMe) {
+			List<String> sellerSKU,	String itemCondition, Boolean excludeMe) {
 		List<GetLowestOfferListingsForSKUResponse> getLowestOfferListingsForSKUResponseList = null;
 		try {
 			GetLowestOfferListingsForSKUAsyncSample getLowestOfferListingsForSKUAsyncSample = new GetLowestOfferListingsForSKUAsyncSample();
 			getLowestOfferListingsForSKUResponseList = getLowestOfferListingsForSKUAsyncSample.getLowestOfferListingsForSKUAsync(sellerId
-					, mwsAuthToken, marketplaceId, sellerSKUList, sellerSKU, itemCondition, excludeMe);
+					, mwsAuthToken, marketplaceId, sellerSKU, itemCondition, excludeMe);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getLowestOfferListingsForSKUAsync");
 			e.printStackTrace();
@@ -176,15 +171,14 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKU(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU,
+	public GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKU(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> sellerSKU,
 			String itemCondition, Boolean excludeMe) {
 		GetLowestOfferListingsForSKUResponse getLowestOfferListingsForSKUResponse = null;
 		try {
 			GetLowestOfferListingsForSKUSample getLowestOfferListingsForSKUSample = new GetLowestOfferListingsForSKUSample();
 			getLowestOfferListingsForSKUResponse = getLowestOfferListingsForSKUSample.getLowestOfferListingsForSKU(sellerId
-					, mwsAuthToken, marketplaceId, sellerSKUList, sellerSKU, itemCondition, excludeMe);
+					, mwsAuthToken, marketplaceId, sellerSKU, itemCondition, excludeMe);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getLowestOfferListingsForSKU");
 			e.printStackTrace();
@@ -193,9 +187,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetLowestPricedOffersForASINResponse> getLowestPricedOffersForASINAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String asin, String itemCondition) {
+	public List<GetLowestPricedOffersForASINResponse> getLowestPricedOffersForASINAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String asin, String itemCondition) {
 		List<GetLowestPricedOffersForASINResponse> getLowestPricedOffersForASINResponseList = null;
 		try {
 			GetLowestPricedOffersForASINAsyncSample getLowestPricedOffersForASINAsyncSample = new GetLowestPricedOffersForASINAsyncSample();
@@ -209,9 +202,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetLowestPricedOffersForASINResponse getLowestPricedOffersForASIN(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String asin, String itemCondition) {
+	public GetLowestPricedOffersForASINResponse getLowestPricedOffersForASIN(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String asin, String itemCondition) {
 		GetLowestPricedOffersForASINResponse getLowestPricedOffersForASINResponse = null;
 		try {
 			GetLowestPricedOffersForASINSample getLowestPricedOffersForASINSample = new GetLowestPricedOffersForASINSample();
@@ -225,9 +217,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetLowestPricedOffersForSKUResponse> getLowestPricedOffersForSKUAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String sellerSKU, String itemCondition) {
+	public List<GetLowestPricedOffersForSKUResponse> getLowestPricedOffersForSKUAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String sellerSKU, String itemCondition) {
 		List<GetLowestPricedOffersForSKUResponse> getLowestPricedOffersForSKUResponseList = null;
 		try {
 			GetLowestPricedOffersForSKUAsyncSample getLowestPricedOffersForSKUAsyncSample = new GetLowestPricedOffersForSKUAsyncSample();
@@ -241,9 +232,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetLowestPricedOffersForSKUResponse getLowestPricedOffersForSKU(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String sellerSKU, String itemCondition) {
+	public GetLowestPricedOffersForSKUResponse getLowestPricedOffersForSKU(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String sellerSKU, String itemCondition) {
 		GetLowestPricedOffersForSKUResponse getLowestPricedOffersForSKUResponse = null;
 		try {
 			GetLowestPricedOffersForSKUSample getLowestPricedOffersForSKUSample = new GetLowestPricedOffersForSKUSample();
@@ -257,14 +247,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetMatchingProductResponse> getMatchingProductAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin) {
+	public List<GetMatchingProductResponse> getMatchingProductAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> asin) {
 		List<GetMatchingProductResponse> getMatchingProductResponseList = null;
 		try {
 			GetMatchingProductAsyncSample getMatchingProductAsyncSample = new GetMatchingProductAsyncSample();
 			getMatchingProductResponseList = getMatchingProductAsyncSample.getMatchingProductAsync(sellerId
-					, mwsAuthToken, marketplaceId, asinList, asin);
+					, mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMatchingProductAsync");
 			e.printStackTrace();
@@ -274,13 +263,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 
 	@Override
 	public GetMatchingProductResponse getMatchingProduct(String sellerId,
-			String mwsAuthToken, String marketplaceId, ASINListType asinList,
-			List<String> asin) {
+			String mwsAuthToken, String marketplaceId, List<String> asin) {
 		GetMatchingProductResponse getMatchingProductResponse = null;
 		try {
 			GetMatchingProductSample getMatchingProductSample = new GetMatchingProductSample();
 			getMatchingProductResponse = getMatchingProductSample.getMatchingProduct(sellerId
-					, mwsAuthToken, marketplaceId, asinList, asin);
+					, mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMatchingProduct");
 			e.printStackTrace();
@@ -289,14 +277,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetMatchingProductForIdResponse> getMatchingProductForIdAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String idType, IdListType idList, List<String> id) {
+	public List<GetMatchingProductForIdResponse> getMatchingProductForIdAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String idType, List<String> id) {
 		List<GetMatchingProductForIdResponse> getMatchingProductForIdResponseList = null;
 		try {
 			GetMatchingProductForIdAsyncSample getMatchingProductForIdAsyncSample = new GetMatchingProductForIdAsyncSample();
 			getMatchingProductForIdResponseList = getMatchingProductForIdAsyncSample.getMatchingProductForIdAsync(sellerId, mwsAuthToken
-					, marketplaceId, idType, idList, id);
+					, marketplaceId, idType, id);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMatchingProductForIdAsync");
 			e.printStackTrace();
@@ -305,14 +292,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetMatchingProductForIdResponse getMatchingProductForId(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String idType, IdListType idList, List<String> id) {
+	public GetMatchingProductForIdResponse getMatchingProductForId(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String idType, List<String> id) {
 		GetMatchingProductForIdResponse getMatchingProductForIdResponse = null;
 		try {
 			GetMatchingProductForIdSample getMatchingProductForIdSample = new GetMatchingProductForIdSample();
 			getMatchingProductForIdResponse = getMatchingProductForIdSample.getMatchingProductForId(sellerId, mwsAuthToken
-					, marketplaceId, idType, idList, id);
+					, marketplaceId, idType, id);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMatchingProductForId");
 			e.printStackTrace();
@@ -321,9 +307,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetMyFeesEstimateResponse> getMyFeesEstimateAsync(
-			String sellerId, String mwsAuthToken,
-			FeesEstimateRequestList feesEstimateRequestList,
+	public List<GetMyFeesEstimateResponse> getMyFeesEstimateAsync(String sellerId, 
+			String mwsAuthToken, FeesEstimateRequestList feesEstimateRequestList,
 			FeesEstimateRequest fer, PriceToEstimateFees pte, MoneyType mt,
 			Points points, List<FeesEstimateRequest> feesEstimateRequest) {
 		List<GetMyFeesEstimateResponse> getMyFeesEstimateResponseList = null;
@@ -357,14 +342,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetMyPriceForASINResponse> getMyPriceForASINAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			ASINListType asinList, List<String> asin) {
+	public List<GetMyPriceForASINResponse> getMyPriceForASINAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> asin) {
 		List<GetMyPriceForASINResponse> getMyPriceForASINResponseList = null;
 		try {
 			GetMyPriceForASINAsyncSample getMyPriceForASINAsyncSample = new GetMyPriceForASINAsyncSample();
 			getMyPriceForASINResponseList = getMyPriceForASINAsyncSample.getMyPriceForASINAsync(sellerId, mwsAuthToken
-					, marketplaceId, asinList, asin);
+					, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMyPriceForASINAsync");
 			e.printStackTrace();
@@ -374,13 +358,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 
 	@Override
 	public GetMyPriceForASINResponse getMyPriceForASIN(String sellerId,
-			String mwsAuthToken, String marketplaceId, ASINListType asinList,
-			List<String> asin) {
+			String mwsAuthToken, String marketplaceId, List<String> asin) {
 		GetMyPriceForASINResponse getMyPriceForASINResponse = null;
 		try {
 			GetMyPriceForASINSample getMyPriceForASINSample = new GetMyPriceForASINSample();
 			getMyPriceForASINResponse = getMyPriceForASINSample.getMyPriceForASIN(sellerId, mwsAuthToken
-					, marketplaceId, asinList, asin);
+					, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMyPriceForASIN");
 			e.printStackTrace();
@@ -389,14 +372,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetMyPriceForSKUResponse> getMyPriceForSKUAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU) {
+	public List<GetMyPriceForSKUResponse> getMyPriceForSKUAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, List<String> sellerSKU) {
 		List<GetMyPriceForSKUResponse> getMyPriceForSKUResponseList = null;
 		try {
 			GetMyPriceForSKUAsyncSample getMyPriceForSKUAsyncSample = new GetMyPriceForSKUAsyncSample();
 			getMyPriceForSKUResponseList = getMyPriceForSKUAsyncSample.getMyPriceForSKUAsync(sellerId, mwsAuthToken
-					, marketplaceId, sellerSKUList, sellerSKU);
+					, marketplaceId, sellerSKU);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMyPriceForSKUAsync");
 			e.printStackTrace();
@@ -406,13 +388,12 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 
 	@Override
 	public GetMyPriceForSKUResponse getMyPriceForSKU(String sellerId,
-			String mwsAuthToken, String marketplaceId,
-			SellerSKUListType sellerSKUList, List<String> sellerSKU) {
+			String mwsAuthToken, String marketplaceId, List<String> sellerSKU) {
 		GetMyPriceForSKUResponse getMyPriceForSKUResponse = null;
 		try {
 			GetMyPriceForSKUSample getMyPriceForSKUSample = new GetMyPriceForSKUSample();
 			getMyPriceForSKUResponse = getMyPriceForSKUSample.getMyPriceForSKU(sellerId, mwsAuthToken
-					, marketplaceId, sellerSKUList, sellerSKU);
+					, marketplaceId, sellerSKU);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getMyPriceForSKU");
 			e.printStackTrace();
@@ -421,14 +402,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetProductCategoriesForASINResponse> getProductCategoriesForASINAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String asin) {
+	public List<GetProductCategoriesForASINResponse> getProductCategoriesForASINAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String asin) {
 		List<GetProductCategoriesForASINResponse> getProductCategoriesForASINResponseList = null;
 		try {
 			GetProductCategoriesForASINAsyncSample getProductCategoriesForASINAsyncSample = new GetProductCategoriesForASINAsyncSample();
-			getProductCategoriesForASINResponseList = getProductCategoriesForASINAsyncSample.getProductCategoriesForASINAsync(sellerId, mwsAuthToken
-					, marketplaceId, asin);
+			getProductCategoriesForASINResponseList = getProductCategoriesForASINAsyncSample.getProductCategoriesForASINAsync(sellerId, 
+					mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getProductCategoriesForASINAsync");
 			e.printStackTrace();
@@ -437,14 +417,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public GetProductCategoriesForASINResponse getProductCategoriesForASIN(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String asin) {
+	public GetProductCategoriesForASINResponse getProductCategoriesForASIN(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String asin) {
 		GetProductCategoriesForASINResponse getProductCategoriesForASINResponse = null;
 		try {
 			GetProductCategoriesForASINSample getProductCategoriesForASINSample = new GetProductCategoriesForASINSample();
-			getProductCategoriesForASINResponse = getProductCategoriesForASINSample.getProductCategoriesForASIN(sellerId, mwsAuthToken
-					, marketplaceId, asin);
+			getProductCategoriesForASINResponse = getProductCategoriesForASINSample.getProductCategoriesForASIN(sellerId, 
+					mwsAuthToken, marketplaceId, asin);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getProductCategoriesForASIN");
 			e.printStackTrace();
@@ -453,14 +432,13 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetProductCategoriesForSKUResponse> getProductCategoriesForSKUAsync(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String sellerSKU) {
+	public List<GetProductCategoriesForSKUResponse> getProductCategoriesForSKUAsync(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String sellerSKU) {
 		List<GetProductCategoriesForSKUResponse> getProductCategoriesForSKUResponseList = null;
 		try {
 			GetProductCategoriesForSKUAsyncSample getProductCategoriesForSKUAsyncSample = new GetProductCategoriesForSKUAsyncSample();
-			getProductCategoriesForSKUResponseList = getProductCategoriesForSKUAsyncSample.getProductCategoriesForSKUAsync(sellerId, mwsAuthToken
-					, marketplaceId, sellerSKU);
+			getProductCategoriesForSKUResponseList = getProductCategoriesForSKUAsyncSample.getProductCategoriesForSKUAsync(sellerId, 
+					mwsAuthToken, marketplaceId, sellerSKU);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getProductCategoriesForSKUAsync");
 			e.printStackTrace();
@@ -469,9 +447,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 	
 	@Override
-	public GetProductCategoriesForSKUResponse getProductCategoriesForSKU(
-			String sellerId, String mwsAuthToken, String marketplaceId,
-			String sellerSKU) {
+	public GetProductCategoriesForSKUResponse getProductCategoriesForSKU(String sellerId, 
+			String mwsAuthToken, String marketplaceId, String sellerSKU) {
 		GetProductCategoriesForSKUResponse getProductCategoriesForSKUResponse = null;
 		try {
 			GetProductCategoriesForSKUSample getProductCategoriesForSKUSample = new GetProductCategoriesForSKUSample();
@@ -485,8 +462,7 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 	}
 
 	@Override
-	public List<GetServiceStatusResponse> getServiceStatusAsync(
-			String sellerId, String mwsAuthToken) {
+	public List<GetServiceStatusResponse> getServiceStatusAsync(String sellerId, String mwsAuthToken) {
 		List<GetServiceStatusResponse> getServiceStatusResponseList = null;
 		try {
 			GetServiceStatusAsyncSample getServiceStatusAsyncSample = new GetServiceStatusAsyncSample();
@@ -519,8 +495,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 		List<ListMatchingProductsResponse> listMatchingProductsResponseList = null;
 		try {
 			ListMatchingProductsAsyncSample listMatchingProductsAsyncSample = new ListMatchingProductsAsyncSample();
-			listMatchingProductsResponseList = listMatchingProductsAsyncSample.listMatchingProductsAsync(sellerId, mwsAuthToken, marketplaceId
-					 , query, queryContextId);
+			listMatchingProductsResponseList = listMatchingProductsAsyncSample.listMatchingProductsAsync(sellerId, 
+					mwsAuthToken, marketplaceId, query, queryContextId);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while listMatchingProductsAsync");
 			e.printStackTrace();
@@ -535,8 +511,8 @@ public class AmazonProductManagerServiceImpl implements AmazonProductManagerServ
 		ListMatchingProductsResponse listMatchingProductsResponse = null;
 		try {
 			ListMatchingProductsSample listMatchingProductsSample = new ListMatchingProductsSample();
-			listMatchingProductsResponse = listMatchingProductsSample.listMatchingProducts(sellerId, mwsAuthToken, marketplaceId
-					 , query, queryContextId);
+			listMatchingProductsResponse = listMatchingProductsSample.listMatchingProducts(sellerId, 
+					mwsAuthToken, marketplaceId, query, queryContextId);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while listMatchingProducts");
 			e.printStackTrace();

@@ -12,6 +12,8 @@ public interface MarketPlaceDao {
 	
 	public MarketPlaceRegionJsonModel getMarketPlaceRegionById(String id);
 	
+	public MarketPlaceRegionJsonModel getMarketPlaceRegionByRegionId(String regionId);
+	
 	public List<MarketPlaceHeadersJsonModel> getMarketPlaceHeaders(String marketPlaceId, String customerId);
 	
 	public MarketPlaceHeadersJsonModel getMarketPlaceHeaderById(String headerId);

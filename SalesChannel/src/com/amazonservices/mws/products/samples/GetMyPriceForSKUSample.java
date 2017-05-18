@@ -66,7 +66,7 @@ public class GetMyPriceForSKUSample {
      *  Command line entry point.
      */
     public GetMyPriceForSKUResponse getMyPriceForSKU(String sellerId, String mwsAuthToken
-    		, String marketplaceId, SellerSKUListType sellerSKUList, List<String> sellerSKU) {
+    		, String marketplaceId, List<String> sellerSKU) {
 
     	GetMyPriceForSKUResponse getMyPriceForSKUResponse = null;
     	
@@ -79,7 +79,7 @@ public class GetMyPriceForSKUSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKUList = new SellerSKUListType();
+        SellerSKUListType sellerSKUList = new SellerSKUListType();
         sellerSKU = new ArrayList<String>();
         sellerSKU.add("JIIT00002");
         sellerSKUList.setSellerSKU(sellerSKU);

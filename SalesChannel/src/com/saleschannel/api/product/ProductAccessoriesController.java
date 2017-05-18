@@ -201,7 +201,7 @@ public class ProductAccessoriesController extends SalesChannelServerResource<Pro
 				}
 			}
 		}
-		//POST method
+		//PUT method
 		if (method.equals(SalesChannelConstants.PUT)) {
 			if(obj.getProductAccessories() != null && obj.getProductAccessories().size() > 0) {
 				for(ProductAttributeSetJsonObject productAttributeSetJsonObject : obj.getProductAccessories()) {

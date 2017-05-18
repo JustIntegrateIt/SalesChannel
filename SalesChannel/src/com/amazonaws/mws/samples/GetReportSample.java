@@ -46,8 +46,8 @@ public class GetReportSample {
 	         * Access Key ID and Secret Access Key ID, obtained from:
 	         * http://aws.amazon.com
 	         ***********************************************************************/
-	        final String accessKeyId = "<Your Access Key ID>";
-	        final String secretAccessKey = "<Your Secret Access Key>";
+	        final String accessKeyId = "AKIAIC2MSCXCVWE3BLJQ";
+	        final String secretAccessKey = "k+R7cQyQIOKA6238xt4dYuQz12A0d68AStGBeP60";
 	
 	        final String appName = "<Your Application or Company Name>";
 	        final String appVersion = "<Your Application Version or Build Number or Release Date>";
@@ -74,7 +74,7 @@ public class GetReportSample {
 	        // Canada
 	        // config.setServiceURL("https://mws.amazonservices.ca/");
 	        // India
-	        // config.setServiceURL("https://mws.amazonservices.in/");
+	        config.setServiceURL("https://mws.amazonservices.in/");
 	
 	        /************************************************************************
 	         * You can also try advanced configuration options. Available options are:
@@ -101,20 +101,21 @@ public class GetReportSample {
 	         * Marketplace and Merchant IDs are required parameters for all 
 	         * Marketplace Web Service calls.
 	         ***********************************************************************/
-	        merchantId = "<Your Merchant ID>";
-	        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+	        merchantId = "A44435JW4FD32";
+	        sellerDevAuthToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
 	
 	        GetReportRequest request = new GetReportRequest();
 	        request.setMerchant( merchantId );
 	        request.setMWSAuthToken(sellerDevAuthToken);
 	
-	        request.setReportId( "<Report ID>" );
+	        request.setReportId( "6164780141017303" );
 	
 	        // Note that depending on the type of report being downloaded, a report can reach 
 	        // sizes greater than 1GB. For this reason we recommend that you _always_ program to
 	        // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
 	        // the in-memory size limit and have to re-work your solution.
 	        //
+	        reportPath = "/home/system6/Documents/SC-AmazonMWS/FlatFiles/productResponse.txt";
 	        OutputStream report = new FileOutputStream(reportPath);
 	        request.setReportOutputStream( report );
 	
