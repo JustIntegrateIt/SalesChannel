@@ -28,7 +28,8 @@ public interface AmazonReportManagerService {
 	public List<GetReportResponse> getReportAsync(String merchantId
 			, String sellerDevAuthToken);
 	
-	public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath);
+	public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath
+			, String reportId);
 	
 	public List<GetReportCountResponse> getReportCountAsync(String merchantId
 			, String sellerDevAuthToken);
@@ -53,7 +54,8 @@ public interface AmazonReportManagerService {
 	public List<GetReportRequestListResponse> getReportRequestListAsync(String merchantId
 			, String sellerDevAuthToken);
 	
-	public GetReportRequestListResponse getReportRequestList(String merchantId, String sellerDevAuthToken);
+	public GetReportRequestListResponse getReportRequestList(String merchantId, String sellerDevAuthToken
+			, List<String> reportRequestIds);
 	
 	public List<GetReportRequestListByNextTokenResponse> getReportRequestListByNextTokenAsync(String merchantId
 			, String sellerDevAuthToken);
@@ -84,7 +86,7 @@ public interface AmazonReportManagerService {
 	public List<RequestReportResponse> requestReportAsync(String merchantId
     		, String sellerDevAuthToken, String marketplaceId);
 	
-	public RequestReportResponse requestReport(String merchantId, String sellerDevAuthToken
+	public RequestReportResponse requestReport(String merchantId, String reportType, String sellerDevAuthToken
 			, List<String> marketplacesIds);
 	
 	public List<UpdateReportAcknowledgementsResponse> updateReportAcknowledgementsAsync(String merchantId

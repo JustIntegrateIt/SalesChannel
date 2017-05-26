@@ -255,7 +255,7 @@ public class CategoryColumnsValueController extends SalesChannelServerResource<C
 											categoryColumnsValueErrors.add(categoryColumnsValueError);
 										}
 									}
-									/*EAN-13 UPC-12 ASIN-10 GCID- GTIN-14 ISBN-10/13*/
+									/*EAN-13 UPC-12 ASIN-10 GTIN-14 ISBN-10/13*/
 									else if(columnValue.getCategoryColumnParameterName().equals("external_product_id")){
 										if(columnValue.getValue().length() == 10 || columnValue.getValue().length() == 12 || columnValue.getValue().length() == 13 
 												|| columnValue.getValue().length() == 14) {

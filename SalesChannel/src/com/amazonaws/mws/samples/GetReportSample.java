@@ -24,6 +24,7 @@ import java.io.OutputStream;
 
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
+import com.saleschannel.api.utility.SalesChannelUtility;
 
 /**
  *
@@ -39,7 +40,8 @@ public class GetReportSample {
      *
      * @param args unused
      */
-    public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath) {
+    public GetReportResponse getReport(String merchantId, String sellerDevAuthToken, String reportPath,
+    		String reportId) {
     	GetReportResponse getReportResponse = null;
     	try {
 	        /************************************************************************
@@ -108,17 +110,17 @@ public class GetReportSample {
 	        request.setMerchant( merchantId );
 	        request.setMWSAuthToken(sellerDevAuthToken);
 	
-	        request.setReportId( "6164780141017303" );
+	        request.setReportId(reportId); //6164780141017303, 6264004814017312
 	
 	        // Note that depending on the type of report being downloaded, a report can reach 
 	        // sizes greater than 1GB. For this reason we recommend that you _always_ program to
 	        // MWS in a streaming fashion. Otherwise, as your business grows you may silently reach
 	        // the in-memory size limit and have to re-work your solution.
 	        //
-	        reportPath = "/home/system6/Documents/SC-AmazonMWS/FlatFiles/productResponse.txt";
+	        //create the file
+	        SalesChannelUtility.createFile(reportPath);
 	        OutputStream report = new FileOutputStream(reportPath);
 	        request.setReportOutputStream( report );
-	
 	        getReportResponse = invokeGetReport(service, request);
     	} catch(Exception e) {
     		e.printStackTrace();

@@ -77,7 +77,6 @@ public class GetProductCategoriesForSKUSample {
         request.setSellerId(sellerId);
         request.setMWSAuthToken(mwsAuthToken);
         request.setMarketplaceId(marketplaceId);
-        sellerSKU = "JIIT00002";
         request.setSellerSKU(sellerSKU);
 
         // Make the call.

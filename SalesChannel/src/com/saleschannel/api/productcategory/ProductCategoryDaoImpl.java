@@ -3,6 +3,7 @@ package com.saleschannel.api.productcategory;
 import java.util.List;
 
 import com.saleschannel.api.constants.SalesChannelConstants;
+import com.saleschannel.api.productcategory.amazonmws.AmazonProductCategoriesJsonModel;
 
 import org.apache.log4j.Logger;
 import org.bson.types.ObjectId;
@@ -329,5 +330,19 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 			e.printStackTrace();
 		}
 		return productCategoryColumnValueJsonModel;
+	}
+	
+	public AmazonProductCategoriesJsonModel getAmazonProductCategoryById(String id) {
+		AmazonProductCategoriesJsonModel amazonProductCategoriesJsonModel = null;
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("_class").is("com.saleschannel.api.productcategory.amazonmws.AmazonProductCategoriesJsonModel")
+					.and("amazonProductCategoryIds").is(id));
+			amazonProductCategoriesJsonModel = this.mongoOps.findOne(query, AmazonProductCategoriesJsonModel.class, SalesChannelConstants.SC_AMAZON_PULL_PRODUCT_CATEGORIES);
+		} catch(Exception e) {
+			LOGGERS.error("error while get ProductCategoryColumnValue By productId & param Id from database");
+			e.printStackTrace();
+		}
+		return amazonProductCategoriesJsonModel;
 	}
 }

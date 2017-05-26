@@ -15,6 +15,9 @@ public class MarketPlaceProductSyncJsonObject extends SalesChannelBaseJsonObject
 	//Amazon MWS parameter
 	private String marketPlaceRegionKey;
 
+	//Amazon MWS parameter
+	private boolean isAll;
+		
 	public List<String> getId() {
 		return id;
 	}
@@ -37,6 +40,14 @@ public class MarketPlaceProductSyncJsonObject extends SalesChannelBaseJsonObject
 
 	public void setMarketPlaceRegionKey(String marketPlaceRegionKey) {
 		this.marketPlaceRegionKey = marketPlaceRegionKey;
+	}
+
+	public boolean isAll() {
+		return isAll;
+	}
+
+	public void setIsAll(boolean isAll) {
+		this.isAll = isAll;
 	}
 	
 }

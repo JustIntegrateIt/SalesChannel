@@ -97,11 +97,11 @@ public class AmazonReportManagerServiceImpl implements AmazonReportManagerServic
 	
 	@Override
 	public GetReportResponse getReport(String merchantId,
-			String sellerDevAuthToken, String reportPath) {
+			String sellerDevAuthToken, String reportPath, String reportId) {
 		GetReportResponse getReportResponse = null; 
 		try {
 			GetReportSample getReportSample = new GetReportSample();
-			getReportResponse = getReportSample.getReport(merchantId, sellerDevAuthToken, reportPath);
+			getReportResponse = getReportSample.getReport(merchantId, sellerDevAuthToken, reportPath, reportId);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getReport");
 			e.printStackTrace();
@@ -241,11 +241,12 @@ public class AmazonReportManagerServiceImpl implements AmazonReportManagerServic
 	
 	@Override
 	public GetReportRequestListResponse getReportRequestList(
-			String merchantId, String sellerDevAuthToken) {
+			String merchantId, String sellerDevAuthToken, List<String> reportRequestIds) {
 		GetReportRequestListResponse getReportRequestListResponse = null; 
 		try {
 			GetReportRequestListSample getReportRequestListSample = new GetReportRequestListSample();
-			getReportRequestListResponse = getReportRequestListSample.getReportRequestList(merchantId, sellerDevAuthToken);
+			getReportRequestListResponse = getReportRequestListSample.getReportRequestList(merchantId, sellerDevAuthToken,
+					reportRequestIds);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while getReportRequestList");
 			e.printStackTrace();
@@ -412,12 +413,12 @@ public class AmazonReportManagerServiceImpl implements AmazonReportManagerServic
 	}
 	
 	@Override
-	public RequestReportResponse requestReport(String merchantId,
+	public RequestReportResponse requestReport(String merchantId, String reportType,
 			String sellerDevAuthToken, List<String> marketplacesIds) {
 		RequestReportResponse requestReportResponse = null; 
 		try {
 			RequestReportSample requestReportSample = new RequestReportSample();
-			requestReportResponse = requestReportSample.requestReport(merchantId, sellerDevAuthToken, marketplacesIds);
+			requestReportResponse = requestReportSample.requestReport(merchantId, reportType, sellerDevAuthToken, marketplacesIds);
 		} catch(Exception e) {
 			LOGGERS.error("error occured while requestReport");
 			e.printStackTrace();

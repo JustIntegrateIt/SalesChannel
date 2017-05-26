@@ -68,6 +68,7 @@ public class SalesChannelConstants {
 	public static final String SC_ORDER_SHIPPING_ADDRESS = "sc_order_shipping_address"; 
 	public static final String SC_AMAZON_FLAT_FILES = "sc_amazon_flat_files";
 	public static final String SC_QUARTZ_JOB = "sc_quartz_job";
+	public static final String SC_AMAZON_PULL_PRODUCT_CATEGORIES = "sc_amazon_pull_product_categories";
 	
 	/** AMZ MWS credentials names. */
 	public static final String accessKeyId = "AKIAIC2MSCXCVWE3BLJQ";  
@@ -78,6 +79,7 @@ public class SalesChannelConstants {
 	public static final String merchantIdSellerId = "A44435JW4FD32";
 	public static final String authToken = "amzn.mws.4ea38b7b-f563-7709-4bae-87aeaEXAMPLE";
 	
-	public static final String FLATFILE_SOURCE_PATH = "/home/system6/Documents/SC-AmazonMWS/FlatFiles";
+	public static final String FLATFILE_SOURCE_PATH = "/home/system6/Documents/SC-AmazonMWS/FlatFiles/Request";
+	public static final String FLATFILE_RESPONSE_SOURCE_PATH = "/home/system6/Documents/SC-AmazonMWS/FlatFiles/Response";
 
 }

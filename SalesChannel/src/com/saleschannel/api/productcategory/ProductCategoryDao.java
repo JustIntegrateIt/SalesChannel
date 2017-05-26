@@ -2,6 +2,8 @@ package com.saleschannel.api.productcategory;
 
 import java.util.List;
 
+import com.saleschannel.api.productcategory.amazonmws.AmazonProductCategoriesJsonModel;
+
 public interface ProductCategoryDao {
 
 	public String insertProductCategory(ProductCategoryJsonModel productCategoryJsonModel);
@@ -43,4 +45,6 @@ public interface ProductCategoryDao {
 	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueById(String id);
 	
 	public ProductCategoryColumnValueJsonModel getProductCategoryColumnValueByProductIdAndParamId(String productId, String paramId);
+	
+	public AmazonProductCategoriesJsonModel getAmazonProductCategoryById(String id);
 }

@@ -44,6 +44,11 @@ public class AmazonProductSyncController extends SalesChannelServerResource<Mark
 			if(obj.getIdType() != null && !obj.getIdType().isEmpty()) {
 				status = amazonProductService.getMatchingProductForId(SalesChannelConstants.merchantIdSellerId, 
 						obj.getMarketPlaceRegionKey(), obj.getIdType(), obj.getId());	
+			} else if(obj.isAll()) {
+				List<String> marketplacesIds = new ArrayList<String>();
+				marketplacesIds.add(obj.getMarketPlaceRegionKey());
+				status = amazonProductService.requestReport(SalesChannelConstants.merchantIdSellerId
+						, marketplacesIds, getCustomerId());
 			} else {
 				status = amazonProductService.getMatchingProduct(SalesChannelConstants.merchantIdSellerId, 
 						obj.getMarketPlaceRegionKey(), obj.getId());
@@ -82,63 +87,66 @@ public class AmazonProductSyncController extends SalesChannelServerResource<Mark
 			String method, JSONObject jsonObject, Form form)
 			throws JSONException {
 		JSONObject jsonObject2 = jsonObject;
-		obj.setCustomerId(getCustomerId());
 		//POST method
 		if (method.equals(SalesChannelConstants.POST)) {
+			obj.setCustomerId(getCustomerId());
 			//marketPlaceRegionKey validation
 			if(obj.getMarketPlaceRegionKey() != null && !obj.getMarketPlaceRegionKey().isEmpty()) {
 				MarketPlaceRegionJsonModel marketPlaceRegionJsonModel = marketPlaceService.
 						getMarketPlaceRegionByRegionId(obj.getMarketPlaceRegionKey());
-				if(marketPlaceRegionJsonModel == null) {
+				if(marketPlaceRegionJsonModel != null) {
+					//Id validation
+					if(obj.getId() != null && obj.getId().size() > 0) {
+						if(obj.getId().size() > 5){
+							jsonObject2.put("30313", "Ids should not be greater than 5.@#id#@");
+						} else {
+							//Id Type validation /*EAN-13 UPC-12 ASIN-10 GCID- GTIN-14 ISBN-10/13*/
+							if(obj.getIdType() != null && !obj.getIdType().isEmpty()) {
+								if(obj.getIdType().equals("ASIN") || obj.getIdType().equals("ISBN")) {
+									for(String asin : obj.getId()) {
+										if(asin != null && !asin.isEmpty() && asin.length() != 10) {
+											jsonObject2.put("30316", "ASIN/ISBN Id is not valid.@#id#@");
+										}
+									}
+								} else if(obj.getIdType().equals("UPC")) {
+									for(String asin : obj.getId()) {
+										if(asin != null && !asin.isEmpty() && asin.length() != 12) {
+											jsonObject2.put("30317", "UPC Id is not valid.@#id#@");
+										}
+									}
+								} else if(obj.getIdType().equals("EAN") || obj.getIdType().equals("ISBN")) {
+									for(String asin : obj.getId()) {
+										if(asin != null && !asin.isEmpty() && asin.length() != 13) {
+											jsonObject2.put("30318", "EAN/ISBN Id is not valid.@#id#@");
+										}
+									}
+								} else if(obj.getIdType().equals("GTIN")) {
+									for(String asin : obj.getId()) {
+										if(asin != null && !asin.isEmpty() && asin.length() != 14) {
+											jsonObject2.put("30319", "GTIN Id is not valid.@#id#@");
+										}
+									}
+								}
+							} else {
+								for(String asin : obj.getId()) {
+									if(asin != null && !asin.isEmpty() && asin.length() != 10) {
+										jsonObject2.put("30314", "ASIN Id is not valid.@#id#@");
+									}
+								}
+							}
+						}
+					} else {
+						if(!obj.isAll()) {
+							jsonObject2.put("30315", "Invalid Request Passed.@##@");
+						}
+					}
+				} else {
 					jsonObject2.put("30312", "Amazon MarketPlace Region Key is Not Valid.@#marketPlaceRegionKey#@");
 				}
 			} else {
 				jsonObject2.put("30311", "Amazon MarketPlace Region Key is empty.@#marketPlaceRegionKey#@");
 			}
-			//Id validation
-			if(obj.getId() != null && obj.getId().size() > 0) {
-				if(obj.getId().size() > 5){
-					jsonObject2.put("30313", "Ids should not be greater than 5.@#id#@");
-				} else {
-					//Id Type validation /*EAN-13 UPC-12 ASIN-10 GCID- GTIN-14 ISBN-10/13*/
-					if(obj.getIdType() != null && !obj.getIdType().isEmpty()) {
-						if(obj.getIdType().equals("ASIN") || obj.getIdType().equals("ISBN")) {
-							for(String asin : obj.getId()) {
-								if(asin != null && !asin.isEmpty() && asin.length() != 10) {
-									jsonObject2.put("30316", "ASIN/ISBN Id is not valid.@#id#@");
-								}
-							}
-						} else if(obj.getIdType().equals("UPC")) {
-							for(String asin : obj.getId()) {
-								if(asin != null && !asin.isEmpty() && asin.length() != 12) {
-									jsonObject2.put("30317", "UPC Id is not valid.@#id#@");
-								}
-							}
-						} else if(obj.getIdType().equals("EAN") || obj.getIdType().equals("ISBN")) {
-							for(String asin : obj.getId()) {
-								if(asin != null && !asin.isEmpty() && asin.length() != 13) {
-									jsonObject2.put("30318", "EAN/ISBN Id is not valid.@#id#@");
-								}
-							}
-						} else if(obj.getIdType().equals("GTIN")) {
-							for(String asin : obj.getId()) {
-								if(asin != null && !asin.isEmpty() && asin.length() != 14) {
-									jsonObject2.put("30319", "GTIN Id is not valid.@#id#@");
-								}
-							}
-						}
-					} else {
-						for(String asin : obj.getId()) {
-							if(asin != null && !asin.isEmpty() && asin.length() != 10) {
-								jsonObject2.put("30314", "ASIN Id is not valid.@#id#@");
-							}
-						}
-					}
-				}
-			} else {
-				jsonObject2.put("30315", "Id is empty.@#id#@");
-				return jsonObject2;
-			}
+			
 		}
 		return jsonObject2;
 	}

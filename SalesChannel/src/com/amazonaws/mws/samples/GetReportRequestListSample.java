@@ -19,8 +19,11 @@
 
 package com.amazonaws.mws.samples;
 
+import java.util.List;
+
 import com.amazonaws.mws.*;
 import com.amazonaws.mws.model.*;
+import com.saleschannel.api.constants.SalesChannelConstants;
 
 /**
  *
@@ -36,14 +39,15 @@ public class GetReportRequestListSample {
      *
      * @param args unused
      */
-    public GetReportRequestListResponse getReportRequestList(String merchantId, String sellerDevAuthToken) {
+    public GetReportRequestListResponse getReportRequestList(String merchantId, String sellerDevAuthToken,
+    		List<String> reportRequestIds) {
     	GetReportRequestListResponse getReportRequestListResponse = null;
         /************************************************************************
          * Access Key ID and Secret Access Key ID, obtained from:
          * http://aws.amazon.com
          ***********************************************************************/
-        final String accessKeyId = "<Your Access Key ID>";
-        final String secretAccessKey = "<Your Secret Access Key>";
+        final String accessKeyId = SalesChannelConstants.accessKeyId;
+        final String secretAccessKey = SalesChannelConstants.secretAccessKey;
 
         final String appName = "<Your Application or Company Name>";
         final String appVersion = "<Your Application Version or Build Number or Release Date>";
@@ -70,7 +74,7 @@ public class GetReportRequestListSample {
         // Canada
         // config.setServiceURL("https://mws.amazonservices.ca/");
         // India
-        // config.setServiceURL("https://mws.amazonservices.in/");
+        config.setServiceURL("https://mws.amazonservices.in/");
 
         /************************************************************************
          * You can also try advanced configuration options. Available options are:
@@ -109,12 +113,15 @@ public class GetReportRequestListSample {
          * Marketplace and Merchant IDs are required parameters for all 
          * Marketplace Web Service calls.
          ***********************************************************************/
-        merchantId = "<Your Merchant ID>";
-        sellerDevAuthToken = "<Merchant Developer MWS Auth Token>";
+        merchantId = SalesChannelConstants.merchantIdSellerId;
+        sellerDevAuthToken = SalesChannelConstants.authToken;
 
         GetReportRequestListRequest request = new GetReportRequestListRequest();
         request.setMerchant( merchantId );
         request.setMWSAuthToken(sellerDevAuthToken);
+        IdList idList = new IdList();
+        idList.setId(reportRequestIds);
+        request.setReportRequestIdList(idList);
 
         // @TODO: set request parameters here
 

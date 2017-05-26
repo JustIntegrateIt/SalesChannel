@@ -4,12 +4,14 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,6 +39,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONException;
@@ -683,5 +686,72 @@ public final class SalesChannelUtility {
 			e.printStackTrace();
 		}
 		return contains;
+	}
+	
+	/**
+	 * Method used to create a file and directory if not exist.
+	 *
+	 * @param filePath the path where the file need to be created
+	 * @return boolean
+	 */
+	public static boolean createFile(String filePath) {
+		boolean status = false;
+		try {
+			String[] tokens = filePath.split(SalesChannelConstants.FILE_SEPERATOR);
+			String directory = filePath.replace(tokens[tokens.length - 1], "");
+			File file = new File(directory);
+			try{
+				if(!file.exists()) {
+					file.mkdirs();
+					file = new File(filePath);
+					status = true;
+				}
+		    } 
+		    catch(Exception e){
+		    	LOGGERS.error("error occured while createDirectory directory:"+directory);
+		    	e.printStackTrace();
+		    }        
+		} catch (Exception e) {
+			LOGGERS.error("error occured while createFile filePath:"+filePath);
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	/**
+	 * Method to convert csv to xlsx file.
+	 *
+	 * @param csvFilePath, xlsxFilePath the path where the file need to be created
+	 * @return boolean
+	 */
+	public static boolean csvToXLSX(String csvFilePath, String xlsxFilePath) {
+		boolean status = false;
+		try {
+	        String csvFileAddress = csvFilePath; //csv file address
+	        String xlsxFileAddress = xlsxFilePath; //xlsx file address
+	        XSSFWorkbook workBook = new XSSFWorkbook();
+	        XSSFSheet sheet = workBook.createSheet("sheet1");
+	        String currentLine = null;
+	        int RowNum = 0;
+	        BufferedReader br = new BufferedReader(new FileReader(csvFileAddress));
+	        while ((currentLine = br.readLine()) != null) {
+	            String str[] = currentLine.split("\t");
+	            RowNum++;
+	            XSSFRow currentRow = sheet.createRow(RowNum);
+	            for(int i = 0; i < str.length; i++){
+	                currentRow.createCell(i).setCellValue(str[i]);
+	            }
+	        }
+
+	        FileOutputStream fileOutputStream =  new FileOutputStream(xlsxFileAddress);
+	        workBook.write(fileOutputStream);
+	        fileOutputStream.close();
+	        workBook.close();
+	        br.close();
+	    } catch (Exception e) {
+	    	LOGGERS.error("error occured while convert csvToXLSX csvFilePath:"+csvFilePath);
+	        e.printStackTrace();
+	    }
+		return status;
 	}
 }

@@ -45,7 +45,7 @@ public class RequestReportSample {
      *
      * @param args unused
      */
-    public RequestReportResponse requestReport(String merchantId
+    public RequestReportResponse requestReport(String merchantId, String reportType
     		, String sellerDevAuthToken, List<String> marketplacesIds) {
     	RequestReportResponse requestReportResponse = null;
         /************************************************************************
@@ -132,8 +132,7 @@ public class RequestReportSample {
         RequestReportRequest request = new RequestReportRequest()
 		        .withMerchant(merchantId)
 		        .withMarketplaceIdList(marketplaces)
-		        .withReportType("Report Type")
-		        .withReportOptions("ShowSalesChannel=true");
+		        .withReportType(reportType);
         request = request.withMWSAuthToken(sellerDevAuthToken);
         
         // demonstrates how to set the date range

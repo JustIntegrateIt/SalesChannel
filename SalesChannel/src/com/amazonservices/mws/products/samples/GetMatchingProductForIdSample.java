@@ -83,7 +83,7 @@ public class GetMatchingProductForIdSample {
         request.setIdType(idType);
         IdListType idList = new IdListType();
         id = new ArrayList<String>();
-        id.add("B013NCSEF4");
+        id.add("B005AWD9B0");
         idList.setId(id);
         request.setIdList(idList);
 

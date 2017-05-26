@@ -78,7 +78,7 @@ public interface AmazonProductService {
     
     public boolean getProductCategoriesForSKUAsync(String sellerId, String marketplaceId, String sellerSKU);
     
-    public boolean getProductCategoriesForSKU(String sellerId, String marketplaceId, String sellerSKU);
+    public String getProductCategoriesForSKU(String sellerId, String marketplaceId, String sellerSKU);
     
     public boolean getServiceStatusAsync(String sellerId);
     
@@ -90,9 +90,10 @@ public interface AmazonProductService {
     public boolean listMatchingProducts(String sellerId, String marketplaceId,
 			String query, String queryContextId);
     
-    public boolean requestReport(String merchantId, List<String> marketplacesIds);
+    public boolean requestReport(String merchantId, List<String> marketplacesIds, String customerId);
     
-    public boolean getReportRequestList(String merchantId);
+    public boolean getReportRequestList(String merchantId, List<String> reportRequestIds, String customerId, List<String> marketplacesIds);
     
-    public boolean getReport(String merchantId);
+    public boolean getReport(String merchantId, String reportId, String customerId, List<String> marketplacesIds);
+
 }

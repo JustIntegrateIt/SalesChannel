@@ -85,6 +85,7 @@
 	
 	<bean id="amazonProductService" class="com.saleschannel.api.product.amazonmws.AmazonProductServiceImpl">
 		<property name="productDao" ref="productDao" />
+		<property name="categoryService" ref="categoryService" />
 		<property name="amazonProductManagerService" ref="amazonProductManagerService" />
 		<property name="amazonReportManagerService" ref="amazonReportManagerService" />
 	</bean>

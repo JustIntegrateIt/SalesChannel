@@ -343,6 +343,20 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		return productCategoryColumnParametersJsonModel;
 	}
 	
+	public ProductCategoryColumnParametersJsonObject getProductCategoryColumnParameterByColumnNameAndCategoryId(String categoryId, String columnName) {
+		ProductCategoryColumnParametersJsonObject productCategoryColumnParameter = null;
+		try {
+			ProductCategoryColumnParametersJsonModel productCategoryColumnParameters = categoryDao.getProductCategoryColumnParameterByColumnNameAndCategoryId(categoryId, columnName);
+			if(productCategoryColumnParameters != null) {
+				productCategoryColumnParameter = convertProductCategoryColumnParametersJsonModelToObject(productCategoryColumnParameters);
+			}
+		} catch(Exception e) {
+			LOGGERS.error("error while check get getProductCategoryColumnParameter By ColumnName And CategoryId");
+			e.printStackTrace();
+		}
+		return productCategoryColumnParameter;
+	}
+	
 	public List<ProductCategoryColumnParametersJsonObject> getProductCategoryColumnParametersByCategoryId(String productCategoryId) {
 		List<ProductCategoryColumnParametersJsonObject> productCategoryColumnParametersJsonObjectList = null;
 		try {
